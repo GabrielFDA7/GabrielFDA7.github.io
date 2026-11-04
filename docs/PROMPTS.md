@@ -223,3 +223,101 @@ Chega de inovação, remova esse fio e vamos no simples, talvez nem precise de s
 1. No computador saíram o fio, as curvas e os divisores. Quem separa as seções é o espaço.
 2. A seção de método voltou ao layout anterior, com os passos à direita.
 3. No toque, o reflexo das letras passou a acompanhar a rolagem, com animação presa à rolagem.
+
+### Prompt #012
+**Data:** 04/11/2026
+**Contexto:** Aprovação do visual.
+
+```
+FIcou zika, menó 
+
+Vamos PREENCHER
+```
+
+**O que resultou:**
+
+1. Lista de 45 itens a preencher, agrupados em 9 projetos.
+
+### Prompt #013
+**Data:** 04/11/2026
+**Contexto:** Respostas à lista. Trechos sobre como o acesso a um sistema de terceiros foi investigado e
+sobre uma questão interna da empresa foram mascarados com `***`, porque este repositório é público.
+
+```
+1 - apenas 2. Talvez seja melhor tirar o item, por enquanto. O que acha?
+
+2 - A integração também foi minha.
+
+2 - b) Em produção;
+
+2 - c) Máquinas monitoradas são 54, enquanto os relatórios processados foram 1 por dia desde 25/10/2026.
+
+2 - d) Aprendi todo o processo de um pipeline de dados, desde a extração, entendimento dos dados, normalização, qualidade e análise dados. Refinei a forma que uso IA para aprender a fazer os códigos e projetos sozinho, sem escrita de código por IA para que eu aprendesse o conteúdo de fato e não só copiasse e colasse. Foi meu primeiro projeto em grupo com uma separação clara de atividades.
+
+3 - a) Foi por volta do mês 09/26.
+
+3 - b) Sim, o projeto está concluído.
+
+3 - c) A API entregava tudo que era necessário para montar o projeto a partir de uma simples requisição. É prefirivel ao Selenium visto que o site não tinha uma estrutura fácil de fazer scrapping, então o código ficaria mais instável e ainda demoraria mais com resultados piores.
+
+3 - c) Antes o tempo era imensurável, dependiamos de olhar item a item de forma manual, primeiro procurar o item dentre uma enorme lista que não era nada amigável ao usuário, o que fazia com que alguns itens fossem fáceis de acha e outros praticamente impossíveis. Atualmente, basta rodar o projeto e ele lê todos os itens a partir da API de catálogo da CAT e monta uma planilha de EXCEL muito mais agradável visualmente e permite com que achemos o que procuramos em segundos. Esse projeto também serviu para extrairmos todo o catálogo de peças para uma máquina, algo que antes não existia dentro da empresa.
+
+3 - e) ***
+
+4 - a) O período da parte 2 é de Setembro de 2026.
+
+4 - b) O projeto continua em uso até os dias de hoje.
+
+4 - c) Tinhamos cerca de 10 - 20 documentos em um dia de trabalho. Com isso, levavamos cerca de 8 - 10 minutos por documento para transcrever todos os itens e realizar uma cotação para o cliente. Após a implementação, o documento já chegava e era anexado a automação, o resultado saia em 1 minuto. 
+
+4 - d) Aprendi a integrar projetos que nasceram com propósitos diferentes, mas que poderiam ser usados para um objetivo em comum. No caso, extrair as informações de um pdf de cotação e a partir desses dados entregar um sistema completo de acompanhamento e análise para o cliente.
+
+5 -  a) continua em produçaõ.
+
+5 - b) Esse tópico de quantos itens são consultados por dia é impossível de responder. O projeto é usado pela Sotreq a nível Brasil, não consigo estimar quantos itens são consultados por dia.  Porém, 50 itens demoram cerca de 3 minutos e antes era mais de 30 minutos fácil.
+
+5 - c) Esse foi meu primeiro projeto que passou a ser usado por pessoas que não mantinham contato direto comigo e aprendi que todo projeto deve ser blindado contra todo tipo de erro que o usuário possa causar, desde o mais pequeno até o maior possível.
+
+6 - a) Foi feito em julho/agosto de 2026.
+
+b) ***
+
+c) Não entendi essa pergunta
+
+d) Cobrimos desde 2022 até 2026 e ainda foi feita uma projeção para a primeira metade do ano de 2027.
+
+e) Aprendi que se especializar em um negócio pode te tornar um grande candidato a crescer na área de desenvolvimento e análise apenas por você entender muito do processo. Nem sempre é preciso estudar apenas código.
+
+7 - a) Tudo meu.
+
+b) Não.
+
+c) Por IA dos inimigos eu quero dizer o padrão de raciocínio deles dentro do jogo. Como atacam, quando, de qual forma, por onde e esse tipo de coisa. Focado em combate.
+
+d - pula
+
+e - pula
+
+f - Eu fiz mais de 7 inimigos, por volta de uns 10. Atualmente, o jogo está em beta fechado, o primeiro bioma (primeira fase) está fechado e sendo testado ao máximo.
+
+g - Me aprofundei bastante em c#  e aprendi mais sobre linguagens orientadas a objetos, foi um dos meus primeiros projetos com programação forte.
+
+8 - pode remover esse projeto.
+
+9 - Pode remover esse também. O projeto não é meu, o que eu fiz foi apenas trocar a tecnologia.
+Antes era tudo feito em VBA, passei para python e html + css e js.
+
+Os projetos estão na pasta:
+
+C:\Users\500557\OneDrive - Sotreq\Gabriel de Angelis\Projetos
+
+Lá tem três pastas, pode entrar em todas e dá uma fuçada, alguns nomes estão diferentes, mas são alguns dos projetos que estão descritos acima.
+```
+
+**O que resultou:**
+
+1. Respostas aplicadas aos projetos, com detalhes técnicos conferidos no código e na documentação das
+   pastas indicadas. Nenhum dado, nome de cliente ou credencial foi copiado.
+2. O mapa de municípios e o Arquivos-Suporte-Visitas saíram do site, que ficou com 7 projetos.
+3. Quatro pontos em que a resposta diverge da documentação do projeto de telemetria foram levados ao
+   Gabriel para confirmar antes da publicação.

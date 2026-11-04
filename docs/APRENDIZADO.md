@@ -159,8 +159,9 @@ título como propriedade. Pular um nível atrapalha quem navega por títulos com
 
 ### O que existe agora
 
-Os 9 projetos do inventário, em [src/content/projetos/](../src/content/projetos/): 8 publicados e 1
-rascunho. Adicionar um projeto é criar um arquivo desses, sem mexer em nenhum componente.
+Os projetos ficam em [src/content/projetos/](../src/content/projetos/). Dos 9 do inventário inicial,
+ficaram 7: o Gabriel retirou o mapa de municípios e o Arquivos-Suporte-Visitas, que não era dele.
+Adicionar um projeto é criar um arquivo desses, sem mexer em nenhum componente.
 
 ### Diagrama no build, não no navegador
 

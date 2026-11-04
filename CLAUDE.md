@@ -71,6 +71,8 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   captura de tela com dado real. O repositório é **público desde o primeiro commit**: `draft: true`
   esconde do site, mas não do GitHub, e o histórico é permanente.
 - Em trabalho de equipe, deixar claro o que foi meu.
+- **As pastas de projetos do Gabriel têm nomes de clientes e credenciais.** Podem ser lidas para
+  conferir fatos, mas nada delas é copiado: nem nome de pasta, nem dado, nem arquivo de credencial.
 - Projetos corporativos podem ser descritos publicamente (autorizado pelo Gabriel em 04/11/2026).
 
 ## Números do NextUp
@@ -136,6 +138,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 7 | (Depois) Versão em inglês | — |
 
 **Pendências combinadas:**
+
+- Antes de integrar a Fase 3: resta 1 `PREENCHER`, nas decisões técnicas das análises com SAP BW. O
+  Gabriel também confirma: autoria da integração com o Gemini e status do painel de telemetria.
 
 - Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
   Os PDFs entram na Fase 4; até lá o botão dá 404.
