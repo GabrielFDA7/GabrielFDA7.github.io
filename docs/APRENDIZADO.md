@@ -232,9 +232,15 @@ Três cuidados para olhar:
 - Contraste medido pixel a pixel, porque ferramentas como o axe não conseguem avaliar texto sobre
   imagem. O mínimo ficou acima de 3,7:1, e a regra para texto grande pede 3:1.
 
-**Fita com lâminas.** A primeira versão, feita só com ruído, parecia uma salsicha metálica. A fita final
-usa a mesma ideia do emblema: espinhos assimétricos, arrastados no sentido do traço. É isso que faz os
-dois parecerem da mesma família.
+**Os fios de cromo.** A primeira separação, com lâminas, ficou agressiva demais, parecia um raio. A
+versão atual são dois fios finos que se cruzam. Traços tão finos não têm área para o relevo do emblema,
+que saía serrilhado, então cada fio é sombreado como um cilindro: a posição dentro da espessura escolhe
+o ponto da faixa de luz. A faixa também é mais simples, porque faixas estreitas viram hachura em poucos
+pixels. Veja `gerarFita` em [gerar-arte.mjs](../scripts/gerar-arte.mjs).
+
+**Logos em metal.** Em [FerramentasIA.astro](../src/components/FerramentasIA.astro), o desenho de cada
+logo vira uma máscara CSS, e a mesma textura das letras preenche a forma. O pacote `simple-icons` roda só
+no build: o caminho do desenho entra no HTML, e o visitante não baixa JavaScript nenhum por isso.
 
 **Por que linhas em vez de cartões.** Um cartão diz "aqui tem um item". Uma linha com número grande em
 metal e título enorme dá ritmo e hierarquia. O hover continua dizendo que é clicável: o título vira

@@ -38,7 +38,9 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   elemento de cromo que pareça parte dela. Os materiais do sistema são:
   - `.metal`: textura de cromo recortada no texto, com reflexo que anda na rolagem. Em títulos e
     números grandes.
-  - `DivisorFita`: fita de metal com lâminas, da mesma família do emblema, entre seções.
+  - `DivisorFita`: dois fios finos de cromo que se cruzam, entre seções. Uma versão com lâminas foi
+    rejeitada em 04/11/2026 por parecer um raio agressivo: a separação precisa ser suave e fina.
+  - `FerramentasIA`: logos das ferramentas em metal, com desenhos do pacote `simple-icons` (CC0).
   - `.tubo` e `.parada`: tubo de cromo com esferas, para sequências e linhas do tempo.
   - `LinhaProjeto`: lista editorial com número em metal, no lugar de cartões de projeto.
   - `TopoPagina`: a composição da abertura (texto à esquerda, arte à direita) nas páginas internas.
@@ -98,6 +100,11 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   `syntaxHighlight: false` fica fora de `unified()`; sem ele, o Mermaid não reconhece os blocos.
 - **Imagem lazy não carrega em captura de página inteira.** Role a página antes de capturar, ou o
   resultado mostra buracos que não existem.
+- **O metal some em captura de página inteira**, porque a textura fica presa à janela. Não é bug:
+  julgue o `.metal` em capturas da janela, rolando até cada elemento.
+- **A textura do `.metal` termina na borda da caixa.** Caudas de "g" e "ç" e a última letra, com
+  espaçamento negativo, ficam cortadas sem folga. Por isso a classe tem `padding`. Em texto
+  centralizado, zere o `padding-inline-end`, que desloca o centro.
 
 ## Fases
 
@@ -122,6 +129,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - Fase 5: `npm audit` acusa 3 alertas de baixa gravidade (katex, via mermaid). Só rodam no build,
   sobre diagramas escritos por nós. Rever quando o mermaid atualizar.
 - Rascunhos (`draft: true`) aparecem no `npm run dev`, com o rótulo "Rascunho", e nunca no build.
+- `/sobre`: "Professor de inglês" veio do Gabriel e não está nos currículos. Falta onde e quando.
+- As ferramentas de IA vêm do currículo de AI Engineer: Claude Code, Claude Design, Gemini e GitHub
+  Copilot. Confirmar se falta alguma.
 
 ## Decisões de arquitetura
 

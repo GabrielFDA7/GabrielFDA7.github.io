@@ -131,3 +131,29 @@ Porém, quando descemos a página ou vamos para outra sessão a identidade do si
    com esferas.
 3. Títulos e números em metal, com reflexo que anda na rolagem, e assinatura no rodapé.
 4. Páginas internas passaram a repetir a composição da abertura. A abertura em si não mudou.
+
+### Prompt #008
+**Data:** 04/11/2026
+**Contexto:** Revisão da nova identidade visual.
+
+```
+A separação entre as sessões hoje é um tipo de raio, bem agressivo. Transforme em uma coisa mais suave e fina.
+
+Substitua o G na parte que fala como eu uso IA pela logo das IAs usadas.
+
+Claude code, gemini, e mais ferramentas de IA que usamos. 
+
+Na sessão "sobre" você poderia acrescentar que eu fui professor de inglês. Acho que isso está nos meus currículos, se não estiver, me fala que eu te atualizo.
+
+Remova o "Português nativo" da parte que fala que eu tenho inglês C1
+
+O meu nome ao final está cortado em algumas letras e fora de centralização. Pode substituir o raio que eu tinha falado antes nessas páginas também.
+```
+
+**O que resultou:**
+
+1. A fita com lâminas virou dois fios finos de cromo, em todas as páginas.
+2. O emblema da seção de IA deu lugar aos logos de Claude Code, Claude Design, Gemini e GitHub Copilot.
+3. "Professor de inglês" entrou em `/sobre`. A informação não está nos currículos, e o Gabriel foi avisado.
+4. "Português nativo" saiu de `/sobre`.
+5. A assinatura do rodapé foi centralizada, e o corte das letras foi corrigido em todo o `.metal`.
