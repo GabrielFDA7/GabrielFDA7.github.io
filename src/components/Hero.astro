@@ -1,0 +1,77 @@
+---
+import { site } from '../config/site';
+import ArteCromo from './ArteCromo.astro';
+import FotoPerfil from './FotoPerfil.astro';
+import Icone from './Icone.astro';
+---
+
+<section class="hero relative overflow-hidden" aria-labelledby="nome">
+  <div class="arte"><ArteCromo class="size-full" /></div>
+  <div class="pagina relative">
+    <div class="texto py-10 lg:py-24">
+      <div class="flex items-center gap-4">
+        <FotoPerfil tamanho={76} />
+        <p class="rotulo">Dados · Python · IA</p>
+      </div>
+      <h1 id="nome" class="mt-5 pb-2 text-marca"><span class="cromo-texto">{site.nome}</span></h1>
+      <p class="mt-5 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{site.posicionamento}</p>
+      <p class="mt-4 max-w-xl text-texto-suave">{site.apoio}</p>
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        <a class="btn btn-cromo" href="/projetos">Ver projetos</a>
+        <a class="btn btn-contorno" href={site.curriculoPadrao}>Baixar currículo</a>
+        <a class="btn btn-contorno" href={site.links.github}>
+          <Icone nome="github" />
+          GitHub
+        </a>
+        <!-- Agrupados: se a linha quebrar, os dois ícones descem juntos. -->
+        <div class="flex gap-2">
+          <a class="btn btn-contorno size-11 p-0!" href={site.links.linkedin} aria-label="LinkedIn">
+            <Icone nome="linkedin" />
+          </a>
+          <a class="btn btn-contorno size-11 p-0!" href={`mailto:${site.links.email}`} aria-label="E-mail">
+            <Icone nome="email" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Celular: a arte é uma faixa abaixo do texto. Nunca há texto sobre a imagem. */
+  .hero {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .arte {
+    height: 13rem;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  }
+
+  /* Computador: a arte ocupa a metade direita, e o texto fica na esquerda. */
+  @media (min-width: 64rem) {
+    .hero {
+      display: block;
+    }
+
+    .arte {
+      position: absolute;
+      inset-block: 0;
+      right: 0;
+      width: 56%;
+      height: auto;
+      --esquerda: linear-gradient(to right, transparent, rgb(0 0 0 / 0.12) 12%, rgb(0 0 0 / 0.55) 26%, #000 44%);
+      --base: linear-gradient(to bottom, #000 80%, transparent);
+      -webkit-mask-image: var(--esquerda), var(--base);
+      mask-image: var(--esquerda), var(--base);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    .texto {
+      max-width: 47%;
+    }
+  }
+</style>

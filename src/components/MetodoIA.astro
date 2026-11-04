@@ -1,0 +1,52 @@
+---
+const BASE = 'https://github.com/GabrielFDA7/nextup';
+
+const praticas = [
+  {
+    titulo: 'Contexto versionado',
+    texto: 'O agente começa cada sessão lendo a arquitetura, as convenções e as decisões do projeto em um arquivo que evolui junto com o código.',
+    links: [{ rotulo: 'CLAUDE.md', href: `${BASE}/blob/main/CLAUDE.md` }],
+  },
+  {
+    titulo: 'Skills próprias',
+    texto: 'Fluxos que se repetem viram instrução executável. Uma exige medição antes de escolher um algoritmo ou limiar, e outra fecha a sessão com o registro feito.',
+    links: [
+      { rotulo: 'medir-antes-de-implementar', href: `${BASE}/blob/main/.claude/skills/medir-antes-de-implementar/SKILL.md` },
+      { rotulo: 'fechar-sessao', href: `${BASE}/blob/main/.claude/skills/fechar-sessao/SKILL.md` },
+    ],
+  },
+  {
+    titulo: 'Log público de prompts',
+    texto: 'Cada prompt fica registrado com o contexto e o que resultou: até agora, 10 sessões e 70 prompts que qualquer pessoa pode auditar.',
+    links: [{ rotulo: 'docs/PROMPTS.md', href: `${BASE}/blob/main/docs/PROMPTS.md` }],
+  },
+  {
+    titulo: 'Testes e CI como rede de segurança',
+    texto: 'O código do agente passa pelo mesmo crivo que o meu: 946 testes e CI em Python 3.11, 3.12 e 3.13.',
+    links: [{ rotulo: 'ci.yml', href: `${BASE}/blob/main/.github/workflows/ci.yml` }],
+  },
+];
+---
+
+<section class="pagina mt-secao" aria-labelledby="metodo-ia">
+  <p class="rotulo">Método</p>
+  <h2 id="metodo-ia" class="mt-3 text-3xl font-bold tracking-tight">Como eu trabalho com IA</h2>
+  <p class="mt-3 max-w-2xl text-texto-suave">
+    O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada item abaixo aponta para o arquivo real no repositório.
+  </p>
+  <ul class="mt-8 grid gap-4 md:grid-cols-2">
+    {praticas.map((pratica) => (
+      <li class="cartao flex flex-col gap-3 p-6">
+        <h3 class="text-lg font-semibold tracking-tight">{pratica.titulo}</h3>
+        <p class="text-sm text-texto-suave">{pratica.texto}</p>
+        <ul class="mt-auto flex flex-wrap gap-x-4 text-sm">
+          {pratica.links.map((link) => (
+            <li>
+              <a class="inline-flex min-h-11 items-center break-all font-medium" href={link.href}>{link.rotulo}</a>
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ul>
+</section>
