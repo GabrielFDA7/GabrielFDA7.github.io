@@ -15,6 +15,11 @@ metrics:
 links:
   repo: https://github.com/GabrielFDA7/nextup
   demo: https://nextup-rcux.onrender.com
+cover: ../../assets/projetos/nextup-celular-claro.webp
+coverEscuro: ../../assets/projetos/nextup-celular-escuro.webp
+coverLargo: ../../assets/projetos/nextup-computador-claro.webp
+coverLargoEscuro: ../../assets/projetos/nextup-computador-escuro.webp
+coverAlt: NextUp com o mapa do Magic Kingdom, a rota a pé até a atração recomendada e o cartão "Seu próximo passo", que soma caminhada e fila.
 featured: true
 order: 1
 confidential: false
