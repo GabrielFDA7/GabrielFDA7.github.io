@@ -1,6 +1,6 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import CapaProjeto from '../components/CapaProjeto.astro';
 import FaixaCromo from '../components/FaixaCromo.astro';
 import Icone from '../components/Icone.astro';
 import Metricas from '../components/Metricas.astro';
@@ -71,12 +71,26 @@ const ficha = [
       )}
     </header>
 
-    <div class="prosa mx-auto mt-12 max-w-3xl">
-      {data.cover && (
-        <Image
-          src={data.cover}
+    {data.coverLargo && (
+      <figure class="tela-larga mx-auto mt-10 max-w-5xl">
+        <CapaProjeto
+          claro={data.coverLargo}
+          escuro={data.coverLargoEscuro}
           alt={data.coverAlt ?? ''}
-          widths={[320, 480, 600]}
+          widths={[640, 960, 1440]}
+          sizes="(min-width: 64rem) 64rem, 100vw"
+          class="w-full rounded-[0.875rem] border border-linha"
+        />
+      </figure>
+    )}
+
+    <div class="prosa mx-auto mt-12 max-w-3xl">
+      {!data.coverLargo && data.cover && (
+        <CapaProjeto
+          claro={data.cover}
+          escuro={data.coverEscuro}
+          alt={data.coverAlt ?? ''}
+          widths={[320, 480, 640]}
           sizes="(min-width: 40rem) 22rem, 100vw"
           class="capa"
         />

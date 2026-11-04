@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  claro: ImageMetadata;
+  escuro?: ImageMetadata | undefined;
+  alt: string;
+  widths: number[];
+  sizes: string;
+  class?: string;
+}
+
+const { claro, escuro, alt, widths, sizes, class: classe } = Astro.props;
+---
+
+<!--
+  O botão de tema não muda o que um <picture> escolhe, então são duas imagens, e o CSS
+  mostra uma. Com loading="lazy", a imagem escondida nem chega a ser baixada.
+-->
+<Image src={claro} alt={alt} widths={widths} sizes={sizes} loading="lazy" class:list={[classe, escuro && 'so-tema-claro']} />
+{escuro && <Image src={escuro} alt={alt} widths={widths} sizes={sizes} loading="lazy" class:list={[classe, 'so-tema-escuro']} />}

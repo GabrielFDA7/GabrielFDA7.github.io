@@ -1,6 +1,6 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import CapaProjeto from './CapaProjeto.astro';
 import Icone from './Icone.astro';
 import Metricas from './Metricas.astro';
 
@@ -39,10 +39,11 @@ const { data } = projeto;
     </div>
     {data.cover && (
       <div class="tela border-t border-linha md:border-t-0 md:border-l">
-        <Image
-          src={data.cover}
+        <CapaProjeto
+          claro={data.cover}
+          escuro={data.coverEscuro}
           alt={data.coverAlt ?? ''}
-          widths={[320, 480, 600]}
+          widths={[320, 480, 640]}
           sizes="(min-width: 48rem) 20rem, 100vw"
           class="size-full object-cover object-top"
         />

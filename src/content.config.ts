@@ -19,7 +19,12 @@ const projetos = defineCollection({
         stack: z.array(z.string().min(1)),
         metrics: z.array(z.object({ label: z.string().min(1), value: z.string().min(1) })).max(3),
         links: z.object({ repo: z.url().optional(), demo: z.url().optional() }),
+        // Capas: a estreita (celular) vai no destaque da home, e a larga (computador) no
+        // estudo de caso. As versões `Escuro` são opcionais e acompanham o tema do site.
         cover: image().optional(),
+        coverEscuro: image().optional(),
+        coverLargo: image().optional(),
+        coverLargoEscuro: image().optional(),
         coverAlt: z.string().min(1).optional(),
         featured: z.boolean(),
         order: z.number().int(),
@@ -30,7 +35,7 @@ const projetos = defineCollection({
         error: 'projeto confidencial não pode ter link de código',
         path: ['links', 'repo'],
       })
-      .refine((projeto) => !projeto.cover || projeto.coverAlt, {
+      .refine((projeto) => !(projeto.cover || projeto.coverLargo) || projeto.coverAlt, {
         error: 'imagem de capa precisa de texto alternativo (coverAlt)',
         path: ['coverAlt'],
       }),
