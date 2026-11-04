@@ -1,0 +1,91 @@
+---
+import { getCollection, render } from 'astro:content';
+import FaixaCromo from '../components/FaixaCromo.astro';
+import FotoPerfil from '../components/FotoPerfil.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+
+const experiencias = (await getCollection('experiencia')).toSorted((a, b) => a.data.order - b.data.order);
+const linhaDoTempo = await Promise.all(
+  experiencias.map(async (item) => ({ ...item.data, Corpo: (await render(item)).Content })),
+);
+
+const alemDoCodigo = [
+  'Instrutor de workshops internos de Python (Pandas e Selenium) e tutor do squad de estagiários na Sotreq.',
+  'Presidente da CIPA na Sotreq Uberlândia.',
+  'Maratona de programação: algoritmos e estruturas de dados (grafos, programação dinâmica, teoria dos números e algoritmos gulosos), em C e C++20.',
+  'Freelance: identidades visuais para 4 pequenos negócios, com os kits gerados por código (Python e Pillow).',
+];
+---
+
+<BaseLayout title="Sobre" description={`Trajetória, experiência, formação e idiomas de ${site.nome}.`}>
+  <FaixaCromo />
+  <div class="pagina">
+    <div class="mt-4 max-w-3xl">
+      <FotoPerfil tamanho={136} />
+      <h1 class="mt-6 pb-1 text-5xl font-bold tracking-tight"><span class="cromo-texto">Sobre</span></h1>
+      <div class="mt-5 flex flex-col gap-4 text-lg">
+        <p>Entrei na Sotreq, revenda oficial Caterpillar no Brasil, em fevereiro de 2025, como estagiário de Automação e Dados. Em março de 2026 passei a Analista de Leads, e hoje construo pipelines, integrações e automações sobre dados de máquinas e do SAP.</p>
+        <p>Fora do trabalho, construí o <a href="/projetos/nextup">NextUp</a>, uma API em Python em produção, com testes, CI e deploy contínuo.</p>
+        <p>Estudo Sistemas de Informação na UFU, com conclusão em dezembro de 2027.</p>
+      </div>
+    </div>
+
+    <section class="mt-secao max-w-3xl" aria-labelledby="linha-do-tempo">
+      <h2 id="linha-do-tempo" class="text-3xl font-bold tracking-tight">Experiência</h2>
+      <ol class="linha mt-8 flex flex-col gap-10">
+        {linhaDoTempo.map(({ cargo, empresa, contexto, period, Corpo }) => (
+          <li class="relative pl-7">
+            <p class="text-sm text-texto-suave">{period}</p>
+            <h3 class="mt-1 text-xl font-semibold tracking-tight">{cargo}</h3>
+            <p class="text-sm text-texto-suave">{empresa}{contexto ? ` · ${contexto}` : ''}</p>
+            <div class="prosa mt-3"><Corpo /></div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="mt-secao max-w-3xl" aria-labelledby="alem">
+      <h2 id="alem" class="text-3xl font-bold tracking-tight">Além do código do dia a dia</h2>
+      <div class="prosa mt-6">
+        <ul>
+          {alemDoCodigo.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="mt-secao grid max-w-3xl gap-10 sm:grid-cols-2" aria-label="Formação e idiomas">
+      <div>
+        <h2 class="text-3xl font-bold tracking-tight">Formação</h2>
+        <p class="mt-5 font-semibold">Bacharelado em Sistemas de Informação</p>
+        <p class="text-sm text-texto-suave">Universidade Federal de Uberlândia · 6º período · conclusão em dez/2027</p>
+        <p class="mt-3 text-sm text-texto-suave">VIII Iniciação Científica da FAMAT/UFU</p>
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold tracking-tight">Idiomas</h2>
+        <p class="mt-5 font-semibold">Português</p>
+        <p class="text-sm text-texto-suave">Nativo</p>
+        <p class="mt-3 font-semibold">Inglês</p>
+        <p class="text-sm text-texto-suave">C1 · FCE, Cambridge</p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .linha {
+    border-left: 1px solid var(--linha);
+    list-style: none;
+  }
+
+  .linha > li::before {
+    content: '';
+    position: absolute;
+    top: 0.45rem;
+    left: -0.3125rem;
+    width: 0.5625rem;
+    height: 0.5625rem;
+    border-radius: 999px;
+    background: var(--destaque);
+  }
+</style>
