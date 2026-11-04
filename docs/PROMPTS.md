@@ -95,3 +95,19 @@ Pode ser o currículo de dev mesmo.
 3. Fase 2 construída: home, `/projetos` com filtro em React e testes, estudo de caso, `/sobre` e 404,
    com o NextUp e o SIS2 como projetos de exemplo.
 4. `curriculo-dev-python.pdf` confirmado como o currículo do botão da home.
+
+### Prompt #006
+**Data:** 04/11/2026
+**Contexto:** Revisão da Fase 2 no servidor local.
+
+```
+Ok!
+As fotos que você pegou do nextup são bem antigas, o projeto está bem diferente hoje em dia, tem até versao clara e escura.
+```
+
+**O que resultou:**
+
+1. Fase 2 aprovada e integrada à `main`.
+2. A imagem antiga saiu. As capas passaram a ser capturas do site no ar, em versão clara e escura,
+   acompanhando o tema do portfólio, com o script `npm run capturas` para refazê-las.
+3. Fase 3 construída: 9 projetos, diagramas Mermaid sem script e a lista de `PREENCHER`.

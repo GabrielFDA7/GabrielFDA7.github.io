@@ -154,3 +154,60 @@ roda no teste sem precisar simular o framework.
 O mesmo cartão aparece em dois contextos: na home ele fica abaixo de um `h2`, e na lista fica logo
 abaixo do `h1`. Por isso [ProjectCard.astro](../src/components/ProjectCard.astro) recebe o nível do
 título como propriedade. Pular um nível atrapalha quem navega por títulos com leitor de tela.
+
+## Fase 3: Conteúdo
+
+### O que existe agora
+
+Os 9 projetos do inventário, em [src/content/projetos/](../src/content/projetos/): 8 publicados e 1
+rascunho. Adicionar um projeto é criar um arquivo desses, sem mexer em nenhum componente.
+
+### Diagrama no build, não no navegador
+
+O jeito comum de usar Mermaid é baixar o script dele e desenhar no navegador do visitante, o que
+pesa e atrasa a página. Aqui, o `rehype-mermaid` abre um navegador **durante o build**, desenha o
+diagrama e coloca o SVG pronto no HTML. O visitante recebe só o resultado.
+
+Veja a configuração em [astro.config.ts](../astro.config.ts). O custo é o build precisar de um
+navegador: na máquina local ele usa o Edge, e no CI vai usar o Chromium do Playwright.
+
+### Por que o diagrama muda de cor com o tema
+
+O plugin tem uma opção pronta de tema escuro, mas ela usa um `<picture>`, que só obedece à preferência
+do sistema e ignora o botão do site. Por isso o SVG entra direto no HTML (`inline-svg`), e o CSS em
+[global.css](../src/styles/global.css) repinta cada parte com os tokens.
+
+O `!important` é necessário ali porque o SVG traz um `<style>` próprio, com seletores mais fortes.
+
+### Três defeitos que só apareceram olhando
+
+Os testes passavam, e as capturas de tela mostraram três problemas nos diagramas:
+
+1. **Texto invisível no tema escuro.** Os rótulos são HTML dentro do SVG, então a cor vem de `color`,
+   e não de `fill`. A regra estava pintando a propriedade errada.
+2. **Letras minúsculas no celular.** Subgrupos sem ligação ficam lado a lado, e o SVG encolhe para
+   caber na tela. A solução foi escrever os diagramas na vertical, ligando os subgrupos com `~~~`, uma
+   ligação invisível que só serve para empilhar.
+3. **Rótulo cortado.** O Mermaid mede a caixa com uma fonte, e a página desenhava com outra, mais
+   larga. O texto quebrava em mais linhas do que a caixa previa.
+
+Cada um virou uma checagem automática: contraste real do rótulo, tamanho final da letra e texto que
+escapa da caixa. Um defeito encontrado uma vez não deveria depender de alguém olhar de novo.
+
+### Duas imagens, uma por tema
+
+[CapaProjeto.astro](../src/components/CapaProjeto.astro) coloca as duas versões na página, e o CSS mostra
+uma. Normalmente isso baixaria as duas, mas o `loading="lazy"` muda o resultado: o navegador só
+carrega uma imagem lazy quando ela vai aparecer, e a escondida nunca aparece.
+
+### Rascunho visível só para mim
+
+[src/lib/projetos.ts](../src/lib/projetos.ts) mostra os rascunhos quando `import.meta.env.MODE` é
+`development`, que é o caso do `npm run dev`. No build eles somem. Assim dá para revisar um projeto
+antes de publicar. Mas o repositório é público: o arquivo do rascunho continua legível no GitHub.
+
+### Por que há `PREENCHER` em vez de um texto genérico
+
+Seria fácil escrever "reduziu o tempo de consulta" sem número. Mas um avaliador técnico pergunta
+"quanto?", e uma frase vaga custa mais credibilidade do que uma seção curta. Por isso o que falta está
+marcado, e a Fase 5 fará o build falhar enquanto houver marcador na página final.

@@ -80,6 +80,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   na mesma linha ou use `{' '}`.
 - **Ano sozinho no frontmatter vira número.** Escreva `period: "2026"`, com aspas.
 - **Captura de tela em página inteira altera o layout.** Meça downloads antes de capturar a tela.
+- **O Mermaid mede as caixas no build.** Se a página desenhar o rótulo com outra fonte, o texto é
+  cortado. Por isso a fonte dos diagramas é fixa em Arial, nos dois lados.
+- **Plugin de Markdown exige `@astrojs/markdown-remark`** no Astro 7, cujo processador padrão mudou.
 
 ## Fases
 
@@ -87,8 +90,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 |---|---|---|
 | 0 | Plano | Aprovada |
 | 1 | Fundação | Aprovada |
-| 2 | Páginas e componentes, filtro React com testes | Aguardando aprovação |
-| 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | — |
+| 2 | Páginas e componentes, filtro React com testes | Aprovada |
+| 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aguardando aprovação |
 | 4 | Focos por vaga e download do currículo | — |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | — |
 | 6 | Publicação no GitHub Pages | — |
@@ -100,10 +103,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   Os PDFs entram na Fase 4; até lá o botão dá 404.
 - Fase 5: só links internos bloqueiam o deploy; os externos geram aviso. O build falha se houver
   `PREENCHER` na pasta final: os comentários do Markdown **chegam ao HTML**, verificado.
-- Fase 5: rodar `npm test` no CI.
-- Fase 3: Mermaid com `rehype-mermaid`, que exige Chromium no CI. O diagrama precisa acompanhar o
-  botão de tema, não só a preferência do sistema. Até lá, o bloco `mermaid` aparece como texto.
-- Fase 3: os 2 projetos atuais são exemplos. Reescrever o NextUp lendo o repositório inteiro.
+- Fase 5: rodar `npm test` no CI e instalar o Chromium do Playwright, que o Mermaid usa no build.
+- Fase 5: `npm audit` acusa 3 alertas de baixa gravidade (katex, via mermaid). Só rodam no build,
+  sobre diagramas escritos por nós. Rever quando o mermaid atualizar.
+- Rascunhos (`draft: true`) aparecem no `npm run dev`, com o rótulo "Rascunho", e nunca no build.
 
 ## Decisões de arquitetura
 
@@ -114,6 +117,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **`coverAlt` é um campo a mais no schema do briefing.** Toda capa precisa de texto alternativo, e
   o build falha sem ele.
 - **A foto vem do avatar público do GitHub** (460 px), recortada em `src/assets/foto/gabriel.jpg`.
+- **Capas do NextUp são capturas do site no ar**, não `docs/img/` do repositório dele, que está
+  desatualizado. Refaça com `npm run capturas` quando a interface mudar (Gabriel, 04/11/2026).
+- **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
+  nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
 
 ## Comandos
 
@@ -124,4 +131,5 @@ npm test         # testes do Vitest
 npm run build    # gera dist/
 npm run preview  # serve dist/
 npm run arte     # regenera a arte de cromo e os favicons
+npm run capturas # recaptura o NextUp no ar; espera o parque ter fila (--agora para não esperar)
 ```
