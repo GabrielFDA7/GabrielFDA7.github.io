@@ -78,3 +78,20 @@ Use 946 e altere o readme do nextup
 3. Contagem de 946 testes confirmada com `pytest --collect-only`. A correção do README do NextUp foi
    para a branch `docs/readme-contagem-testes`, aguardando o merge do Gabriel, porque todo push na
    `main` daquele repositório republica o serviço no Render.
+
+### Prompt #005
+**Data:** 04/11/2026
+**Contexto:** Revisão da Fase 1 no servidor local.
+
+```
+É nessa pegada ai mesmo a arte visual.  Coloca a minha foto do github ou linkedin em algum lugar ai.
+Pode ser o currículo de dev mesmo.
+```
+
+**O que resultou:**
+
+1. Fase 1 aprovada e integrada à `main`.
+2. Foto do GitHub recortada e colocada na abertura da home e em `/sobre`. O LinkedIn exige login.
+3. Fase 2 construída: home, `/projetos` com filtro em React e testes, estudo de caso, `/sobre` e 404,
+   com o NextUp e o SIS2 como projetos de exemplo.
+4. `curriculo-dev-python.pdf` confirmado como o currículo do botão da home.

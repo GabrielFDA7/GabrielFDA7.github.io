@@ -79,3 +79,78 @@ A primeira verificação no navegador passou com a arte invisível: o contêiner
 A causa está em [CLAUDE.md](../CLAUDE.md), nas armadilhas: o `<style>` de um componente tem escopo e
 não alcança os elementos internos de um componente filho. Só apareceu ao olhar a captura de tela.
 Depois disso, a verificação passou a conferir também o tamanho da arte.
+
+## Fase 2: Páginas e componentes
+
+### O que existe agora
+
+Todas as páginas: home, lista de projetos com filtro, estudo de caso, sobre e 404. O conteúdo ainda é
+de exemplo, com o NextUp e o SIS2. O restante entra na Fase 3.
+
+### O que é uma ilha
+
+Em um site React comum, a página inteira vira JavaScript: o navegador baixa o código de tudo, mesmo
+do que é só texto, e então "liga" cada parte (*hidratação*). O Astro inverte isso. A página é HTML
+puro, e só os pedaços marcados viram JavaScript. Esses pedaços são as **ilhas**, em um mar de HTML.
+
+Quem marca é a diretiva `client:*`. Veja em [src/pages/projetos/index.astro](../src/pages/projetos/index.astro):
+
+```astro
+<ProjectFilter client:visible projetos={...} />
+```
+
+`client:visible` significa: só baixe e ligue este componente quando ele aparecer na tela. Sem
+diretiva nenhuma, o Astro geraria o HTML do componente e descartaria o JavaScript.
+
+### Por que só o filtro usa React
+
+React é útil quando a tela muda com o estado: o filtro precisa lembrar a tag escolhida e atualizar
+botões, contagem e URL. O resto do site não muda depois de carregar, e carregar React para exibir
+texto seria pagar por algo sem uso. O resultado é mensurável: `/projetos` baixa 3 arquivos JS, e as
+outras páginas não baixam nenhum.
+
+O maior deles tem 212 KB antes da compressão e é o próprio React. Esse é o custo da ilha, e só quem
+abre `/projetos` paga por ele.
+
+### O filtro não desenha os cartões
+
+Em [src/components/ProjectFilter.tsx](../src/components/ProjectFilter.tsx), o caminho óbvio seria
+receber os projetos e desenhar os cartões em React. Isso criaria dois cartões para manter, um em
+Astro para a home e outro em React para a lista, e deixaria de usar a otimização de imagem do Astro.
+
+A escolha foi outra: o Astro gera todos os cartões, cada um com `data-tags`, e a ilha só liga o
+atributo `hidden` nos que não combinam. Sem JavaScript, nada fica escondido, e a lista completa
+aparece sozinha. Isso cumpre a regra de o filtro ser melhoria, não requisito. O custo é o componente
+mexer em elementos fora da própria árvore, o que não é o padrão do React.
+
+Dois detalhes para olhar no código:
+
+- **A URL só é lida depois de montar.** O HTML foi gerado no build, sem URL nenhuma. Se o primeiro
+  desenho já usasse `?tag=`, ele sairia diferente do HTML, e o React reclamaria (*hydration mismatch*).
+  Por isso existe o `useEffect`.
+- **`replaceState`, não `pushState`.** Trocar de filtro não cria uma entrada no histórico, então o
+  botão Voltar sai da página em vez de desfazer filtros um a um.
+
+### Testes
+
+[tests/ProjectFilter.test.tsx](../tests/ProjectFilter.test.tsx) usa Vitest e Testing Library. Ele
+procura os botões pelo papel e pelo nome, como um leitor de tela faria, e não por classes CSS. Assim,
+trocar o visual não quebra o teste, mas trocar o comportamento sim.
+
+[src/lib/projetos.ts](../src/lib/projetos.ts) não importa nada do Astro de propósito: função pura
+roda no teste sem precisar simular o framework.
+
+### Um arquivo por rota, um componente por seção
+
+- [src/pages/index.astro](../src/pages/index.astro) só escolhe os dados e empilha as seções. Na Fase 4,
+  as páginas de foco vão reaproveitar essas mesmas seções.
+- [src/pages/projetos/[slug].astro](../src/pages/projetos/[slug].astro) cria uma página por projeto com
+  `getStaticPaths`, que roda no build e já calcula o anterior e o próximo.
+- [src/layouts/EstudoDeCaso.astro](../src/layouts/EstudoDeCaso.astro) monta o cabeçalho a partir do
+  frontmatter. O texto vem do Markdown, então um projeto novo continua sendo um único arquivo.
+
+### Hierarquia de títulos
+
+O mesmo cartão aparece em dois contextos: na home ele fica abaixo de um `h2`, e na lista fica logo
+abaixo do `h1`. Por isso [ProjectCard.astro](../src/components/ProjectCard.astro) recebe o nível do
+título como propriedade. Pular um nível atrapalha quem navega por títulos com leitor de tela.

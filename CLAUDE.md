@@ -86,8 +86,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | Fase | Conteúdo | Situação |
 |---|---|---|
 | 0 | Plano | Aprovada |
-| 1 | Fundação | Aguardando aprovação |
-| 2 | Páginas e componentes, filtro React com testes | — |
+| 1 | Fundação | Aprovada |
+| 2 | Páginas e componentes, filtro React com testes | Aguardando aprovação |
 | 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | — |
 | 4 | Focos por vaga e download do currículo | — |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | — |
@@ -96,16 +96,31 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 **Pendências combinadas:**
 
-- Currículo do botão da home: `curriculo-dev-python.pdf`, recomendação ainda sem confirmação.
+- Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
+  Os PDFs entram na Fase 4; até lá o botão dá 404.
 - Fase 5: só links internos bloqueiam o deploy; os externos geram aviso. O build falha se houver
-  `PREENCHER` na pasta final.
-- Fase 3: Mermaid com `rehype-mermaid`, que exige Chromium no CI.
+  `PREENCHER` na pasta final: os comentários do Markdown **chegam ao HTML**, verificado.
+- Fase 5: rodar `npm test` no CI.
+- Fase 3: Mermaid com `rehype-mermaid`, que exige Chromium no CI. O diagrama precisa acompanhar o
+  botão de tema, não só a preferência do sistema. Até lá, o bloco `mermaid` aparece como texto.
+- Fase 3: os 2 projetos atuais são exemplos. Reescrever o NextUp lendo o repositório inteiro.
+
+## Decisões de arquitetura
+
+- **O filtro não renderiza os cartões.** `ProjectFilter.tsx` só desenha os botões e esconde os
+  `[data-projeto]` que o Astro gerou. Assim existe uma única versão do cartão, as imagens seguem
+  otimizadas e, sem JavaScript, a lista completa fica visível. O custo é a ilha mexer em um DOM fora
+  da própria árvore, o que os testes cobrem.
+- **`coverAlt` é um campo a mais no schema do briefing.** Toda capa precisa de texto alternativo, e
+  o build falha sem ele.
+- **A foto vem do avatar público do GitHub** (460 px), recortada em `src/assets/foto/gabriel.jpg`.
 
 ## Comandos
 
 ```bash
 npm run dev      # servidor local em http://localhost:4321
 npm run check    # tipos e diagnósticos do Astro
+npm test         # testes do Vitest
 npm run build    # gera dist/
 npm run preview  # serve dist/
 npm run arte     # regenera a arte de cromo e os favicons
