@@ -1,29 +1,20 @@
 ---
 // A arte é decorativa, então entra como fundo CSS: assim o navegador baixa só a
 // imagem do tema ativo, no tamanho certo, o que duas <img> escondidas não garantem.
-import { getImage } from 'astro:assets';
-import claro from '../assets/arte/cromo-claro.webp';
-import escuro from '../assets/arte/cromo-escuro.webp';
+import { enderecosDaArte } from '../lib/arte';
 
 interface Props {
   class?: string;
 }
 
 const { class: classe } = Astro.props;
-
-const gerar = (src: ImageMetadata, width: number) => getImage({ src, width, format: 'webp', quality: 80 });
-const [claroP, claroG, escuroP, escuroG] = await Promise.all([
-  gerar(claro, 900),
-  gerar(claro, 1600),
-  gerar(escuro, 900),
-  gerar(escuro, 1600),
-]);
+const { claroP, claroG, escuroP, escuroG } = await enderecosDaArte();
 
 const variaveis = [
-  `--claro-p:url(${claroP.src})`,
-  `--claro-g:url(${claroG.src})`,
-  `--escuro-p:url(${escuroP.src})`,
-  `--escuro-g:url(${escuroG.src})`,
+  `--claro-p:url(${claroP})`,
+  `--claro-g:url(${claroG})`,
+  `--escuro-p:url(${escuroP})`,
+  `--escuro-g:url(${escuroG})`,
 ].join(';');
 ---
 

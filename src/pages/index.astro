@@ -1,8 +1,28 @@
 ---
+import { getImage } from 'astro:assets';
+import foto from '../assets/foto/gabriel.jpg';
 import Inicio from '../components/Inicio.astro';
+import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const retrato = await getImage({ src: foto, width: 460, format: 'jpeg' });
+const pessoa = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.nome,
+  url: Astro.site?.href,
+  image: new URL(retrato.src, Astro.site).href,
+  jobTitle: 'Analista de Leads (Assistente de Produto)',
+  worksFor: { '@type': 'Organization', name: 'Sotreq' },
+  email: `mailto:${site.links.email}`,
+  sameAs: [site.links.github, site.links.linkedin],
+  knowsAbout: ['Python', 'Engenharia de dados', 'Automação', 'Inteligência artificial'],
+};
+// "<" escapado: o conteúdo nunca pode fechar a tag <script> por acidente.
+const jsonLd = JSON.stringify(pessoa).replace(/</g, '\\u003c');
 ---
 
 <BaseLayout>
+  <script slot="head" is:inline type="application/ld+json" set:html={jsonLd} />
   <Inicio />
 </BaseLayout>

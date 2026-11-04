@@ -6,7 +6,7 @@ import MetalLiquido from '../components/MetalLiquido.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Página não encontrada" description="Esta página não existe. Veja os links para continuar navegando.">
+<BaseLayout title="Página não encontrada" description="Esta página não existe. Veja os links para continuar navegando." noindex>
   <section class="erro relative overflow-clip">
     <MetalLiquido altura={88} />
     <div class="arte"><ArteCromo class="size-full" /></div>
@@ -16,8 +16,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="mt-4 max-w-xl text-lg text-texto-suave">O endereço pode estar errado, ou a página mudou de lugar. Daqui você consegue seguir:</p>
       <div class="botoes mt-8">
         <a class="btn btn-cromo" href="/">Página inicial</a>
-        <a class="btn btn-contorno" href="/projetos">Projetos</a>
-        <a class="btn btn-contorno" href="/sobre">Sobre</a>
+        <a class="btn btn-contorno" href="/projetos/">Projetos</a>
+        <a class="btn btn-contorno" href="/sobre/">Sobre</a>
       </div>
       <Image src={emblema} alt="" widths={[320, 640]} sizes="16rem" class="emblema hidden lg:absolute lg:right-16 lg:bottom-16 lg:block lg:w-64" />
     </div>

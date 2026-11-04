@@ -5,16 +5,17 @@ import { FOCOS, type Foco } from '../../config/focos';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export function getStaticPaths() {
-  return Object.entries(FOCOS).map(([foco, config]) => ({ params: { foco }, props: { config } }));
+  return Object.entries(FOCOS).map(([foco, config]) => ({ params: { foco }, props: { config, nome: foco } }));
 }
 
 interface Props {
   config: Foco;
+  nome: string;
 }
 
-const { config } = Astro.props;
+const { config, nome } = Astro.props;
 ---
 
-<BaseLayout title={config.chamada} description={config.chamada} noindex>
+<BaseLayout title={config.chamada} description={config.chamada} noindex imagem={`foco-${nome}`}>
   <Inicio foco={config} />
 </BaseLayout>

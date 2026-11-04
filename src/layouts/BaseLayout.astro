@@ -4,17 +4,34 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SkipLink from '../components/SkipLink.astro';
 import { site } from '../config/site';
+import { enderecosDaArte } from '../lib/arte';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Nome da imagem de compartilhamento gerada em /og/. */
+  imagem?: string;
 }
 
-const { title, description = site.descricao, noindex = false } = Astro.props;
+const { title, description = site.descricao, noindex = false, imagem = 'inicio' } = Astro.props;
 const tituloCompleto = title ? `${title} · ${site.nomeCurto}` : `${site.nomeCurto} · ${site.posicionamento}`;
 const canonica = new URL(Astro.url.pathname, Astro.site);
+const imagemOg = new URL(`/og/${imagem}.jpg`, Astro.site);
+const arte = await enderecosDaArte();
+const ESCURO = '(prefers-color-scheme: dark)';
+const CLARO = '(prefers-color-scheme: light)';
+const CELULAR = '(max-width: 47.99rem)';
+const COMPUTADOR = '(min-width: 48rem)';
+// A arte é o maior elemento da abertura, mas fica no CSS, onde o navegador a descobre tarde. Só a
+// versão do tema e do tamanho certos é pré-carregada; o mesmo corte do ArteCromo.
+const preArte = [
+  { href: arte.claroP, media: `${CLARO} and ${CELULAR}` },
+  { href: arte.claroG, media: `${CLARO} and ${COMPUTADOR}` },
+  { href: arte.escuroP, media: `${ESCURO} and ${CELULAR}` },
+  { href: arte.escuroG, media: `${ESCURO} and ${COMPUTADOR}` },
+];
 ---
 
 <!doctype html>
@@ -25,10 +42,27 @@ const canonica = new URL(Astro.url.pathname, Astro.site);
     <title>{tituloCompleto}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={canonica} />
+    {!noindex && <link rel="canonical" href={canonica} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.nomeCurto} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagemOg} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={tituloCompleto} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloCompleto} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagemOg} />
+    <slot name="head" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+    {preArte.map(({ href, media }) => <link rel="preload" as="image" type="image/webp" href={href} media={media} fetchpriority="high" />)}
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#eceef1" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#050608" />
     <!-- Aplica o tema escolhido antes da primeira pintura, para a tela não piscar. -->

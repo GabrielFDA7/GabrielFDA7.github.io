@@ -21,7 +21,7 @@ const destaque = data.metrics[0];
     <p class="rotulo">{data.draft && 'Rascunho · '}{ROTULO_CONTEXTO[data.context]} · {ROTULO_STATUS[data.status]}</p>
     <Titulo class="titulo-linha mt-2">
       <!-- O ::after estica o link por toda a linha, sem aninhar outros elementos dentro dele. -->
-      <a href={`/projetos/${data.slug}`} class="no-underline after:absolute after:inset-0">
+      <a href={`/projetos/${data.slug}/`} class="no-underline after:absolute after:inset-0">
         <span class="nome">{data.title}</span>
       </a>
     </Titulo>

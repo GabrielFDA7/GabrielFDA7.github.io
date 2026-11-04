@@ -9,10 +9,10 @@ import { publicados } from '../../lib/projetos';
 const projetos = publicados(await getCollection('projetos'));
 ---
 
-<BaseLayout title="Projetos" description="Todos os projetos de Gabriel Faria de Angelis, com filtro por dados, IA, backend, automação, BI e web.">
+<BaseLayout title="Projetos" description="Todos os projetos de Gabriel Faria de Angelis, com filtro por dados, IA, backend, automação, BI e web." imagem="projetos">
   <TopoPagina titulo="Projetos" descricao="Cada um tem um estudo de caso com problema, arquitetura, decisões e resultado.">
     <div class="mt-8">
-      <ProjectFilter client:visible projetos={projetos.map((projeto) => projeto.data.tags)} />
+      <ProjectFilter client:idle projetos={projetos.map((projeto) => projeto.data.tags)} />
     </div>
   </TopoPagina>
 

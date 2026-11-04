@@ -27,11 +27,11 @@ const [nome = data.title, ...resto] = data.title.split(' — ');
 const apoio = resto.join(' — ');
 ---
 
-<BaseLayout title={data.title} description={data.summary}>
+<BaseLayout title={data.title} description={data.summary} imagem={data.slug}>
   <article>
     <TopoPagina titulo={nome} apoio={apoio || undefined} rotulo={ROTULO_CONTEXTO[data.context]} descricao={data.summary} longo={!apoio}>
       <p slot="antes" class="mb-4">
-        <a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos">Todos os projetos</a>
+        <a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos/">Todos os projetos</a>
       </p>
       {(data.links.repo || data.links.demo) && (
         <div class="botoes mt-8">

@@ -44,7 +44,7 @@ const apoio = resto.join(' — ');
       <p class="max-w-xl text-lg text-texto-suave">{data.summary}</p>
       <div class="mt-6 lg:mt-10"><Metricas itens={data.metrics} /></div>
       <div class="botoes mt-6 lg:mt-10">
-        <a class="btn btn-cromo" href={`/projetos/${data.slug}`}>Ver estudo de caso</a>
+        <a class="btn btn-cromo" href={`/projetos/${data.slug}/`}>Ver estudo de caso</a>
         {data.links.demo && (
           <a class="btn btn-contorno" href={data.links.demo}>
             Abrir demo
