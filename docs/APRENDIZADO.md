@@ -211,3 +211,38 @@ antes de publicar. Mas o repositório é público: o arquivo do rascunho continu
 Seria fácil escrever "reduziu o tempo de consulta" sem número. Mas um avaliador técnico pergunta
 "quanto?", e uma frase vaga custa mais credibilidade do que uma seção curta. Por isso o que falta está
 marcado, e a Fase 5 fará o build falhar enquanto houver marcador na página final.
+
+### Como a identidade passou da abertura para o site inteiro
+
+**O diagnóstico.** A abertura tinha linguagem própria, e o resto era um template de cartões. O remédio
+não foi enfeitar os cartões, e sim trocar a estrutura: um sistema de materiais, em que cada tipo de
+conteúdo tem um jeito próprio de aparecer em cromo.
+
+**Metal nas letras.** A classe `.metal`, em [global.css](../src/styles/global.css), usa
+`background-clip: text`: a imagem de fundo só aparece dentro do formato das letras, e o texto em si
+fica transparente. A textura é gerada em [gerar-arte.mjs](../scripts/gerar-arte.mjs) com uma faixa de
+luz que nunca fica escura demais, porque letra de metal ainda precisa ser legível.
+
+Três cuidados para olhar:
+
+- `background-color` junto da imagem: se ela falhar, o texto continua visível.
+- `background-attachment: fixed`: a textura fica presa à janela e as letras passam por cima dela.
+  É isso que faz o reflexo andar na rolagem, sem JavaScript. Vale só em computador e para quem não
+  pediu menos movimento.
+- Contraste medido pixel a pixel, porque ferramentas como o axe não conseguem avaliar texto sobre
+  imagem. O mínimo ficou acima de 3,7:1, e a regra para texto grande pede 3:1.
+
+**Fita com lâminas.** A primeira versão, feita só com ruído, parecia uma salsicha metálica. A fita final
+usa a mesma ideia do emblema: espinhos assimétricos, arrastados no sentido do traço. É isso que faz os
+dois parecerem da mesma família.
+
+**Por que linhas em vez de cartões.** Um cartão diz "aqui tem um item". Uma linha com número grande em
+metal e título enorme dá ritmo e hierarquia. O hover continua dizendo que é clicável: o título vira
+metal, e a seta avança.
+
+**A técnica do link esticado.** Em [LinhaProjeto.astro](../src/components/LinhaProjeto.astro), o `::after`
+do link cobre a linha inteira. Assim toda a área é clicável, mas o leitor de tela anuncia só o título.
+
+**CSS como material.** O tubo e as esferas não são imagens: são degradês (`--cromo-tubo` e
+`--cromo-esfera`, em [tokens.css](../src/styles/tokens.css)). Pesam quase nada e ficam nítidos em
+qualquer tela. A esfera é um `radial-gradient` com a luz deslocada para o canto.

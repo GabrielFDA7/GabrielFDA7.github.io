@@ -33,15 +33,27 @@ ele divergir deste arquivo, **vale este arquivo**, que guarda as decisões poste
 Decisão de 04/11/2026, que **substitui** o "sóbrio e editorial" da seção 4 do briefing.
 Referência: chrome artwork, só no estilo. As imagens de referência não entram no repositório.
 
-- **O metal fica na moldura, o conteúdo em fundo liso.** O cromo aparece na arte, no nome, nos
-  botões e nas bordas. Texto corrido nunca fica sobre imagem nem em degradê.
+- **A identidade não pode morrer depois da abertura.** Exigência do Gabriel em 04/11/2026: a grade de
+  cartões "matou" o site. **Não use cartões com texto como padrão.** Toda seção precisa ter um
+  elemento de cromo que pareça parte dela. Os materiais do sistema são:
+  - `.metal`: textura de cromo recortada no texto, com reflexo que anda na rolagem. Em títulos e
+    números grandes.
+  - `DivisorFita`: fita de metal com lâminas, da mesma família do emblema, entre seções.
+  - `.tubo` e `.parada`: tubo de cromo com esferas, para sequências e linhas do tempo.
+  - `LinhaProjeto`: lista editorial com número em metal, no lugar de cartões de projeto.
+  - `TopoPagina`: a composição da abertura (texto à esquerda, arte à direita) nas páginas internas.
+- **Texto corrido fica em fundo liso**, nunca sobre imagem nem em degradê. A arte se encaixa ao lado
+  ou atrás de objetos, como o aparelho do projeto principal.
 - **Toda a arte é gerada por código**, em `scripts/gerar-arte.mjs` (`npm run arte`). As saídas
   ficam versionadas e o build não roda o script. Não usar imagem de banco nem de terceiros.
 - **Dois temas:** cromo negro (`#050608`) e prata polida (`#eceef1`). Azul `#1f4e8c` no claro,
   azul-gelo `#8ec5ff` no escuro. O acento térmico (laranja) é raro e nunca o único sinal de algo.
 - **Continuam proibidos:** gradiente roxo, glassmorphism, barra de nível de habilidade, emoji como
   ícone, animação que atrasa a leitura, carrossel e texto sobre imagem.
-- `.cromo-texto` só em texto grande: o tom mais fraco do degradê mira 3:1, não 4,5:1.
+- `.metal` e `.cromo-texto` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. A textura foi
+  medida: em todo pixel, o contraste com o fundo fica acima de 3,7:1 nos dois temas. Se regenerar,
+  meça de novo.
+- A abertura (`Hero`) segue com o degradê prateado, de que o Gabriel gostou. As demais usam `.metal`.
 
 ## Conteúdo e confidencialidade
 
@@ -83,6 +95,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **O Mermaid mede as caixas no build.** Se a página desenhar o rótulo com outra fonte, o texto é
   cortado. Por isso a fonte dos diagramas é fixa em Arial, nos dois lados.
 - **Plugin de Markdown exige `@astrojs/markdown-remark`** no Astro 7, cujo processador padrão mudou.
+  `syntaxHighlight: false` fica fora de `unified()`; sem ele, o Mermaid não reconhece os blocos.
+- **Imagem lazy não carrega em captura de página inteira.** Role a página antes de capturar, ou o
+  resultado mostra buracos que não existem.
 
 ## Fases
 

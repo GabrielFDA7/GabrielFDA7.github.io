@@ -111,3 +111,23 @@ As fotos que você pegou do nextup são bem antigas, o projeto está bem diferen
 2. A imagem antiga saiu. As capas passaram a ser capturas do site no ar, em versão clara e escura,
    acompanhando o tema do portfólio, com o script `npm run capturas` para refazê-las.
 3. Fase 3 construída: 9 projetos, diagramas Mermaid sem script e a lista de `PREENCHER`.
+
+### Prompt #007
+**Data:** 04/11/2026
+**Contexto:** Revisão da Fase 3. O Gabriel pediu para resolver o design antes de preencher os dados.
+
+```
+Vou preencher tudo que você precisa, mas antes disso, vamos ter que voltar a parte de desing.
+
+A parte inicial, onde batemos os olhos primeiramente está muito bontia, fonte diferente, elemento cromático ao fundo e tudo mais (nas duas versões).
+
+Porém, quando descemos a página ou vamos para outra sessão a identidade do site morre. Passa a ser apenas um monte de quadradinhos que tem texto dentro. Precisamos mudar isso, trazer de volta a personalidade do site e colocar mais elementos cromáticos que sintonizem e pareçam fazer parte do site.
+```
+
+**O que resultou:**
+
+1. Novos materiais gerados por código: textura de metal para as letras e fitas com lâminas.
+2. Os cartões saíram do site: projetos viraram linhas editoriais, e as sequências, um tubo de cromo
+   com esferas.
+3. Títulos e números em metal, com reflexo que anda na rolagem, e assinatura no rodapé.
+4. Páginas internas passaram a repetir a composição da abertura. A abertura em si não mudou.
