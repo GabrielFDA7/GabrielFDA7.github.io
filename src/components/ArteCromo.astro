@@ -1,0 +1,64 @@
+---
+// A arte é decorativa, então entra como fundo CSS: assim o navegador baixa só a
+// imagem do tema ativo, no tamanho certo, o que duas <img> escondidas não garantem.
+import { getImage } from 'astro:assets';
+import claro from '../assets/arte/cromo-claro.webp';
+import escuro from '../assets/arte/cromo-escuro.webp';
+
+interface Props {
+  class?: string;
+}
+
+const { class: classe } = Astro.props;
+
+const gerar = (src: ImageMetadata, width: number) => getImage({ src, width, format: 'webp', quality: 80 });
+const [claroP, claroG, escuroP, escuroG] = await Promise.all([
+  gerar(claro, 900),
+  gerar(claro, 1600),
+  gerar(escuro, 900),
+  gerar(escuro, 1600),
+]);
+
+const variaveis = [
+  `--claro-p:url(${claroP.src})`,
+  `--claro-g:url(${claroG.src})`,
+  `--escuro-p:url(${escuroP.src})`,
+  `--escuro-g:url(${escuroG.src})`,
+].join(';');
+---
+
+<div class:list={['arte-cromo', classe]} style={variaveis} aria-hidden="true"></div>
+
+<style>
+  .arte-cromo {
+    --pequena: var(--claro-p);
+    --grande: var(--claro-g);
+    background-image: var(--pequena);
+    background-position: center;
+    background-size: cover;
+  }
+
+  @media (min-width: 48rem) {
+    .arte-cromo {
+      background-image: var(--grande);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .arte-cromo {
+      --pequena: var(--escuro-p);
+      --grande: var(--escuro-g);
+    }
+  }
+
+  :global(:root[data-theme='dark']) .arte-cromo {
+    --pequena: var(--escuro-p);
+    --grande: var(--escuro-g);
+  }
+
+  @media (forced-colors: active) {
+    .arte-cromo {
+      display: none;
+    }
+  }
+</style>

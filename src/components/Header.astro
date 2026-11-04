@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import emblema from '../assets/arte/emblema.webp';
+import { site } from '../config/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const caminho = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header>
+  <div class="pagina flex items-center justify-between gap-3 py-3">
+    <a href="/" class="flex min-h-11 items-center gap-2.5 text-texto no-underline hover:text-texto" aria-label={`${site.nomeCurto}, página inicial`}>
+      <Image src={emblema} alt="" width={36} height={36} class="emblema size-9" />
+      <span class="hidden text-sm font-semibold tracking-tight sm:inline">{site.nomeCurto}</span>
+    </a>
+    <div class="flex items-center gap-1 sm:gap-3">
+      <nav aria-label="Principal">
+        <ul class="flex items-center gap-1 sm:gap-2">
+          {site.navegacao.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={caminho.startsWith(item.href) ? 'page' : undefined}
+                class="inline-flex min-h-11 items-center px-2.5 text-sm font-medium text-texto-suave no-underline hover:text-texto aria-[current=page]:text-texto aria-[current=page]:underline"
+              >
+                {item.rotulo}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <ThemeToggle />
+    </div>
+  </div>
+  <hr class="regua-cromo" />
+</header>
+
+<style>
+  .emblema {
+    filter: var(--sombra-emblema);
+  }
+</style>

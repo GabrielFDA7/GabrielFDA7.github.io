@@ -1,0 +1,50 @@
+---
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import SkipLink from '../components/SkipLink.astro';
+import { site } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.descricao } = Astro.props;
+const tituloCompleto = title ? `${title} · ${site.nomeCurto}` : `${site.nomeCurto} · ${site.posicionamento}`;
+const canonica = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonica} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#eceef1" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#050608" />
+    <!-- Aplica o tema escolhido antes da primeira pintura, para a tela não piscar. -->
+    <script is:inline>
+      try {
+        const tema = localStorage.getItem('tema');
+        if (tema === 'dark' || tema === 'light') document.documentElement.dataset.theme = tema;
+      } catch {
+        // Sem acesso ao armazenamento: vale a preferência do sistema.
+      }
+    </script>
+  </head>
+  <body>
+    <SkipLink />
+    <Header />
+    <main id="conteudo" class="flex-1" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

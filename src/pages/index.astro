@@ -1,0 +1,105 @@
+---
+// Prévia da Fase 1: valida tokens, tema e layout. A home real chega na Fase 2.
+import ArteCromo from '../components/ArteCromo.astro';
+import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const cores = [
+  { nome: 'fundo', classe: 'bg-fundo' },
+  { nome: 'superfície', classe: 'bg-superficie' },
+  { nome: 'superfície 2', classe: 'bg-superficie-2' },
+  { nome: 'linha', classe: 'bg-linha' },
+  { nome: 'texto', classe: 'bg-texto' },
+  { nome: 'texto suave', classe: 'bg-texto-suave' },
+  { nome: 'destaque', classe: 'bg-destaque' },
+  { nome: 'quente', classe: 'bg-quente' },
+];
+---
+
+<BaseLayout>
+  <section class="hero relative overflow-hidden" aria-labelledby="nome">
+    <div class="arte"><ArteCromo class="size-full" /></div>
+    <div class="pagina relative">
+      <div class="texto py-12 lg:py-28">
+        <p class="rotulo">Dados · Python · IA</p>
+        <h1 id="nome" class="mt-4 pb-2 text-marca"><span class="cromo-texto">{site.nome}</span></h1>
+        <p class="mt-5 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{site.posicionamento}</p>
+        <p class="mt-4 max-w-xl text-texto-suave">{site.apoio}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-cromo" href="/projetos">Ver projetos</a>
+          <a class="btn btn-contorno" href={site.curriculoPadrao}>Baixar currículo</a>
+          <a class="btn btn-contorno" href={site.links.github}>GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pagina mt-secao" aria-labelledby="sistema">
+    <p class="rotulo">Prévia da Fase 1</p>
+    <h2 id="sistema" class="mt-3 text-3xl font-bold tracking-tight">Sistema visual</h2>
+    <p class="mt-3 max-w-2xl text-texto-suave">
+      Esta seção existe só para validar os tokens nos dois temas e sai na Fase 2. Uma <a href="https://github.com/GabrielFDA7/nextup">referência de link</a> e um <span class="font-semibold text-quente">acento térmico</span> mostram os tons de texto colorido.
+    </p>
+
+    <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {cores.map((cor) => (
+        <li class="cartao p-3">
+          <div class:list={['h-14 rounded-md border border-linha', cor.classe]}></div>
+          <p class="mt-2 text-sm font-medium">{cor.nome}</p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      <a href="/projetos" class="cartao cartao-link block p-6 no-underline">
+        <p class="rotulo">Cartão com link</p>
+        <p class="mt-3 text-xl font-semibold text-texto">A borda vira cromo ao passar o mouse</p>
+        <p class="mt-2 text-sm text-texto-suave">É assim que os projetos vão aparecer na Fase 2.</p>
+      </a>
+      <div class="cartao p-6">
+        <p class="rotulo">Cartão simples</p>
+        <p class="mt-3 text-xl font-semibold">Sem brilho, para o conteúdo</p>
+        <p class="mt-2 text-sm text-texto-suave">O metal fica na moldura. O texto corrido segue em fundo liso.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Celular: a arte é uma faixa abaixo do texto. Nunca há texto sobre a imagem. */
+  .hero {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .arte {
+    height: 15rem;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  }
+
+  /* Computador: a arte ocupa a metade direita, e o texto fica na esquerda. */
+  @media (min-width: 64rem) {
+    .hero {
+      display: block;
+    }
+
+    .arte {
+      position: absolute;
+      inset-block: 0;
+      right: 0;
+      width: 56%;
+      height: auto;
+      --esquerda: linear-gradient(to right, transparent, rgb(0 0 0 / 0.12) 12%, rgb(0 0 0 / 0.55) 26%, #000 44%);
+      --base: linear-gradient(to bottom, #000 80%, transparent);
+      -webkit-mask-image: var(--esquerda), var(--base);
+      mask-image: var(--esquerda), var(--base);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    .texto {
+      max-width: 44%;
+    }
+  }
+</style>

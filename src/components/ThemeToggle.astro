@@ -1,0 +1,63 @@
+<!-- Sem JavaScript o botão não faria nada, então ele só aparece depois que o script roda. -->
+<button
+  type="button"
+  id="alternar-tema"
+  class="btn btn-contorno size-11 shrink-0 p-0!"
+  aria-label="Usar tema escuro"
+  hidden
+>
+  <svg class="icone-sol size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+  </svg>
+  <svg class="icone-lua size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path>
+  </svg>
+</button>
+
+<script>
+  const botao = document.querySelector<HTMLButtonElement>('#alternar-tema');
+  const raiz = document.documentElement;
+
+  const temaAtual = () => getComputedStyle(raiz).colorScheme.includes('dark') ? 'dark' : 'light';
+
+  const atualizar = () => {
+    if (!botao) return;
+    const escuro = temaAtual() === 'dark';
+    botao.dataset.tema = escuro ? 'dark' : 'light';
+    botao.setAttribute('aria-label', escuro ? 'Usar tema claro' : 'Usar tema escuro');
+  };
+
+  if (botao) {
+    botao.hidden = false;
+    atualizar();
+    botao.addEventListener('click', () => {
+      const novo = temaAtual() === 'dark' ? 'light' : 'dark';
+      raiz.dataset.theme = novo;
+      try {
+        localStorage.setItem('tema', novo);
+      } catch {
+        // A escolha vale só para esta página.
+      }
+      atualizar();
+    });
+    // Acompanha o sistema enquanto a pessoa não tiver escolhido um tema.
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', atualizar);
+  }
+</script>
+
+<style>
+  #alternar-tema[hidden] {
+    display: none;
+  }
+
+  /* O ícone mostra o tema para o qual o botão leva. */
+  #alternar-tema .icone-sol,
+  #alternar-tema[data-tema='dark'] .icone-lua {
+    display: none;
+  }
+
+  #alternar-tema[data-tema='dark'] .icone-sol {
+    display: block;
+  }
+</style>

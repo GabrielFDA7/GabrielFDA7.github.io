@@ -1,0 +1,26 @@
+---
+import { site } from '../config/site';
+
+const ano = new Date().getFullYear();
+const links = [
+  { rotulo: 'GitHub', href: site.links.github },
+  { rotulo: 'LinkedIn', href: site.links.linkedin },
+  { rotulo: 'E-mail', href: `mailto:${site.links.email}` },
+];
+---
+
+<footer class="mt-secao">
+  <hr class="regua-cromo" />
+  <div class="pagina flex flex-col gap-3 py-8 text-sm text-texto-suave sm:flex-row sm:items-center sm:justify-between">
+    <p>© {ano} {site.nome}</p>
+    <ul class="flex flex-wrap gap-x-2">
+      {links.map((link) => (
+        <li>
+          <a href={link.href} class="inline-flex min-h-11 items-center px-2 font-medium text-texto-suave underline hover:text-texto">
+            {link.rotulo}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</footer>
