@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+import emblema from '../assets/arte/emblema-grande.webp';
+import TituloSecao from './TituloSecao.astro';
+
 const BASE = 'https://github.com/GabrielFDA7/nextup';
 
 const praticas = [
@@ -28,25 +32,44 @@ const praticas = [
 ];
 ---
 
-<section class="pagina mt-secao" aria-labelledby="metodo-ia">
-  <p class="rotulo">Método</p>
-  <h2 id="metodo-ia" class="mt-3 text-3xl font-bold tracking-tight">Como eu trabalho com IA</h2>
-  <p class="mt-3 max-w-2xl text-texto-suave">
-    O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada item abaixo aponta para o arquivo real no repositório.
-  </p>
-  <ul class="mt-8 grid gap-4 md:grid-cols-2">
+<section class="pagina mt-secao grid gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]" aria-labelledby="metodo-ia">
+  <div class="fixo">
+    <TituloSecao
+      id="metodo-ia"
+      rotulo="Método"
+      titulo="Como eu trabalho com IA"
+      descricao="O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada passo aponta para o arquivo real no repositório."
+    />
+    <Image src={emblema} alt="" widths={[320, 640]} sizes="20rem" loading="lazy" class="emblema mt-10 hidden w-80 lg:block" />
+  </div>
+
+  <ol class="tubo">
     {praticas.map((pratica) => (
-      <li class="cartao flex flex-col gap-3 p-6">
-        <h3 class="text-lg font-semibold tracking-tight">{pratica.titulo}</h3>
-        <p class="text-sm text-texto-suave">{pratica.texto}</p>
-        <ul class="mt-auto flex flex-wrap gap-x-4 text-sm">
+      <li class="parada">
+        <h3 class="text-2xl font-bold tracking-tight">{pratica.titulo}</h3>
+        <p class="mt-2 text-texto-suave">{pratica.texto}</p>
+        <ul class="mt-1 flex flex-wrap gap-x-4">
           {pratica.links.map((link) => (
             <li>
-              <a class="inline-flex min-h-11 items-center break-all font-medium" href={link.href}>{link.rotulo}</a>
+              <a class="inline-flex min-h-11 items-center font-medium break-all" href={link.href}>{link.rotulo}</a>
             </li>
           ))}
         </ul>
       </li>
     ))}
-  </ul>
+  </ol>
 </section>
+
+<style>
+  .emblema {
+    filter: var(--sombra-emblema);
+  }
+
+  @media (min-width: 64rem) {
+    .fixo {
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+    }
+  }
+</style>

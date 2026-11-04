@@ -1,24 +1,67 @@
 ---
 import { site } from '../config/site';
+import ArteCromo from './ArteCromo.astro';
 import Icone from './Icone.astro';
 ---
 
-<section class="pagina mt-secao" aria-labelledby="contato">
-  <p class="rotulo">Contato</p>
-  <h2 id="contato" class="mt-3 text-3xl font-bold tracking-tight">Vamos conversar</h2>
-  <p class="mt-3 text-texto-suave">O caminho mais rápido é o e-mail.</p>
-  <div class="mt-6 flex flex-wrap gap-3">
-    <a class="btn btn-cromo max-w-full whitespace-normal! break-all" href={`mailto:${site.links.email}`}>
-      <Icone nome="email" class="size-5 shrink-0" />
-      {site.links.email}
-    </a>
-    <a class="btn btn-contorno" href={site.links.linkedin}>
-      <Icone nome="linkedin" />
-      LinkedIn
-    </a>
-    <a class="btn btn-contorno" href={site.links.github}>
-      <Icone nome="github" />
-      GitHub
-    </a>
+<section class="contato relative mt-secao overflow-hidden" aria-labelledby="contato">
+  <div class="arte"><ArteCromo class="size-full" /></div>
+  <div class="pagina relative py-12 lg:py-24">
+    <div class="texto">
+      <p class="rotulo">Contato</p>
+      <h2 id="contato" class="titulo-gigante mt-3 pb-2"><span class="metal">Vamos conversar</span></h2>
+      <p class="mt-4 text-lg text-texto-suave">O caminho mais rápido é o e-mail.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a class="btn btn-cromo max-w-full whitespace-normal! break-all" href={`mailto:${site.links.email}`}>
+          <Icone nome="email" class="size-5 shrink-0" />
+          {site.links.email}
+        </a>
+        <a class="btn btn-contorno" href={site.links.linkedin}>
+          <Icone nome="linkedin" />
+          LinkedIn
+        </a>
+        <a class="btn btn-contorno" href={site.links.github}>
+          <Icone nome="github" />
+          GitHub
+        </a>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  .contato {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .arte {
+    height: 11rem;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%);
+    mask-image: linear-gradient(to bottom, transparent, #000 40%);
+  }
+
+  @media (min-width: 64rem) {
+    .contato {
+      display: block;
+    }
+
+    .arte {
+      position: absolute;
+      inset-block: 0;
+      right: 0;
+      width: 50%;
+      height: auto;
+      --lado: linear-gradient(to right, transparent, rgb(0 0 0 / 0.15) 16%, rgb(0 0 0 / 0.6) 34%, #000 56%);
+      --base: linear-gradient(to bottom, transparent, #000 14%, #000 80%, transparent);
+      -webkit-mask-image: var(--lado), var(--base);
+      mask-image: var(--lado), var(--base);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    .texto {
+      max-width: 60%;
+    }
+  }
+</style>

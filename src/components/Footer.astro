@@ -1,5 +1,6 @@
 ---
 import { site } from '../config/site';
+import DivisorFita from './DivisorFita.astro';
 
 const ano = new Date().getFullYear();
 const links = [
@@ -9,18 +10,34 @@ const links = [
 ];
 ---
 
-<footer class="mt-secao">
-  <hr class="regua-cromo" />
-  <div class="pagina flex flex-col gap-3 py-8 text-sm text-texto-suave sm:flex-row sm:items-center sm:justify-between">
-    <p>© {ano} {site.nome}</p>
-    <ul class="flex flex-wrap gap-x-2">
-      {links.map((link) => (
-        <li>
-          <a href={link.href} class="inline-flex min-h-11 items-center px-2 font-medium text-texto-suave underline hover:text-texto">
-            {link.rotulo}
-          </a>
-        </li>
-      ))}
-    </ul>
+<footer class="mt-8 overflow-hidden">
+  <DivisorFita variante="b" espelhada />
+  <div class="pagina">
+    <p class="assinatura metal" aria-hidden="true">{site.nomeCurto}</p>
+    <div class="flex flex-col gap-3 py-6 text-sm text-texto-suave sm:flex-row sm:items-center sm:justify-between">
+      <p>© {ano} {site.nome}</p>
+      <ul class="flex flex-wrap gap-x-2">
+        {links.map((link) => (
+          <li>
+            <a href={link.href} class="inline-flex min-h-11 items-center px-2 font-medium text-texto-suave underline hover:text-texto">
+              {link.rotulo}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </footer>
+
+<style>
+  /* A assinatura ocupa a largura da página em qualquer tela. */
+  .assinatura {
+    display: block;
+    width: fit-content;
+    font-size: min(9.3vw, 7.5rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    white-space: nowrap;
+  }
+</style>

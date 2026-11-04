@@ -1,8 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import ArteCromo from './ArteCromo.astro';
 import CapaProjeto from './CapaProjeto.astro';
 import Icone from './Icone.astro';
-import Metricas from './Metricas.astro';
 
 interface Props {
   projeto: CollectionEntry<'projetos'>;
@@ -10,18 +10,30 @@ interface Props {
 
 const { projeto } = Astro.props;
 const { data } = projeto;
+// "NextUp — recomendador..." vira um nome enorme e uma linha de apoio.
+const [nome = data.title, ...resto] = data.title.split(' — ');
+const apoio = resto.join(' — ');
 ---
 
-<section class="pagina mt-secao" aria-labelledby="projeto-principal">
-  <p class="rotulo">Projeto principal</p>
-  <div class="cartao mt-4 grid overflow-hidden md:grid-cols-[1fr_auto]">
-    <div class="flex flex-col gap-6 p-6 sm:p-10">
-      <div>
-        <h2 id="projeto-principal" class="text-3xl font-bold leading-tight tracking-tight sm:text-4xl">{data.title}</h2>
-        <p class="mt-3 max-w-xl text-texto-suave">{data.summary}</p>
-      </div>
-      <Metricas itens={data.metrics} grande />
-      <div class="mt-auto flex flex-wrap gap-3">
+<section class="principal relative overflow-hidden" aria-labelledby="projeto-principal">
+  <div class="arte"><ArteCromo class="size-full" /></div>
+  <div class="pagina relative grid items-center gap-12 py-12 lg:grid-cols-[1fr_auto] lg:py-20">
+    <div class="texto min-w-0">
+      <p class="rotulo">Projeto principal</p>
+      <h2 id="projeto-principal" class="titulo-gigante mt-3 pb-2"><span class="metal">{nome}</span></h2>
+      {apoio && <p class="mt-2 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{apoio}</p>}
+      <p class="mt-4 max-w-xl text-lg text-texto-suave">{data.summary}</p>
+
+      <dl class="mt-10 flex flex-wrap gap-x-10 gap-y-6">
+        {data.metrics.map((item) => (
+          <div class="flex flex-col-reverse">
+            <dt class="mt-1 text-sm text-texto-suave">{item.label}</dt>
+            <dd class="metal numero-metrica">{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="mt-10 flex flex-wrap gap-3">
         <a class="btn btn-cromo" href={`/projetos/${data.slug}`}>Ver estudo de caso</a>
         {data.links.demo && (
           <a class="btn btn-contorno" href={data.links.demo}>
@@ -37,31 +49,70 @@ const { data } = projeto;
         )}
       </div>
     </div>
+
     {data.cover && (
-      <div class="tela border-t border-linha md:border-t-0 md:border-l">
-        <CapaProjeto
-          claro={data.cover}
-          escuro={data.coverEscuro}
-          alt={data.coverAlt ?? ''}
-          widths={[320, 480, 640]}
-          sizes="(min-width: 48rem) 20rem, 100vw"
-          class="size-full object-cover object-top"
-        />
+      <div class="aparelho mx-auto lg:mx-0">
+        <div class="tela">
+          <CapaProjeto
+            claro={data.cover}
+            escuro={data.coverEscuro}
+            alt={data.coverAlt ?? ''}
+            widths={[320, 480, 640]}
+            sizes="20rem"
+            class="size-full object-cover object-top"
+          />
+        </div>
       </div>
     )}
   </div>
 </section>
 
 <style>
-  /* A captura é bem alta: o enquadramento fixo mostra só o topo, com o mapa. */
-  .tela {
-    height: 20rem;
+  /* A arte fica atrás do aparelho, nunca atrás do texto. */
+  .arte {
+    position: absolute;
+    inset: auto 0 0;
+    height: 30rem;
+    --lado: linear-gradient(to bottom, transparent, #000 35%);
+    -webkit-mask-image: var(--lado);
+    mask-image: var(--lado);
+    pointer-events: none;
   }
 
-  @media (min-width: 48rem) {
-    .tela {
-      width: 20rem;
-      height: 26rem;
+  @media (min-width: 64rem) {
+    .arte {
+      inset: 0 0 0 auto;
+      width: 52%;
+      height: auto;
+      --lado: linear-gradient(to right, transparent, rgb(0 0 0 / 0.15) 18%, rgb(0 0 0 / 0.6) 34%, #000 56%);
+      --base: linear-gradient(to bottom, transparent, #000 14%, #000 80%, transparent);
+      -webkit-mask-image: var(--lado), var(--base);
+      mask-image: var(--lado), var(--base);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
     }
+
+    .texto {
+      max-width: 40rem;
+    }
+  }
+
+  /* O celular tem moldura de cromo: a captura vira objeto da composição. */
+  .aparelho {
+    width: min(100%, 19rem);
+    padding: 0.5rem;
+    border-radius: 2.75rem;
+    background: var(--cromo-borda);
+    box-shadow:
+      0 0 0 1px var(--linha),
+      0 2.5rem 5rem -2rem color-mix(in srgb, var(--quente) 45%, transparent);
+    rotate: 3deg;
+  }
+
+  .tela {
+    overflow: hidden;
+    aspect-ratio: 390 / 760;
+    border-radius: 2.25rem;
+    background: var(--fundo);
   }
 </style>
