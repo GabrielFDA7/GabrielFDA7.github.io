@@ -332,3 +332,53 @@ Um retângulo branco por cima do telefone esconderia o número na tela, mas ele 
 pronto para ser copiado. A correção usou *redaction* (PyMuPDF), que remove o texto do conteúdo da página,
 e reescreveu só o trecho seguinte, na mesma fonte. Depois, a verificação comparou a página linha a linha
 com o original, para garantir que só o previsto mudou.
+
+## Fase 5: Qualidade
+
+### O que existe agora
+
+Toda verificação que antes eu rodava à mão virou parte do repositório, e o
+[workflow de CI](../.github/workflows/ci.yml) a executa a cada push. Se algo falhar, o commit fica
+reprovado. Na Fase 6, é isso que vai impedir o deploy de uma versão quebrada.
+
+### Imagem de compartilhamento gerada no build
+
+Quando alguém cola um link no LinkedIn, aparece a imagem de `og:image`. Em
+[[pagina].jpg.ts](../src/pages/og/[pagina].jpg.ts), um *endpoint* do Astro gera uma imagem por página. O
+[og.ts](../src/lib/og.ts) usa o `satori` para transformar o texto em SVG e o `sharp` para juntá-lo à arte.
+Como tudo acontece no build, um projeto novo ganha a sua imagem sem nenhum passo manual.
+
+### SEO: quem é cada coisa
+
+- **`sitemap.xml`** lista as páginas que queremos no Google. Os focos ficam de fora.
+- **`robots.txt`** diz aos buscadores onde está esse mapa.
+- **URL canônica** diz qual é o endereço oficial de cada página.
+- **JSON-LD `Person`** ([index.astro](../src/pages/index.astro)) conta aos buscadores, em formato estruturado,
+  quem é a pessoa do site.
+
+### Três camadas de verificação
+
+- [verificar-dist.mjs](../scripts/verificar-dist.mjs) lê o HTML pronto, sem navegador: links, `PREENCHER`,
+  telefone, valor financeiro e SEO. É rápido. Link externo só gera aviso, porque um site fora do ar não
+  é culpa do commit (o LinkedIn, por exemplo, responde 999 a robôs).
+- [verificar-navegador.mjs](../scripts/verificar-navegador.mjs) abre cada página nas duas telas e nos dois
+  temas: acessibilidade com o axe, teclado, filtro, focos, diagramas e reflexo do metal.
+- [lighthouserc.cjs](../lighthouserc.cjs) mede desempenho, acessibilidade, boas práticas e SEO no celular.
+
+### O que o Lighthouse ensinou
+
+**LCP é o maior elemento visível.** Aqui era a arte, que fica no CSS e por isso é descoberta tarde. Um
+`<link rel="preload">` com `media` avisa o navegador logo no início, e só a versão do tema e do tamanho certos é
+baixada.
+
+**`client:idle` em vez de `client:visible`.** O filtro estava acima da dobra, então "visível" significava
+"agora". Com `idle`, o React espera o navegador ficar livre, e o espaço já fica reservado, sem salto no layout.
+
+**Meça em condições iguais às reais.** Projetos parecia reprovada, mas meu servidor de teste não comprimia
+os arquivos. Medir errado leva a otimizar o que não é problema.
+
+### Um erro que o teste local não pegaria
+
+`build.format: 'file'` deixaria `projetos.html` ao lado da pasta `projetos/`. Local, tudo passava. No
+GitHub Pages, `/projetos` poderia cair na pasta e dar 404. Por isso cada página é uma pasta, com link
+terminando em `/`, que é o formato mais previsível nesse tipo de hospedagem.

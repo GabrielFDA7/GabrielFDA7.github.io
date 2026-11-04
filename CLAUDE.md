@@ -101,6 +101,15 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 ### Armadilhas já encontradas
 
+- **Todo link interno termina em `/`** (`/projetos/`, `/sobre/`). Cada página é uma pasta com
+  `index.html`, e `trailingSlash: 'always'` faz o servidor local dar 404 no link errado. Não use
+  `build.format: 'file'`: `projetos.html` ao lado da pasta `projetos/` deixa `/projetos` ambíguo no Pages.
+- **Lighthouse local precisa de compressão.** `scripts/servir-dist.mjs` comprime como o GitHub Pages. Sem
+  isso, a nota cai vários pontos por medir arquivos até 3 vezes maiores que os reais.
+- **A arte é o LCP no celular.** Por estar no CSS, é pré-carregada no `BaseLayout` com `media` por tema e
+  tamanho. Se mudar o corte no `ArteCromo`, os dois leem `src/lib/arte.ts`.
+- **Dado real não entra nas verificações.** `verificar-dist.mjs` procura padrões genéricos de telefone e
+  de valor. Listar nome de cliente ou número ali o publicaria, porque o repositório é público.
 - **`overflow-hidden` paralisa o reflexo do metal no celular.** Ele transforma a seção em rolador, e a
   animação presa à rolagem (`view()`) passa a escutar a seção, que nunca rola. Em volta de `.metal`,
   use `overflow-clip`.
@@ -138,8 +147,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 1 | Fundação | Aprovada |
 | 2 | Páginas e componentes, filtro React com testes | Aprovada |
 | 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aprovada |
-| 4 | Focos por vaga e download do currículo | Aguardando aprovação |
-| 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | — |
+| 4 | Focos por vaga e download do currículo | Aprovada |
+| 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aguardando aprovação |
 | 6 | Publicação no GitHub Pages | — |
 | 7 | (Depois) Versão em inglês | — |
 
@@ -151,12 +160,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Os 3 PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Foram corrigidos a
   partir dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa
   passar pela mesma limpeza antes de entrar aqui.
-- Fase 5: quando o sitemap entrar, deixar `/foco/*` de fora.
-- Fase 5: só links internos bloqueiam o deploy; os externos geram aviso. O build falha se houver
-  `PREENCHER` na pasta final: os comentários do Markdown **chegam ao HTML**, verificado.
-- Fase 5: rodar `npm test` no CI e instalar o Chromium do Playwright, que o Mermaid usa no build.
-- Fase 5: `npm audit` acusa 3 alertas de baixa gravidade (katex, via mermaid). Só rodam no build,
-  sobre diagramas escritos por nós. Rever quando o mermaid atualizar.
+- **Depois da publicação:** medir o Lighthouse no site real e testar em um celular de verdade, em
+  especial o reflexo das letras e a fluidez da rolagem. O CI mede um servidor local que imita o Pages.
+- `npm audit` acusa alertas só em dependências de desenvolvimento (katex, via mermaid), que rodam no
+  build sobre diagramas escritos por nós. Em produção, são 0. Rever quando o mermaid atualizar.
 - Rascunhos (`draft: true`) aparecem no `npm run dev`, com o rótulo "Rascunho", e nunca no build.
 - O CNA Idiomas (LinkedIn do Gabriel) não está nos currículos. No site, aparece só em `/sobre`
   (`naHome: false`), porque a home mostra a experiência na Sotreq, como pede o briefing.
@@ -190,4 +197,9 @@ npm run build    # gera dist/
 npm run preview  # serve dist/
 npm run arte     # regenera a arte de cromo e os favicons
 npm run capturas # recaptura o NextUp no ar; espera o parque ter fila (--agora para não esperar)
+
+# Depois de `npm run build`. O CI roda todos, e qualquer falha reprova:
+npm run verificar:dist       # links internos, PREENCHER, dados proibidos, SEO e mapa do site
+npm run verificar:navegador  # acessibilidade, layout, teclado, filtro, focos, tema, diagramas e metal
+npm run lighthouse           # 95 ou mais no celular; localmente, defina CHROME_PATH com o Edge
 ```

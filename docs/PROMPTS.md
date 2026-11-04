@@ -368,3 +368,20 @@ SIm, a pergunta veio de lá.
 1. Os 3 currículos foram corrigidos direto no PDF e entraram em `public/cv/`: sem telefone, sem valor
    financeiro e com 946 testes, 10 sessões e 70 prompts. Os originais não foram alterados.
 2. O nome SIS2 e a pergunta vinda da diretoria foram confirmados.
+
+### Prompt #016
+**Data:** 04/11/2026
+**Contexto:** Aprovação dos focos.
+
+```
+Troque os e-mails do site por:
+gfaria.deangelis@gmail.com
+
+Pode seguir a fase 5.
+```
+
+**O que resultou:**
+
+1. Fase 4 integrada à `main`, e o e-mail trocado no site e nos 3 currículos.
+2. Fase 5 construída: imagem de compartilhamento por página, mapa do site, `robots.txt`, JSON-LD,
+   verificações automáticas e CI com Lighthouse.
