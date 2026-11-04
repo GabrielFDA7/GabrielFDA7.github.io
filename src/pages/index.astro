@@ -1,35 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
-import Contato from '../components/Contato.astro';
-import ExperienciaResumo from '../components/ExperienciaResumo.astro';
-import Hero from '../components/Hero.astro';
-import LinhaProjeto from '../components/LinhaProjeto.astro';
-import MetodoIA from '../components/MetodoIA.astro';
-import ProjetoPrincipal from '../components/ProjetoPrincipal.astro';
-import TituloSecao from '../components/TituloSecao.astro';
+import Inicio from '../components/Inicio.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { publicados } from '../lib/projetos';
-
-const destaques = publicados(await getCollection('projetos')).filter((projeto) => projeto.data.featured);
-const [principal, ...outros] = destaques;
-const experiencia = (await getCollection('experiencia', (item) => item.data.naHome)).toSorted((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout>
-  <Hero />
-  {principal && <ProjetoPrincipal projeto={principal} />}
-  {outros.length > 0 && (
-    <section class="pagina mt-secao" aria-labelledby="outros-projetos">
-      <TituloSecao id="outros-projetos" rotulo="Em destaque" titulo="Outros projetos" />
-      <ul class="mt-8">
-        {outros.map((projeto, indice) => (
-          <li><LinhaProjeto projeto={projeto} numero={indice + 2} /></li>
-        ))}
-      </ul>
-      <p class="mt-2"><a class="inline-flex min-h-11 items-center font-medium" href="/projetos">Ver todos os projetos</a></p>
-    </section>
-  )}
-  <MetodoIA />
-  <ExperienciaResumo itens={experiencia} />
-  <Contato />
+  <Inicio />
 </BaseLayout>

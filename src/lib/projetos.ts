@@ -15,6 +15,19 @@ export function publicados<T extends Publicavel>(
   return lista.filter((item) => comRascunhos || !item.data.draft).toSorted((a, b) => a.data.order - b.data.order);
 }
 
+interface Selecionavel {
+  data: { featured: boolean; tags: readonly string[] };
+}
+
+/**
+ * Lista de um link de foco: os projetos com as tags do foco vêm primeiro, mesmo fora dos destaques
+ * da home, seguidos dos demais destaques. Dentro de cada grupo, a ordem do site é mantida.
+ */
+export function selecionarParaFoco<T extends Selecionavel>(lista: readonly T[], tags: readonly string[]): T[] {
+  const combina = (item: T) => item.data.tags.some((tag) => tags.includes(tag));
+  return [...lista.filter(combina), ...lista.filter((item) => item.data.featured && !combina(item))];
+}
+
 /** Projeto anterior e próximo na ordem do site. Não dá a volta: as pontas ficam sem vizinho. */
 export function vizinhos<T>(lista: readonly T[], indice: number): { anterior?: T; proximo?: T } {
   return { anterior: lista[indice - 1], proximo: lista[indice + 1] };

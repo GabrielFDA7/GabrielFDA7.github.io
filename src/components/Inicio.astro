@@ -1,0 +1,41 @@
+---
+// O conteúdo da home. Os links de foco usam esta mesma composição, mudando só o que o foco define.
+import { getCollection } from 'astro:content';
+import type { Foco } from '../config/focos';
+import { publicados, selecionarParaFoco } from '../lib/projetos';
+import Contato from './Contato.astro';
+import ExperienciaResumo from './ExperienciaResumo.astro';
+import Hero from './Hero.astro';
+import LinhaProjeto from './LinhaProjeto.astro';
+import MetodoIA from './MetodoIA.astro';
+import ProjetoPrincipal from './ProjetoPrincipal.astro';
+import TituloSecao from './TituloSecao.astro';
+
+interface Props {
+  foco?: Foco | undefined;
+}
+
+const { foco } = Astro.props;
+const todos = publicados(await getCollection('projetos'));
+const selecao = foco ? selecionarParaFoco(todos, foco.tags) : todos.filter((projeto) => projeto.data.featured);
+const [principal, ...outros] = selecao;
+const experiencia = (await getCollection('experiencia', (item) => item.data.naHome)).toSorted((a, b) => a.data.order - b.data.order);
+---
+
+<Hero chamada={foco?.chamada} curriculo={foco?.curriculo} />
+{foco?.iaPrimeiro && <MetodoIA />}
+{principal && <ProjetoPrincipal projeto={principal} />}
+{outros.length > 0 && (
+  <section class="pagina mt-secao" aria-labelledby="outros-projetos">
+    <TituloSecao id="outros-projetos" rotulo="Em destaque" titulo="Outros projetos" />
+    <ul class="mt-8">
+      {outros.map((projeto, indice) => (
+        <li><LinhaProjeto projeto={projeto} numero={indice + 2} /></li>
+      ))}
+    </ul>
+    <p class="mt-2"><a class="inline-flex min-h-11 items-center font-medium" href="/projetos">Ver todos os projetos</a></p>
+  </section>
+)}
+{!foco?.iaPrimeiro && <MetodoIA />}
+<ExperienciaResumo itens={experiencia} />
+<Contato />
