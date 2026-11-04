@@ -205,6 +205,70 @@
   overflow-wrap: normal;
 }
 
+/*
+ * Diagramas Mermaid: o SVG já vem com as cores do build. Estas regras o repintam com os
+ * tokens, para acompanhar o botão de tema. O !important vence o <style> interno do SVG.
+ */
+.prosa svg[aria-roledescription] {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+  padding: 1.25rem 0.5rem;
+  border: 1px solid var(--linha);
+  border-radius: 0.875rem;
+  background: var(--superficie);
+}
+
+.prosa svg[aria-roledescription] .node :is(rect, polygon, circle, ellipse, path) {
+  fill: var(--superficie-2) !important;
+  stroke: var(--destaque) !important;
+}
+
+.prosa svg[aria-roledescription] .cluster rect {
+  fill: transparent !important;
+  stroke: var(--linha) !important;
+}
+
+/* Os rótulos são HTML dentro do SVG, então a cor vem de `color`, e não de `fill`. */
+.prosa svg[aria-roledescription] :is(text, tspan) {
+  fill: var(--texto) !important;
+}
+
+.prosa svg[aria-roledescription] :is(span, p) {
+  color: var(--texto) !important;
+}
+
+/*
+ * O Mermaid mede cada caixa no build, com a fonte da configuração. Se a página desenhar
+ * o rótulo com outra fonte, ele quebra em mais linhas e é cortado. Por isso a fonte é
+ * fixada aqui, e o overflow visível é a segurança para aparelhos sem essa fonte.
+ */
+.prosa svg[aria-roledescription] foreignObject {
+  overflow: visible;
+}
+
+.prosa svg[aria-roledescription] foreignObject * {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-feature-settings: normal;
+}
+
+.prosa svg[aria-roledescription] :is(.flowchart-link, .edgePath path) {
+  stroke: var(--texto-suave) !important;
+}
+
+.prosa svg[aria-roledescription] marker path,
+.prosa svg[aria-roledescription] .marker {
+  fill: var(--texto-suave) !important;
+  stroke: var(--texto-suave) !important;
+}
+
+.prosa svg[aria-roledescription] .edgeLabel rect,
+.prosa svg[aria-roledescription] .labelBkg {
+  fill: var(--superficie) !important;
+  background: var(--superficie) !important;
+}
+
 .prosa .capa {
   width: 100%;
   max-width: 22rem;
