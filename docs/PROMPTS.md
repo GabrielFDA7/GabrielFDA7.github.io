@@ -157,3 +157,33 @@ O meu nome ao final está cortado em algumas letras e fora de centralização. P
 3. "Professor de inglês" entrou em `/sobre`. A informação não está nos currículos, e o Gabriel foi avisado.
 4. "Português nativo" saiu de `/sobre`.
 5. A assinatura do rodapé foi centralizada, e o corte das letras foi corrigido em todo o `.metal`.
+
+### Prompt #009
+**Data:** 04/11/2026
+**Contexto:** Respostas às perguntas anteriores. Anexo: captura do LinkedIn com a experiência no CNA Idiomas (janeiro a novembro de 2024, Uberlândia, alunos de todas as idades e níveis).
+
+```
+1 -  imagem em anexo.
+
+2 - Tá bom desse jeito.
+
+3 - Sim
+
+4 - Depois preencho.
+
+A versão de computador está bem montada, já a de celular eu não estou gostando tanto assim. 
+
+Aquele fundo cromado parece estar meio desconectado com o resto. Não está muito bem amarrado.
+
+Me dê ideias para melhorar a estrutura geral do site como um todo. Principalmente a parte do celular, que está muito desamarrado.
+
+Outra coisa, as fotos do NextUP não demonstram a funcionalidade do app. Você tirou a foto em um momento que o parque estava fechado. Se você clicar no mapa agora, vai ter as funcionalidades aparentes.
+Gostei muito da forma que você fez o celular para display do nextup, bem criativo!
+```
+
+**O que resultou:**
+
+1. CNA Idiomas entrou na linha do tempo de `/sobre`.
+2. O nome da abertura passou a usar o mesmo metal do resto do site.
+3. As capas do NextUp foram refeitas tocando no mapa, com as opções numeradas e a rota à vista.
+4. Ideias de estrutura apresentadas, para o Gabriel escolher antes de qualquer mudança.

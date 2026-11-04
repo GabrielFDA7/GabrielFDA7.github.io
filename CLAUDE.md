@@ -52,10 +52,8 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   azul-gelo `#8ec5ff` no escuro. O acento térmico (laranja) é raro e nunca o único sinal de algo.
 - **Continuam proibidos:** gradiente roxo, glassmorphism, barra de nível de habilidade, emoji como
   ícone, animação que atrasa a leitura, carrossel e texto sobre imagem.
-- `.metal` e `.cromo-texto` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. A textura foi
-  medida: em todo pixel, o contraste com o fundo fica acima de 3,7:1 nos dois temas. Se regenerar,
-  meça de novo.
-- A abertura (`Hero`) segue com o degradê prateado, de que o Gabriel gostou. As demais usam `.metal`.
+- `.metal` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. A textura foi medida: em todo
+  pixel, o contraste com o fundo fica acima de 3,7:1 nos dois temas. Se regenerar, meça de novo.
 
 ## Conteúdo e confidencialidade
 
@@ -129,9 +127,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - Fase 5: `npm audit` acusa 3 alertas de baixa gravidade (katex, via mermaid). Só rodam no build,
   sobre diagramas escritos por nós. Rever quando o mermaid atualizar.
 - Rascunhos (`draft: true`) aparecem no `npm run dev`, com o rótulo "Rascunho", e nunca no build.
-- `/sobre`: "Professor de inglês" veio do Gabriel e não está nos currículos. Falta onde e quando.
-- As ferramentas de IA vêm do currículo de AI Engineer: Claude Code, Claude Design, Gemini e GitHub
-  Copilot. Confirmar se falta alguma.
+- O CNA Idiomas (LinkedIn do Gabriel) não está nos currículos. No site, aparece só em `/sobre`
+  (`naHome: false`), porque a home mostra a experiência na Sotreq, como pede o briefing.
 
 ## Decisões de arquitetura
 
@@ -143,7 +140,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   o build falha sem ele.
 - **A foto vem do avatar público do GitHub** (460 px), recortada em `src/assets/foto/gabriel.jpg`.
 - **Capas do NextUp são capturas do site no ar**, não `docs/img/` do repositório dele, que está
-  desatualizado. Refaça com `npm run capturas` quando a interface mudar (Gabriel, 04/11/2026).
+  desatualizado. Refaça com `npm run capturas` quando a interface mudar (Gabriel, 04/11/2026). O
+  script toca no mapa, porque é aí que a função aparece: aproximação, opções numeradas e rota.
 - **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
   nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
 
