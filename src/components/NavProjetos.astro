@@ -14,11 +14,11 @@ const itens = [
 ---
 
 {itens.length > 0 && (
-  <nav aria-label="Outros projetos" class="mt-16 grid gap-4 sm:grid-cols-2">
+  <nav aria-label="Outros projetos" class="mt-12 grid gap-8 sm:grid-cols-2">
     {itens.map((item) => (
-      <a href={`/projetos/${item.projeto.data.slug}`} class:list={['cartao cartao-link block p-5 no-underline', item.classe]}>
+      <a href={`/projetos/${item.projeto.data.slug}`} class:list={['block no-underline', item.classe]}>
         <span class="rotulo block">{item.rotulo}</span>
-        <span class="mt-2 block font-semibold text-texto">{item.projeto.data.title}</span>
+        <span class="metal titulo-navegacao mt-2">{item.projeto.data.title}</span>
       </a>
     ))}
   </nav>
