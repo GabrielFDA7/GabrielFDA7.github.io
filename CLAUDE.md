@@ -149,7 +149,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   decide os dois textos suavizados (SIS2 e pergunta de negócio das análises com SAP BW).
 
 - Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
-  Os PDFs entram na Fase 4; até lá o botão dá 404.
+- **Faltam os 3 PDFs em `public/cv/`**: `curriculo-dados.pdf`, `curriculo-dev-python.pdf` e
+  `curriculo-ai-engineer.pdf`. Até o Gabriel enviá-los corrigidos, o botão dá 404. Sem telefone e sem
+  valor financeiro: o PDF é público.
+- Fase 5: quando o sitemap entrar, deixar `/foco/*` de fora.
 - Fase 5: só links internos bloqueiam o deploy; os externos geram aviso. O build falha se houver
   `PREENCHER` na pasta final: os comentários do Markdown **chegam ao HTML**, verificado.
 - Fase 5: rodar `npm test` no CI e instalar o Chromium do Playwright, que o Mermaid usa no build.
@@ -173,6 +176,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   script toca no mapa, porque é aí que a função aparece: aproximação, opções numeradas e rota.
 - **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
   nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
+
+- **Foco novo é uma entrada em `src/config/focos.ts`.** `Inicio.astro` é a composição única da home e
+  dos focos, e `selecionarParaFoco` decide a lista: projetos com as tags do foco primeiro, mesmo fora
+  dos destaques, e depois os demais destaques. Focos ficam fora do menu e têm `noindex`.
 
 ## Comandos
 

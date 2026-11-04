@@ -348,3 +348,5 @@ As filiais de tamanhos diferentes foram analisadas com pesos e métricas persona
 1. O texto do painel de telemetria passou a separar o pipeline da tutoria na integração com o Gemini.
 2. O selo "Em produção" foi mantido, com o escopo que ainda falta descrito no texto.
 3. As decisões técnicas das análises foram escritas, e nenhum `PREENCHER` ficou nos projetos.
+4. Fase 3 integrada à `main`.
+5. Fase 4 construída: `/foco/dados`, `/foco/ia` e `/foco/backend`, à espera dos PDFs corrigidos.

@@ -295,3 +295,33 @@ nenhum ficou parado.
 paradas. O compactador de CSS fundiu `animation` e `animation-timeline` em uma única linha, que o
 navegador rejeita. Com as propriedades escritas uma a uma, não há o que fundir. A verificação no
 `dist/` pegou o erro antes do deploy, e por isso a conferência final roda sempre no build.
+
+## Fase 4: Focos por vaga
+
+### O que existe agora
+
+Três links para mandar em candidaturas: `/foco/dados`, `/foco/ia` e `/foco/backend`. Cada um muda a
+chamada da abertura, a ordem dos projetos e o currículo oferecido. O foco de IA também sobe a seção do
+método.
+
+### Configuração em um arquivo só
+
+[focos.ts](../src/config/focos.ts) é uma lista de dados. Em
+[[foco].astro](../src/pages/foco/[foco].astro), `getStaticPaths` percorre essa lista e o Astro gera uma
+página para cada entrada, no build. Acrescentar um foco é acrescentar uma entrada, sem tocar em componente.
+
+### Uma composição para a home e os focos
+
+[Inicio.astro](../src/components/Inicio.astro) monta a página. A home o chama sem nada, e o foco passa a
+configuração. Assim, uma melhora na home já vale para todos os focos.
+
+### A regra da ordem é uma função testável
+
+`selecionarParaFoco`, em [projetos.ts](../src/lib/projetos.ts), não depende do Astro, por isso os testes
+a chamam direto. Ela inclui um projeto com a tag do foco mesmo que ele não seja destaque na home: é assim
+que as análises com SAP BW aparecem no foco de dados.
+
+### Por que `noindex`
+
+A tag `<meta name="robots" content="noindex">` pede aos buscadores que não listem a página. Sem ela, três
+versões quase iguais da home competiriam com a original no Google.
