@@ -111,6 +111,15 @@ const LUZ = {
     [0.56, 0.66], [0.6, 0.42], [0.618, 0.12], [0.634, 0.98], [0.72, 0.84], [0.86, 0.72],
     [0.95, 0.94], [1.0, 0.6],
   ]),
+  // Texturas para letras: o tom mais fraco precisa manter 3:1 contra o fundo de cada tema.
+  letrasEscuro: criarTabela([
+    [0.0, 0.62], [0.2, 0.96], [0.3, 1.0], [0.36, 0.56], [0.4, 0.47], [0.46, 0.74], [0.54, 1.0],
+    [0.62, 0.8], [0.68, 0.48], [0.72, 0.72], [0.82, 1.0], [0.92, 0.78], [1.0, 0.5],
+  ]),
+  letrasClaro: criarTabela([
+    [0.0, 0.34], [0.2, 0.08], [0.3, 0.03], [0.36, 0.34], [0.4, 0.47], [0.46, 0.2], [0.54, 0.03],
+    [0.62, 0.16], [0.68, 0.46], [0.72, 0.22], [0.82, 0.04], [0.92, 0.18], [1.0, 0.42],
+  ]),
   // O emblema é pequeno: precisa de prata aberta, com poucas faixas escuras.
   emblema: criarTabela([
     [0.0, 0.3], [0.2, 0.86], [0.3, 1.0], [0.36, 0.5], [0.4, 0.09], [0.46, 0.62], [0.54, 0.98],
@@ -159,7 +168,7 @@ function sombrear({ altura, largura, alturaPx, forca, tema, dispersao, termico }
       const brilho = limitar(0.5 * g + 0.25 * r + 0.25 * b);
       const j = i * 3;
       // Prata fria como base, com o mapa térmico entrando só onde m > 0.
-      if (tema !== 'claro') {
+      if (tema !== 'claro' && tema !== 'letrasClaro') {
         rgb[j] = r * 0.94 * (1 - m) + ler(TERMICO, brilho, 0) * m;
         rgb[j + 1] = g * 0.98 * (1 - m) + ler(TERMICO, brilho, 1) * m;
         rgb[j + 2] = b * (1 - m) + ler(TERMICO, brilho, 2) * m;
@@ -326,16 +335,18 @@ function transformadaDeDistancia(dentro, largura, alturaPx) {
 }
 
 // Borra em caixa, nas duas direções: tira os degraus da distância em pixels inteiros.
-function suavizar(campo, lado, raio, passes) {
+function suavizar(campo, largura, alturaPx, raio, passes) {
   let origem = campo;
   for (let n = 0; n < passes * 2; n += 1) {
     const horizontal = n % 2 === 0;
     const destino = new Float32Array(campo.length);
-    for (let a = 0; a < lado; a += 1) {
+    const linhas = horizontal ? alturaPx : largura;
+    const colunas = horizontal ? largura : alturaPx;
+    for (let a = 0; a < linhas; a += 1) {
       let soma = 0;
-      const pos = (b) => (horizontal ? a * lado + limitar(b, 0, lado - 1) : limitar(b, 0, lado - 1) * lado + a);
+      const pos = (b) => (horizontal ? a * largura + limitar(b, 0, largura - 1) : limitar(b, 0, alturaPx - 1) * largura + a);
       for (let b = -raio; b <= raio; b += 1) soma += origem[pos(b)];
-      for (let b = 0; b < lado; b += 1) {
+      for (let b = 0; b < colunas; b += 1) {
         destino[pos(b)] = soma / (2 * raio + 1);
         soma += origem[pos(b + raio + 1)] - origem[pos(b - raio)];
       }
@@ -370,7 +381,7 @@ async function gerarEmblema() {
     }
   }
   const rgb = sombrear({
-    altura: suavizar(altura, lado, 5, 3),
+    altura: suavizar(altura, lado, lado, 5, 3),
     largura: lado,
     alturaPx: lado,
     forca: 24,
@@ -382,6 +393,7 @@ async function gerarEmblema() {
   const { bytes, canais } = paraBytes(rgb, mascara);
   const original = sharp(bytes, { raw: { width: lado, height: lado, channels: canais } });
   await original.clone().resize(192).webp({ quality: 90, alphaQuality: 100 }).toFile(`${SAIDA}/emblema.webp`);
+  await original.clone().resize(900).webp({ quality: 84, alphaQuality: 90 }).toFile(`${SAIDA}/emblema-grande.webp`);
   await original.clone().resize(64).png({ compressionLevel: 9 }).toFile('public/favicon.png');
   await original.clone().resize(180).flatten({ background: '#050608' }).png({ compressionLevel: 9 }).toFile('public/apple-touch-icon.png');
   if (process.env.ARTE_PREVIA) {
@@ -391,8 +403,127 @@ async function gerarEmblema() {
   console.log('ok: emblema e favicons');
 }
 
+// --- Textura das letras: metal recortado no formato do texto -------------------
+
+async function gerarTextura(tema, tabela) {
+  const largura = 1800;
+  const alturaPx = 1125;
+  const fbm = criarRuido(90);
+  const altura = relevoDoFluxo(largura, alturaPx, 73);
+  const rgb = sombrear({
+    altura,
+    largura,
+    alturaPx,
+    forca: 165,
+    tema: tabela,
+    // Dispersão alta: é ela que põe as franjas de azul e laranja nas letras.
+    dispersao: (x, y) => 0.016 + 0.012 * degrau(-0.1, 0.25, fbm((x / alturaPx) * 1.4, (y / alturaPx) * 1.4, 2)),
+    termico: () => 0,
+  });
+  const { bytes, canais } = paraBytes(rgb);
+  const arquivo = `${SAIDA}/letras-${tema}.webp`;
+  await sharp(bytes, { raw: { width: largura, height: alturaPx, channels: canais } })
+    .resize(1500)
+    .webp({ quality: 78, effort: 6 })
+    .toFile(arquivo);
+  console.log(`ok: ${arquivo}`);
+}
+
+// --- Fita: metal derretido que atravessa a página entre as seções ---------------
+
+async function gerarFita({ nome, semente, espinhos, largura = 2400, alturaPx = 520, espessura = 54, amplitude = 150 }) {
+  const fbm = criarRuido(semente);
+  const fbm2 = criarRuido(semente + 11);
+  const lamina = (t, e) => {
+    const d = t < e.t ? (e.t - t) / e.antes : (t - e.t) / e.depois;
+    return d < 1 ? (1 - d) ** 1.7 : 0;
+  };
+  const passos = 1400;
+  const cima = [];
+  const baixo = [];
+  for (let i = 0; i <= passos; i += 1) {
+    const t = i / passos;
+    const x = t * largura;
+    const centro = alturaPx / 2 + amplitude * 2.2 * fbm(t * 2.1 + 3, 0.5, 2);
+    // A fita afina até virar ponta nas duas extremidades, como uma lâmina.
+    const miolo = espessura * Math.sin(Math.PI * t) ** 0.75 * (0.62 + 1.25 * limitar(0.5 + 1.5 * fbm2(t * 4.2, 1.7, 2)));
+    const noLado = (lado) => espinhos.filter((e) => e.lado === lado);
+    const forca = (lado) => noLado(lado).reduce((m, e) => Math.max(m, lamina(t, e)), 0);
+    const altura = (lado) => noLado(lado).reduce((m, e) => Math.max(m, lamina(t, e) * e.altura), 0);
+    // Cada espinho é arrastado no sentido da fita: vira lâmina, como os do emblema.
+    cima.push([x + 34 * forca('cima'), centro - miolo - altura('cima')]);
+    baixo.push([x - 34 * forca('baixo'), centro + miolo + altura('baixo')]);
+  }
+  const pontos = [...cima, ...baixo.reverse()].map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${largura}" height="${alturaPx}"><path fill="#fff" d="M${pontos}Z"/></svg>`;
+  const { data: alfa } = await sharp(Buffer.from(svg))
+    .resize(largura, alturaPx)
+    .ensureAlpha()
+    .extractChannel('alpha')
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const dentro = new Uint8Array(alfa.length);
+  for (let i = 0; i < alfa.length; i += 1) dentro[i] = alfa[i] > 127 ? 1 : 0;
+  const distancia = transformadaDeDistancia(dentro, largura, alturaPx);
+  const raio = 40;
+  const relevo = new Float32Array(alfa.length);
+  for (let y = 0; y < alturaPx; y += 1) {
+    for (let x = 0; x < largura; x += 1) {
+      const i = y * largura + x;
+      const t = limitar(distancia[i] / raio);
+      relevo[i] = Math.sqrt(1 - (1 - t) ** 2) + 0.6 * t * fbm((x / alturaPx) * 1.6, (y / alturaPx) * 3.4, 2);
+    }
+  }
+  const rgb = sombrear({
+    altura: suavizar(relevo, largura, alturaPx, 6, 3),
+    largura,
+    alturaPx,
+    forca: 30,
+    tema: 'emblema',
+    dispersao: () => 0.014,
+    termico: (x, y) => 0.62 * degrau(0.0, 0.18, fbm2((x / alturaPx) * 0.9 + 4, (y / alturaPx) * 0.9, 2)),
+  });
+  const { bytes, canais } = paraBytes(rgb, alfa);
+  const arquivo = `${SAIDA}/fita-${nome}.webp`;
+  await sharp(bytes, { raw: { width: largura, height: alturaPx, channels: canais } })
+    .resize(1800)
+    .webp({ quality: 82, alphaQuality: 90, effort: 6 })
+    .toFile(arquivo);
+  if (process.env.ARTE_PREVIA) {
+    await sharp(bytes, { raw: { width: largura, height: alturaPx, channels: canais } })
+      .resize(1400).flatten({ background: '#050608' }).png().toFile(`${process.env.ARTE_PREVIA}/fita-${nome}.png`);
+  }
+  console.log(`ok: ${arquivo}`);
+}
+
 await mkdir(SAIDA, { recursive: true });
 await mkdir('public', { recursive: true });
 await gerarFundo('escuro');
 await gerarFundo('claro');
-await gerarEmblema();
+await gerarTextura('escuro', 'letrasEscuro');
+await gerarTextura('claro', 'letrasClaro');
+await gerarFita({
+  nome: 'a',
+  semente: 12,
+  espinhos: [
+    { t: 0.16, lado: 'cima', altura: 74, antes: 0.07, depois: 0.012 },
+    { t: 0.31, lado: 'baixo', altura: 92, antes: 0.012, depois: 0.075 },
+    { t: 0.44, lado: 'cima', altura: 120, antes: 0.085, depois: 0.014 },
+    { t: 0.58, lado: 'baixo', altura: 104, antes: 0.012, depois: 0.08 },
+    { t: 0.7, lado: 'cima', altura: 96, antes: 0.08, depois: 0.012 },
+    { t: 0.85, lado: 'baixo', altura: 70, antes: 0.01, depois: 0.06 },
+  ],
+});
+await gerarFita({
+  nome: 'b',
+  semente: 57,
+  espinhos: [
+    { t: 0.13, lado: 'baixo', altura: 66, antes: 0.01, depois: 0.06 },
+    { t: 0.27, lado: 'cima', altura: 104, antes: 0.08, depois: 0.013 },
+    { t: 0.4, lado: 'baixo', altura: 118, antes: 0.013, depois: 0.085 },
+    { t: 0.55, lado: 'cima', altura: 126, antes: 0.09, depois: 0.014 },
+    { t: 0.68, lado: 'baixo', altura: 88, antes: 0.012, depois: 0.07 },
+    { t: 0.83, lado: 'cima', altura: 78, antes: 0.07, depois: 0.012 },
+  ],
+});await gerarEmblema();
