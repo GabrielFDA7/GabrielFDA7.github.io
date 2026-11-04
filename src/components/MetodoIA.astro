@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import emblema from '../assets/arte/emblema-grande.webp';
+import FerramentasIA from './FerramentasIA.astro';
 import TituloSecao from './TituloSecao.astro';
 
 const BASE = 'https://github.com/GabrielFDA7/nextup';
@@ -40,7 +39,7 @@ const praticas = [
       titulo="Como eu trabalho com IA"
       descricao="O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada passo aponta para o arquivo real no repositório."
     />
-    <Image src={emblema} alt="" widths={[320, 640]} sizes="20rem" loading="lazy" class="emblema mt-10 hidden w-80 lg:block" />
+    <FerramentasIA />
   </div>
 
   <ol class="tubo">
@@ -61,10 +60,6 @@ const praticas = [
 </section>
 
 <style>
-  .emblema {
-    filter: var(--sombra-emblema);
-  }
-
   @media (min-width: 64rem) {
     .fixo {
       position: sticky;

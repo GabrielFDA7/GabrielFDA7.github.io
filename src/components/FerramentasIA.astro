@@ -1,0 +1,46 @@
+---
+// Logos das ferramentas de IA em metal. Os desenhos vêm do pacote simple-icons (licença CC0);
+// as marcas pertencem às respectivas empresas e aparecem só para dizer o que eu uso.
+import { siClaude, siClaudecode, siGithubcopilot, siGooglegemini } from 'simple-icons';
+
+const ferramentas = [
+  { nome: 'Claude Code', icone: siClaudecode },
+  { nome: 'Claude Design', icone: siClaude },
+  { nome: 'Gemini', icone: siGooglegemini },
+  { nome: 'GitHub Copilot', icone: siGithubcopilot },
+];
+
+// A silhueta do logo vira máscara, e a mesma textura das letras preenche o desenho.
+const mascara = (caminho: string) => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="${caminho}"/></svg>`;
+  return `--logo:url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+};
+---
+
+<ul class="logos mt-10 grid max-w-lg grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4" aria-label="Ferramentas de IA que eu uso">
+  {ferramentas.map(({ nome, icone }) => (
+    <li>
+      <span class="logo block size-14" style={mascara(icone.path)} aria-hidden="true"></span>
+      <span class="mt-3 block text-sm font-semibold tracking-tight">{nome}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .logo {
+    background-color: var(--texto);
+    background-image: var(--cromo-letras);
+    background-position: center;
+    background-size: 420px auto;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
+
+  /* No alto contraste do Windows, o logo assume a cor do texto do sistema. */
+  @media (forced-colors: active) {
+    .logo {
+      background: CanvasText;
+      forced-color-adjust: none;
+    }
+  }
+</style>
