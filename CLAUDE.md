@@ -38,17 +38,16 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   elemento de cromo que pareça parte dela. Os materiais do sistema são:
   - `.metal`: textura de cromo recortada no texto, com reflexo que anda na rolagem. Em títulos e
     números grandes.
-  - **Fio condutor** (`.trilho`, no `BaseLayout`): uma única peça de cromo desce a página inteira, e
-    as seções se penduram nele com esferas (`.com-conta`, `.parada`). É o que amarra o site.
+  - **Fio condutor, só abaixo de 64rem** (`.trilho`, no `BaseLayout`): uma peça de cromo desce a página,
+    e as seções se penduram nele com esferas (`.com-conta`, `.parada`).
   - `MetalLiquido`: abaixo de 64rem, a arte sangra no topo, termina em uma onda e escorre em um gargalo
     que vira o fio. Invertida, é a poça no fim do rodapé. A arte não aparece em outro lugar no celular.
-  - `CurvaFio`: no computador, leva o fio da arte até a margem e o devolve à direita no rodapé.
-  - `DivisorFita`: dois fios finos de cromo que se cruzam, entre seções, só no computador. Uma versão
-    com lâminas foi rejeitada em 04/11/2026 por parecer um raio agressivo: a separação precisa ser
-    suave e fina.
   - `FerramentasIA`: logos das ferramentas em metal, com desenhos do pacote `simple-icons` (CC0).
   - `LinhaProjeto`: lista editorial com número em metal, no lugar de cartões de projeto.
   - `TopoPagina`: a composição da abertura (texto à esquerda, arte à direita) nas páginas internas.
+- **No computador, nada de fio nem divisor entre seções** (Gabriel, 04/11/2026: "chega de inovação").
+  Quem separa as seções é o espaço. Divisores em forma de raio e de fios finos já foram testados e
+  rejeitados. Não proponha outro elemento decorativo sem o Gabriel pedir.
 - **O celular tem composição própria, não é o computador empilhado** (Gabriel, 04/11/2026). Métricas em
   uma linha (`Metricas`), aparelho logo abaixo do nome do projeto, número e seta na linha do título e
   botões em grade (`.botoes`), para nenhum cair sozinho.
@@ -94,8 +93,14 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 ### Armadilhas já encontradas
 
-- **Sequência com esferas precisa começar na margem do conteúdo.** A esfera é posicionada a partir da
-  margem (`--recuo-fio`). Um `.tubo` em coluna à direita ou centralizado deixa a esfera fora do fio.
+- **`overflow-hidden` paralisa o reflexo do metal no celular.** Ele transforma a seção em rolador, e a
+  animação presa à rolagem (`view()`) passa a escutar a seção, que nunca rola. Em volta de `.metal`,
+  use `overflow-clip`.
+- **Animação presa à rolagem não usa o atalho `animation`.** O compactador do build funde o atalho com
+  `animation-timeline` em uma forma inválida, e o efeito some só em produção. Declare as propriedades
+  separadas e **confira efeitos de CSS no build**, não só em `npm run dev`.
+- **Sequência com esferas precisa começar na margem do conteúdo, no celular.** A esfera é posicionada
+  a partir da margem (`--recuo-fio`). Um `.tubo` centralizado deixa a esfera fora do fio.
 - **O gargalo do `MetalLiquido` está desenhado em x = 14px.** Se mudar `--margem-esquerda` ou
   `--recuo-fio` no celular, mude o desenho também, ou a arte se solta do fio.
 

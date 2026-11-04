@@ -205,3 +205,21 @@ Manda bala, faz A + B + C
    sobre ele.
 4. Celular recomposto: métricas em uma linha, aparelho logo abaixo do nome, linhas de projeto e botões
    mais compactos. A home foi de cerca de 8,5 para 6,7 telas em 390 px.
+
+### Prompt #011
+**Data:** 04/11/2026
+**Contexto:** Revisão do fio condutor, com o Chrome simulando um Samsung A55.
+
+```
+Beleza, testei no chrome simulando um samsung a55, lá as letras não tinham o efeito de chrome que tem no desktop, aquele que eu desço a página e ele vai dando um efeito de chromado. Depois irei testar no celular quando for feito o deploy.
+
+No modo de computador, ainda tem aquele fio de chrome que separa a página. 
+
+Chega de inovação, remova esse fio e vamos no simples, talvez nem precise de separação entre essas etapas.
+```
+
+**O que resultou:**
+
+1. No computador saíram o fio, as curvas e os divisores. Quem separa as seções é o espaço.
+2. A seção de método voltou ao layout anterior, com os passos à direita.
+3. No toque, o reflexo das letras passou a acompanhar a rolagem, com animação presa à rolagem.

@@ -232,11 +232,9 @@ Três cuidados para olhar:
 - Contraste medido pixel a pixel, porque ferramentas como o axe não conseguem avaliar texto sobre
   imagem. O mínimo ficou acima de 3,7:1, e a regra para texto grande pede 3:1.
 
-**Os fios de cromo.** A primeira separação, com lâminas, ficou agressiva demais, parecia um raio. A
-versão atual são dois fios finos que se cruzam. Traços tão finos não têm área para o relevo do emblema,
-que saía serrilhado, então cada fio é sombreado como um cilindro: a posição dentro da espessura escolhe
-o ponto da faixa de luz. A faixa também é mais simples, porque faixas estreitas viram hachura em poucos
-pixels. Veja `gerarFita` em [gerar-arte.mjs](../scripts/gerar-arte.mjs).
+**Os divisores que saíram.** A primeira separação, com lâminas, parecia um raio. A segunda, com fios
+finos, também foi retirada depois: no computador, o espaço em branco separa as seções sem disputar
+atenção. A lição é simples: nem toda seção precisa de um objeto entre ela e a próxima.
 
 **Logos em metal.** Em [FerramentasIA.astro](../src/components/FerramentasIA.astro), o desenho de cada
 logo vira uma máscara CSS, e a mesma textura das letras preenche a forma. O pacote `simple-icons` roda só
@@ -253,20 +251,20 @@ do link cobre a linha inteira. Assim toda a área é clicável, mas o leitor de 
 `--cromo-esfera`, em [tokens.css](../src/styles/tokens.css)). Pesam quase nada e ficam nítidos em
 qualquer tela. A esfera é um `radial-gradient` com a luz deslocada para o canto.
 
-### Como o site foi amarrado, principalmente no celular
+### Como o celular foi amarrado
 
 **O diagnóstico.** Cada seção estava bonita sozinha, mas nada ligava uma à outra. No celular, a arte
 era um retângulo solto, e o layout era o do computador empilhado. O remédio foi estrutural: uma peça
-só, que atravessa a página.
+só, que atravessa a página. O fio também chegou a existir no computador, onde foi retirado a pedido do
+Gabriel: lá, a composição já funcionava sem ele.
 
 **O fio é um único elemento.** Em [global.css](../src/styles/global.css), o `.trilho::before` envolve
 `main` e rodapé e vai de cima a baixo. As pontas não são calculadas: quem está na frente cobre o fio.
 A arte (`z-index: 2`) esconde o começo, e assim ele parece nascer de dentro do metal. Isso evita medir
 a altura de cada seção, que mudaria com o texto.
 
-**A posição vem de contas em CSS.** `--x-fio` soma a sobra lateral da página à margem e subtrai o
-recuo. O `max(0px, ...)` cobre a tela menor que o limite da página. As esferas usam o mesmo recuo, e
-por isso caem sobre o fio em qualquer largura. O desvio medido foi de 0 px em quatro larguras.
+**A posição vem de contas em CSS.** O fio e as esferas usam a mesma margem e o mesmo recuo, e por isso
+as esferas caem sobre o fio em qualquer largura. O desvio medido foi de 0 px.
 
 **A borda líquida.** [MetalLiquido.astro](../src/components/MetalLiquido.astro) usa `clip-path: path()`
 para recortar a arte. O mesmo desenho, com comandos relativos, serve para qualquer altura. Três traços
@@ -280,4 +278,19 @@ sobrepostos, do mais grosso e escuro ao mais fino e claro, imitam o volume de um
 texto) é a do celular. No computador, a grade coloca o aparelho na segunda coluna.
 
 **Decoração oculta não pesa.** Com `display: none`, nem o fundo CSS nem a imagem lazy são baixados. O
-celular não baixa as fitas nem a versão grande da arte.
+celular não baixa a versão grande da arte.
+
+**O reflexo das letras no toque.** No computador, o reflexo vem de `background-attachment: fixed`, em
+que o iPhone não é confiável. No toque, [global.css](../src/styles/global.css) usa uma animação presa à
+rolagem (`animation-timeline: view()`): a textura desliza enquanto o texto atravessa a tela. Navegador
+sem suporte mostra a textura parada, o que continua legível.
+
+**A diferença entre `overflow: hidden` e `clip`.** Os dois cortam o que passa da caixa, mas `hidden` cria
+um contêiner de rolagem. A animação passou a escutar a seção em vez da página, e as letras dentro dela
+ficaram paradas. O teste encontrou isso: 7 de 14 títulos da home não se moviam. Com `overflow-clip`,
+nenhum ficou parado.
+
+**O que só aparece em produção.** Em `npm run dev` funcionava, mas no build todas as letras ficaram
+paradas. O compactador de CSS fundiu `animation` e `animation-timeline` em uma única linha, que o
+navegador rejeita. Com as propriedades escritas uma a uma, não há o que fundir. A verificação no
+`dist/` pegou o erro antes do deploy, e por isso a conferência final roda sempre no build.
