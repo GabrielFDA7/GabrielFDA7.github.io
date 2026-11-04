@@ -9,7 +9,7 @@ period: '2026'
 # PREENCHER: confirmar o status
 status: concluido
 tags: [automacao, backend, industrial]
-stack: [Python, API REST/JSON]
+stack: [Python, API REST/JSON, SIS2]
 metrics:
   - { label: Máquinas cobertas, value: '81' }
 links: {}
@@ -29,13 +29,21 @@ Uma automação em Python que consome a API JSON do SIS2 e levanta os part numbe
 
 ## Arquitetura
 
-<!-- PREENCHER: diagrama do fluxo, a ser escrito na Fase 3 -->
+```mermaid
+flowchart TD
+  accTitle: Fluxo da integração com o SIS2
+  accDescr: Uma lista de máquinas alimenta a automação em Python, que consulta a API JSON do SIS2 e produz o levantamento de part numbers.
+  L[Frota de 81 máquinas] --> P[Automação em Python]
+  P --> A[API JSON do SIS2]
+  A --> P
+  P --> R[Levantamento de part numbers]
+```
 
 ## Decisões técnicas
 
 **API em vez de raspagem de tela com Selenium.**
 
-<!-- PREENCHER: por que escolhi a API -->
+<!-- PREENCHER: por que escolhi a API e qual foi o custo dessa escolha -->
 
 ## Resultados
 
