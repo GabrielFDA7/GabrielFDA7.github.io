@@ -137,18 +137,126 @@
     color: var(--destaque);
   }
 
-  .cartao {
-    border: 1px solid transparent;
-    border-radius: 0.875rem;
-    background:
-      linear-gradient(var(--superficie), var(--superficie)) padding-box,
-      linear-gradient(var(--linha), var(--linha)) border-box;
+  /*
+   * Letras de metal: a textura de cromo recortada no formato do texto. Só em texto grande,
+   * porque o tom mais fraco da textura garante 3:1 (WCAG AA para texto grande), não 4,5:1.
+   * A cor de fundo é a segurança: sem a imagem, o texto continua legível.
+   */
+  .metal,
+  .prosa h2 {
+    color: var(--texto);
+    background-color: var(--texto);
+    background-image: var(--cromo-letras);
+    background-position: center;
+    background-size: 900px auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
-  .cartao-link:hover {
-    background:
-      linear-gradient(var(--superficie), var(--superficie)) padding-box,
-      var(--cromo-borda) border-box;
+  .titulo-gigante,
+  .titulo-pagina,
+  .titulo-secao,
+  .titulo-longo,
+  .numero-metrica,
+  .numero-gigante {
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+  }
+
+  .titulo-gigante {
+    font-size: clamp(3.25rem, 2rem + 7vw, 7.5rem);
+  }
+
+  .titulo-pagina {
+    font-size: clamp(3rem, 1.8rem + 6vw, 6.5rem);
+  }
+
+  .titulo-secao {
+    font-size: clamp(2.5rem, 1.6rem + 4vw, 5rem);
+  }
+
+  .titulo-longo {
+    font-size: clamp(2.25rem, 1.5rem + 3.4vw, 4.25rem);
+  }
+
+  .titulo-linha {
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .titulo-navegacao {
+    display: inline;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .numero-metrica {
+    font-size: clamp(2rem, 1.5rem + 2.2vw, 3.5rem);
+    white-space: nowrap;
+  }
+
+  .numero-gigante {
+    display: block;
+    width: fit-content;
+    font-size: clamp(5rem, 4rem + 7vw, 9rem);
+    line-height: 1;
+  }
+
+  /* Tubo de cromo com esferas: a linha do tempo e os passos do método. */
+  .tubo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-left: 2.5rem;
+    list-style: none;
+  }
+
+  .tubo::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.75rem;
+    left: 0.59rem;
+    width: 0.5rem;
+    border-radius: 999px;
+    background: var(--cromo-tubo);
+  }
+
+  .parada {
+    position: relative;
+  }
+
+  .parada::before {
+    content: '';
+    position: absolute;
+    top: 0.1rem;
+    left: -2.5rem;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 999px;
+    background: var(--cromo-esfera);
+  }
+
+  .esfera {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: var(--cromo-esfera);
+  }
+
+  .moldura-tela {
+    padding: 0.375rem;
+    border-radius: 1.125rem;
+    background: var(--cromo-borda);
   }
 }
 
@@ -157,28 +265,56 @@
   display: flow-root; /* contém a capa flutuante */
 }
 
+.prosa {
+  counter-reset: secao;
+}
+
 .prosa > * + * {
   margin-top: 1rem;
 }
 
+/* Seções numeradas em metal, para o estudo de caso ter a mesma voz do resto do site. */
 .prosa h2 {
-  margin-top: 3rem;
-  font-size: 1.625rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  margin-top: 4.5rem;
+  counter-increment: secao;
+  font-size: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.prosa h2::before {
+  content: counter(secao, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--destaque);
+  -webkit-text-fill-color: var(--destaque); /* texto pequeno: cor sólida, não a textura */
+  font-size: 1rem;
+  letter-spacing: 0.1em;
 }
 
 .prosa ul {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding-left: 1.25rem;
-  list-style: disc;
+  gap: 0.75rem;
+  list-style: none;
 }
 
-.prosa li::marker {
-  color: var(--destaque);
+/* Marcador em esfera de cromo. */
+.prosa ul > li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.prosa ul > li::before {
+  content: '';
+  position: absolute;
+  top: 0.4em;
+  left: 0;
+  width: 0.8125rem;
+  height: 0.8125rem;
+  border-radius: 999px;
+  background: var(--cromo-esfera);
 }
 
 .prosa code {
@@ -215,9 +351,11 @@
   height: auto;
   margin-inline: auto;
   padding: 1.25rem 0.5rem;
-  border: 1px solid var(--linha);
+  border: 1px solid transparent;
   border-radius: 0.875rem;
-  background: var(--superficie);
+  background:
+    linear-gradient(var(--superficie), var(--superficie)) padding-box,
+    var(--cromo-borda) border-box;
 }
 
 .prosa svg[aria-roledescription] .node :is(rect, polygon, circle, ellipse, path) {
@@ -288,9 +426,23 @@
 
 /* Sem degradê em texto quando o sistema impõe as próprias cores (alto contraste do Windows). */
 @media (forced-colors: active) {
-  .cromo-texto {
+  .cromo-texto,
+  .metal,
+  .prosa h2 {
     -webkit-text-fill-color: currentColor;
     background: none;
+  }
+}
+
+/*
+ * O reflexo anda com a rolagem: a textura fica presa à janela, e as letras passam por cima
+ * dela, como metal de verdade. Sem JavaScript. Fica de fora no toque, que rola com menos folga.
+ */
+@media (min-width: 48rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .metal,
+  .prosa h2 {
+    background-attachment: fixed;
+    background-size: cover;
   }
 }
 
@@ -307,13 +459,5 @@
   .btn-contorno,
   a {
     transition: color 160ms ease;
-  }
-
-  .cartao-link {
-    transition: translate 200ms ease;
-  }
-
-  .cartao-link:hover {
-    translate: 0 -2px;
   }
 }

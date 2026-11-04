@@ -1,0 +1,83 @@
+---
+import ArteCromo from './ArteCromo.astro';
+
+interface Props {
+  titulo: string;
+  rotulo?: string | undefined;
+  /** Linha de apoio logo abaixo do título, em destaque. */
+  apoio?: string | undefined;
+  descricao?: string | undefined;
+  /** Títulos longos, como os de estudo de caso, usam uma escala menor. */
+  longo?: boolean;
+}
+
+const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
+---
+
+<section class="topo relative overflow-hidden">
+  <div class="arte"><ArteCromo class="size-full" /></div>
+  <div class="pagina relative">
+    <div class="conteudo py-8 lg:py-20">
+      <div class="min-w-0">
+        <slot name="antes" />
+        {rotulo && <p class="rotulo">{rotulo}</p>}
+        <h1 class:list={['mt-3 pb-2', longo ? 'titulo-longo' : 'titulo-pagina']}><span class="metal">{titulo}</span></h1>
+        {apoio && <p class="mt-2 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{apoio}</p>}
+        {descricao && <p class="mt-5 max-w-2xl text-lg text-texto-suave">{descricao}</p>}
+        <slot />
+      </div>
+      <slot name="lado" />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Celular: a arte é uma faixa acima do texto. Nunca há texto sobre a imagem. */
+  .topo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .arte {
+    height: 7rem;
+    -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+    mask-image: linear-gradient(to bottom, #000 35%, transparent);
+  }
+
+  .conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Computador: a mesma composição da abertura, com a arte à direita. */
+  @media (min-width: 64rem) {
+    .topo {
+      display: block;
+    }
+
+    .arte {
+      position: absolute;
+      inset-block: 0;
+      right: 0;
+      width: 48%;
+      height: auto;
+      --esquerda: linear-gradient(to right, transparent, rgb(0 0 0 / 0.12) 14%, rgb(0 0 0 / 0.55) 30%, #000 50%);
+      --base: linear-gradient(to bottom, #000 72%, transparent);
+      -webkit-mask-image: var(--esquerda), var(--base);
+      mask-image: var(--esquerda), var(--base);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    .conteudo {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .conteudo > :first-child {
+      max-width: 60%;
+    }
+  }
+</style>
