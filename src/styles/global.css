@@ -1,0 +1,185 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter/wght.css';
+@import './tokens.css';
+
+/* Faz as classes do Tailwind (bg-fundo, text-destaque...) lerem os tokens do tema ativo. */
+@theme inline {
+  --color-fundo: var(--fundo);
+  --color-superficie: var(--superficie);
+  --color-superficie-2: var(--superficie-2);
+  --color-linha: var(--linha);
+  --color-texto: var(--texto);
+  --color-texto-suave: var(--texto-suave);
+  --color-destaque: var(--destaque);
+  --color-destaque-forte: var(--destaque-forte);
+  --color-quente: var(--quente);
+
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-marca: clamp(2.75rem, 1.6rem + 5.6vw, 5.25rem);
+  --text-marca--line-height: 1;
+  --text-marca--letter-spacing: -0.035em;
+  --text-marca--font-weight: 800;
+
+  --spacing-secao: clamp(4rem, 3rem + 5vw, 7rem);
+  --spacing-margem: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --container-pagina: 76rem;
+}
+
+@layer base {
+  html {
+    background: var(--fundo);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    line-height: 1.6;
+  }
+
+  /* O sublinhado é o padrão: link no meio do texto não pode depender só da cor. */
+  a {
+    color: var(--destaque);
+    text-decoration-line: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    color: var(--destaque-forte);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--foco);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  .pagina {
+    width: 100%;
+    max-width: var(--container-pagina);
+    margin-inline: auto;
+    padding-inline: var(--spacing-margem);
+  }
+
+  /* Rótulo de seção: mesma assinatura visual do currículo. */
+  .rotulo {
+    color: var(--destaque);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /*
+   * Letras metálicas. Só em texto grande: o tom mais fraco do degradê mira 3:1 (WCAG AA).
+   * Em um <span>, o `clone` repete o reflexo em cada linha quando o título quebra.
+   */
+  .cromo-texto {
+    color: var(--texto);
+    background-image: var(--cromo-texto);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .regua-cromo {
+    height: 1px;
+    border: 0;
+    background: var(--cromo-regua);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-cromo {
+    color: var(--cromo-botao-texto);
+    background: var(--cromo-botao);
+    background-size: 100% 180%;
+    background-position: 50% 0;
+  }
+
+  .btn-cromo:hover {
+    color: var(--cromo-botao-texto);
+    background-position: 50% 100%;
+  }
+
+  .btn-contorno {
+    color: var(--texto);
+    background:
+      linear-gradient(var(--fundo), var(--fundo)) padding-box,
+      var(--cromo-borda) border-box;
+  }
+
+  .btn-contorno:hover {
+    color: var(--destaque);
+  }
+
+  .cartao {
+    border: 1px solid transparent;
+    border-radius: 0.875rem;
+    background:
+      linear-gradient(var(--superficie), var(--superficie)) padding-box,
+      linear-gradient(var(--linha), var(--linha)) border-box;
+  }
+
+  .cartao-link:hover {
+    background:
+      linear-gradient(var(--superficie), var(--superficie)) padding-box,
+      var(--cromo-borda) border-box;
+  }
+}
+
+/* Sem degradê em texto quando o sistema impõe as próprias cores (alto contraste do Windows). */
+@media (forced-colors: active) {
+  .cromo-texto {
+    -webkit-text-fill-color: currentColor;
+    background: none;
+  }
+}
+
+/* Movimento só para quem não pediu para reduzi-lo. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  .btn-cromo {
+    transition: background-position 280ms ease;
+  }
+
+  .btn-contorno,
+  a {
+    transition: color 160ms ease;
+  }
+
+  .cartao-link {
+    transition: translate 200ms ease;
+  }
+
+  .cartao-link:hover {
+    translate: 0 -2px;
+  }
+}

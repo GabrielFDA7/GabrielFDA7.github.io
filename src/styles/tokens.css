@@ -1,0 +1,77 @@
+/*
+ * Tokens de design: toda cor do site nasce aqui.
+ * Os componentes usam os nomes semânticos (fundo, texto, destaque...), nunca um valor solto.
+ *
+ * O tema segue o sistema até a pessoa escolher no botão, que grava `data-theme` no <html>.
+ * Por isso o bloco escuro aparece duas vezes: a preferência do sistema e a escolha manual.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Prata polida */
+  --fundo: #eceef1;
+  --superficie: #f7f8fa;
+  --superficie-2: #e1e4e9;
+  --linha: #c3c9d1;
+  --texto: #0b0d10;
+  --texto-suave: #4a525e;
+  --destaque: #1f4e8c;
+  --destaque-forte: #163a6a;
+  --quente: #a8350d;
+  --foco: #1f4e8c;
+
+  --cromo-texto: linear-gradient(180deg, #0b0d10 10%, #2c333d 44%, #5b6573 60%, #0f1216 70%, #2a313b 84%, #444d5a 96%);
+  --cromo-botao: linear-gradient(180deg, #414a57 0%, #181c23 47%, #05070a 53%, #2c333d 100%);
+  --cromo-botao-texto: #ffffff;
+  --cromo-borda: linear-gradient(115deg, #7c8592, #b4bbc5 28%, #4a525e 46%, #a2aab5 62%, #a8350d 78%, #1f4e8c 90%, #7c8592);
+  --cromo-regua: linear-gradient(90deg, transparent, #8c95a2 18%, #1f4e8c 62%, #a8350d 80%, transparent);
+  --sombra-emblema: brightness(0.62) contrast(1.5) drop-shadow(0 0 0.5px rgb(11 13 16 / 0.9));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    /* Cromo negro */
+    --fundo: #050608;
+    --superficie: #0e1014;
+    --superficie-2: #181b21;
+    --linha: #2c313a;
+    --texto: #eff2f6;
+    --texto-suave: #a6aeba;
+    --destaque: #8ec5ff;
+    --destaque-forte: #bcdcff;
+    --quente: #ff8a5c;
+    --foco: #8ec5ff;
+
+    --cromo-texto: linear-gradient(180deg, #ffffff 10%, #d5dbe3 44%, #98a2af 60%, #f2f5f8 70%, #c6ced8 84%, #a3acb8 96%);
+    --cromo-botao: linear-gradient(180deg, #f8fafc 0%, #ccd3dc 46%, #929ca9 52%, #e1e6ec 100%);
+    --cromo-botao-texto: #050608;
+    --cromo-borda: linear-gradient(115deg, #59616d, #f4f6f8 28%, #3a404a 46%, #cfd6df 62%, #ff8a5c 78%, #8ec5ff 90%, #59616d);
+    --cromo-regua: linear-gradient(90deg, transparent, #59616d 18%, #8ec5ff 62%, #ff8a5c 80%, transparent);
+    --sombra-emblema: none;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --fundo: #050608;
+  --superficie: #0e1014;
+  --superficie-2: #181b21;
+  --linha: #2c313a;
+  --texto: #eff2f6;
+  --texto-suave: #a6aeba;
+  --destaque: #8ec5ff;
+  --destaque-forte: #bcdcff;
+  --quente: #ff8a5c;
+  --foco: #8ec5ff;
+
+  --cromo-texto: linear-gradient(180deg, #ffffff 10%, #d5dbe3 44%, #98a2af 60%, #f2f5f8 70%, #c6ced8 84%, #a3acb8 96%);
+  --cromo-botao: linear-gradient(180deg, #f8fafc 0%, #ccd3dc 46%, #929ca9 52%, #e1e6ec 100%);
+  --cromo-botao-texto: #050608;
+  --cromo-borda: linear-gradient(115deg, #59616d, #f4f6f8 28%, #3a404a 46%, #cfd6df 62%, #ff8a5c 78%, #8ec5ff 90%, #59616d);
+  --cromo-regua: linear-gradient(90deg, transparent, #59616d 18%, #8ec5ff 62%, #ff8a5c 80%, transparent);
+  --sombra-emblema: none;
+}
