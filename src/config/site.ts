@@ -11,10 +11,10 @@ export const site = {
   links: {
     github: 'https://github.com/GabrielFDA7',
     linkedin: 'https://www.linkedin.com/in/gabriel-de-angelis',
-    email: 'gabrielfariaangelis@gmail.com',
+    email: 'gfaria.deangelis@gmail.com',
   },
   navegacao: [
-    { rotulo: 'Projetos', href: '/projetos' },
-    { rotulo: 'Sobre', href: '/sobre' },
+    { rotulo: 'Projetos', href: '/projetos/' },
+    { rotulo: 'Sobre', href: '/sobre/' },
   ],
 } as const;
