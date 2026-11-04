@@ -50,6 +50,7 @@ const experiencia = defineCollection({
     period: z.string().min(1),
     resumo: z.string().min(1).max(260), // versão curta, usada na home
     order: z.number().int(),
+    naHome: z.boolean().default(true), // false: aparece só na linha do tempo de /sobre
   }),
 });
 
