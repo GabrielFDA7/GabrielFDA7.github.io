@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ROTULO_CONTEXTO, ROTULO_STATUS } from '../lib/projetos';
+import Metricas from './Metricas.astro';
+import StackChips from './StackChips.astro';
+
+interface Props {
+  projeto: CollectionEntry<'projetos'>;
+  /** Nível do título, para respeitar a hierarquia da página em que o cartão aparece. */
+  titulo?: 'h2' | 'h3';
+}
+
+const { projeto, titulo: Titulo = 'h3' } = Astro.props;
+const { data } = projeto;
+---
+
+<article class="cartao cartao-link relative flex h-full flex-col gap-4 p-6">
+  <p class="rotulo">{ROTULO_CONTEXTO[data.context]} · {ROTULO_STATUS[data.status]}</p>
+  <div>
+    <Titulo class="text-xl font-semibold leading-snug tracking-tight">
+      <!-- O ::after estica o link por todo o cartão, sem aninhar outros elementos dentro dele. -->
+      <a href={`/projetos/${data.slug}`} class="text-texto no-underline after:absolute after:inset-0 after:rounded-[0.875rem] hover:text-texto">
+        {data.title}
+      </a>
+    </Titulo>
+    <p class="mt-2 text-sm text-texto-suave">{data.summary}</p>
+  </div>
+  <Metricas itens={data.metrics} />
+  <div class="mt-auto">
+    <StackChips itens={data.stack.slice(0, 5)} />
+  </div>
+</article>

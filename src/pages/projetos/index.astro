@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import FaixaCromo from '../../components/FaixaCromo.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ProjectFilter from '../../components/ProjectFilter';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { publicados } from '../../lib/projetos';
+
+const projetos = publicados(await getCollection('projetos'));
+---
+
+<BaseLayout title="Projetos" description="Todos os projetos de Gabriel Faria de Angelis, com filtro por dados, IA, backend, automação, BI e web.">
+  <FaixaCromo />
+  <div class="pagina">
+    <h1 class="mt-4 pb-1 text-5xl font-bold tracking-tight"><span class="cromo-texto">Projetos</span></h1>
+    <p class="mt-3 max-w-2xl text-texto-suave">Cada um tem um estudo de caso com problema, arquitetura, decisões e resultado.</p>
+
+    <div class="mt-8">
+      <ProjectFilter client:visible projetos={projetos.map((projeto) => projeto.data.tags)} />
+    </div>
+
+    <ul class="mt-6 grid gap-4 md:grid-cols-2">
+      {projetos.map((projeto) => (
+        <li data-projeto={projeto.data.slug} data-tags={projeto.data.tags.join(' ')}>
+          <ProjectCard projeto={projeto} titulo="h2" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
