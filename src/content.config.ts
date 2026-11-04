@@ -20,6 +20,7 @@ const projetos = defineCollection({
         metrics: z.array(z.object({ label: z.string().min(1), value: z.string().min(1) })).max(3),
         links: z.object({ repo: z.url().optional(), demo: z.url().optional() }),
         cover: image().optional(),
+        coverAlt: z.string().min(1).optional(),
         featured: z.boolean(),
         order: z.number().int(),
         confidential: z.boolean(),
@@ -28,6 +29,10 @@ const projetos = defineCollection({
       .refine((projeto) => !(projeto.confidential && projeto.links.repo), {
         error: 'projeto confidencial não pode ter link de código',
         path: ['links', 'repo'],
+      })
+      .refine((projeto) => !projeto.cover || projeto.coverAlt, {
+        error: 'imagem de capa precisa de texto alternativo (coverAlt)',
+        path: ['coverAlt'],
       }),
 });
 

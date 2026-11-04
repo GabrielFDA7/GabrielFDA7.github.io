@@ -1,0 +1,14 @@
+---
+import ArteCromo from './ArteCromo.astro';
+---
+
+<!-- Faixa fina de arte no topo das páginas internas: mantém a identidade sem ocupar a leitura. -->
+<div class="faixa"><ArteCromo class="size-full" /></div>
+
+<style>
+  .faixa {
+    height: 5.5rem;
+    -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+    mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  anterior?: CollectionEntry<'projetos'>;
+  proximo?: CollectionEntry<'projetos'>;
+}
+
+const { anterior, proximo } = Astro.props;
+const itens = [
+  anterior && { rotulo: 'Projeto anterior', projeto: anterior, classe: '' },
+  proximo && { rotulo: 'Próximo projeto', projeto: proximo, classe: 'sm:col-start-2 sm:text-right' },
+].filter((item) => !!item);
+---
+
+{itens.length > 0 && (
+  <nav aria-label="Outros projetos" class="mt-16 grid gap-4 sm:grid-cols-2">
+    {itens.map((item) => (
+      <a href={`/projetos/${item.projeto.data.slug}`} class:list={['cartao cartao-link block p-5 no-underline', item.classe]}>
+        <span class="rotulo block">{item.rotulo}</span>
+        <span class="mt-2 block font-semibold text-texto">{item.projeto.data.title}</span>
+      </a>
+    ))}
+  </nav>
+)}

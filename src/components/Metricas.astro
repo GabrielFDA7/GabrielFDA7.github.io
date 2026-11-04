@@ -1,0 +1,19 @@
+---
+interface Props {
+  itens: readonly { label: string; value: string }[];
+  grande?: boolean;
+}
+
+const { itens, grande = false } = Astro.props;
+---
+
+{itens.length > 0 && (
+  <dl class:list={['flex flex-wrap gap-x-8 gap-y-3', grande && 'gap-x-12']}>
+    {itens.map((item) => (
+      <div class="flex flex-col-reverse">
+        <dt class="text-xs text-texto-suave">{item.label}</dt>
+        <dd class:list={['font-semibold tracking-tight', grande ? 'text-2xl sm:text-3xl' : 'text-lg']}>{item.value}</dd>
+      </div>
+    ))}
+  </dl>
+)}

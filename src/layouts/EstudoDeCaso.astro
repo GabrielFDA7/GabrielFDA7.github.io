@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import FaixaCromo from '../components/FaixaCromo.astro';
+import Icone from '../components/Icone.astro';
+import Metricas from '../components/Metricas.astro';
+import NavProjetos from '../components/NavProjetos.astro';
+import StackChips from '../components/StackChips.astro';
+import { ROTULO_STATUS } from '../lib/projetos';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  projeto: CollectionEntry<'projetos'>;
+  anterior?: CollectionEntry<'projetos'>;
+  proximo?: CollectionEntry<'projetos'>;
+}
+
+const { projeto, anterior, proximo } = Astro.props;
+const { data } = projeto;
+const ficha = [
+  { termo: 'Status', valor: ROTULO_STATUS[data.status] },
+  { termo: 'Período', valor: data.period },
+  { termo: 'Meu papel', valor: data.role },
+];
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <FaixaCromo />
+  <article class="pagina">
+    <header class="mx-auto max-w-3xl">
+      <p class="pt-4"><a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos">Todos os projetos</a></p>
+      <h1 class="mt-2 text-4xl font-bold leading-tight tracking-tight sm:text-5xl"><span class="cromo-texto">{data.title}</span></h1>
+      <p class="mt-4 text-lg text-texto-suave">{data.summary}</p>
+
+      <dl class="mt-8 grid gap-4 border-y border-linha py-5 sm:grid-cols-3">
+        {ficha.map((item) => (
+          <div>
+            <dt class="text-xs text-texto-suave">{item.termo}</dt>
+            <dd class="mt-0.5 text-sm font-medium">{item.valor}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {data.confidential && (
+        <p class="mt-5 border-l-2 border-quente pl-3 text-sm text-texto-suave">
+          Projeto corporativo: dados e nomes de clientes omitidos.
+        </p>
+      )}
+
+      <div class="mt-6"><StackChips itens={data.stack} /></div>
+
+      {(data.links.repo || data.links.demo) && (
+        <div class="mt-6 flex flex-wrap gap-3">
+          {data.links.demo && (
+            <a class="btn btn-cromo" href={data.links.demo}>
+              Abrir demo
+              <Icone nome="externo" class="size-4" />
+            </a>
+          )}
+          {data.links.repo && (
+            <a class="btn btn-contorno" href={data.links.repo}>
+              <Icone nome="github" />
+              Código
+            </a>
+          )}
+        </div>
+      )}
+
+      {data.metrics.length > 0 && (
+        <div class="mt-8"><Metricas itens={data.metrics} grande /></div>
+      )}
+    </header>
+
+    <div class="prosa mx-auto mt-12 max-w-3xl">
+      {data.cover && (
+        <Image
+          src={data.cover}
+          alt={data.coverAlt ?? ''}
+          widths={[320, 480, 600]}
+          sizes="(min-width: 40rem) 22rem, 100vw"
+          class="capa"
+        />
+      )}
+      <slot />
+    </div>
+
+    <div class="mx-auto max-w-3xl">
+      <NavProjetos anterior={anterior} proximo={proximo} />
+    </div>
+  </article>
+</BaseLayout>

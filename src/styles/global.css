@@ -152,6 +152,76 @@
   }
 }
 
+/* Texto vindo do Markdown: o Tailwind zera os estilos, então a prosa os define de novo aqui. */
+.prosa {
+  display: flow-root; /* contém a capa flutuante */
+}
+
+.prosa > * + * {
+  margin-top: 1rem;
+}
+
+.prosa h2 {
+  margin-top: 3rem;
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.prosa ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.prosa li::marker {
+  color: var(--destaque);
+}
+
+.prosa code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+  background: var(--superficie-2);
+  font-size: 0.875em;
+  overflow-wrap: anywhere;
+}
+
+.prosa pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid var(--linha);
+  border-radius: 0.5rem;
+  background: var(--superficie);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.prosa pre code {
+  padding: 0;
+  background: none;
+  overflow-wrap: normal;
+}
+
+.prosa .capa {
+  width: 100%;
+  max-width: 22rem;
+  max-height: 34rem;
+  border: 1px solid var(--linha);
+  border-radius: 0.875rem;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (min-width: 40rem) {
+  .prosa .capa {
+    float: right;
+    margin: 0 0 1.5rem 2rem;
+  }
+}
+
 /* Sem degradê em texto quando o sistema impõe as próprias cores (alto contraste do Windows). */
 @media (forced-colors: active) {
   .cromo-texto {
