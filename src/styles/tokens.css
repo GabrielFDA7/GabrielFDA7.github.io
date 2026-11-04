@@ -10,7 +10,12 @@
   color-scheme: light;
 
   /* Metal igual nos dois temas: as bordas escuras dão volume no claro e no escuro. */
-  --cromo-tubo: linear-gradient(90deg, #2c333d, #f4f6f9 34%, #8b95a3 54%, #ffffff 68%, #39414d);
+  --cromo-fio:
+    repeating-linear-gradient(180deg, transparent 0 14rem, rgb(142 197 255 / 0.55) 18rem, transparent 22rem 34rem, rgb(255 138 92 / 0.4) 37rem, transparent 40rem 52rem),
+    linear-gradient(90deg, #39414d, #f4f6f9 34%, #8b95a3 58%, #ffffff 72%, #39414d);
+  --fio-borda: #39414d;
+  --fio-meio: #aeb7c2;
+  --fio-brilho: #f4f6f9;
   --cromo-esfera: radial-gradient(circle at 34% 28%, #ffffff 0 7%, #dfe5ec 20%, #7f8a98 46%, #1d2127 70%, #8ec5ff 86%, #ff8a5c 100%);
 
   --cromo-letras: url('../assets/arte/letras-claro.webp');

@@ -11,7 +11,7 @@ const { itens } = Astro.props;
 
 <section class="pagina mt-secao" aria-labelledby="experiencia">
   <TituloSecao id="experiencia" rotulo="Trajetória" titulo="Experiência" />
-  <ol class="tubo mt-10 max-w-3xl">
+  <ol class="tubo mt-8 max-w-3xl lg:mt-10">
     {itens.map(({ data }) => (
       <li class="parada">
         <p class="rotulo">{data.period}</p>

@@ -9,6 +9,6 @@ interface Props {
 const { id, rotulo, titulo, descricao } = Astro.props;
 ---
 
-<p class="rotulo">{rotulo}</p>
+<p class="rotulo com-conta">{rotulo}</p>
 <h2 id={id} class="titulo-secao mt-3"><span class="metal">{titulo}</span></h2>
 {descricao && <p class="mt-5 max-w-2xl text-lg text-texto-suave">{descricao}</p>}

@@ -18,7 +18,6 @@ const experiencia = (await getCollection('experiencia', (item) => item.data.naHo
 
 <BaseLayout>
   <Hero />
-  <DivisorFita variante="a" />
   {principal && <ProjetoPrincipal projeto={principal} />}
   {outros.length > 0 && (
     <section class="pagina mt-secao" aria-labelledby="outros-projetos">

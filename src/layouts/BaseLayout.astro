@@ -42,9 +42,11 @@ const canonica = new URL(Astro.url.pathname, Astro.site);
   <body>
     <SkipLink />
     <Header />
-    <main id="conteudo" class="flex-1" tabindex="-1">
-      <slot />
-    </main>
-    <Footer />
+    <div class="trilho">
+      <main id="conteudo" class="flex-1" tabindex="-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

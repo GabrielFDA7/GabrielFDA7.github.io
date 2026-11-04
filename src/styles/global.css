@@ -21,9 +21,28 @@
   --text-marca--letter-spacing: -0.035em;
   --text-marca--font-weight: 800;
 
-  --spacing-secao: clamp(4rem, 3rem + 5vw, 7rem);
+  --spacing-secao: clamp(3.25rem, 2rem + 5.5vw, 7rem);
   --spacing-margem: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
   --container-pagina: 76rem;
+}
+
+/*
+ * Geometria do fio de cromo. No celular, os valores são fixos em px porque o gargalo da borda
+ * líquida (MetalLiquido) é desenhado em x = 14px e precisa encontrar o fio exatamente.
+ */
+:root {
+  --fio: 4px;
+  --conta: 1.125rem;
+  --recuo-fio: 20px; /* do centro do fio até o início do conteúdo */
+  --margem-esquerda: 34px;
+  --x-fio: calc(max(0px, (100% - var(--container-pagina)) / 2) + var(--margem-esquerda) - var(--recuo-fio) - var(--fio) / 2);
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --recuo-fio: 1.5rem;
+    --margem-esquerda: var(--spacing-margem);
+  }
 }
 
 @layer base {
@@ -67,6 +86,81 @@
     max-width: var(--container-pagina);
     margin-inline: auto;
     padding-inline: var(--spacing-margem);
+  }
+
+  /*
+   * O fio condutor: uma única peça de cromo que desce pela página inteira. A arte da abertura
+   * e o rodapé ficam por cima das pontas, então o fio nasce e termina dentro do metal.
+   */
+  .trilho {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .trilho::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset-block: 0;
+    left: var(--x-fio);
+    width: var(--fio);
+    background: var(--cromo-fio);
+    pointer-events: none;
+  }
+
+  .trilho .pagina {
+    padding-left: var(--margem-esquerda);
+  }
+
+  /* Traço curvo com o mesmo volume do fio: três linhas sobrepostas imitam um cilindro. */
+  .traco {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .traco-borda {
+    stroke: var(--fio-borda);
+    stroke-width: 4;
+  }
+
+  .traco-meio {
+    stroke: var(--fio-meio);
+    stroke-width: 2.6;
+  }
+
+  .traco-brilho {
+    stroke: var(--fio-brilho);
+    stroke-width: 1;
+  }
+
+  /* Botões: no celular viram uma grade regular, e nenhum fica sozinho em uma linha. */
+  .botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 39.99rem) {
+    .botoes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    .botoes > .btn {
+      width: 100%;
+      padding-inline: 0.75rem;
+      text-align: center;
+      white-space: normal;
+    }
+
+    /* Número ímpar de botões: o principal ocupa a linha inteira. */
+    .botoes > .btn-cromo:first-child:nth-last-child(odd) {
+      grid-column: 1 / -1;
+    }
   }
 
   /* Rótulo de seção: mesma assinatura visual do currículo. */
@@ -176,7 +270,7 @@
   }
 
   .titulo-linha {
-    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+    font-size: clamp(1.25rem, 1rem + 1.6vw, 2.25rem);
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1.15;
@@ -202,39 +296,47 @@
     line-height: 1;
   }
 
-  /* Tubo de cromo com esferas: a linha do tempo e os passos do método. */
+  /*
+   * Sequências penduradas no fio: a linha do tempo e os passos do método. O `.tubo` precisa
+   * começar na margem do conteúdo, para as esferas caírem exatamente sobre o fio.
+   */
   .tubo {
-    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
-    padding-left: 2.5rem;
+    gap: 2rem;
     list-style: none;
   }
 
-  .tubo::before {
-    content: '';
-    position: absolute;
-    inset-block: 0.75rem;
-    left: 0.59rem;
-    width: 0.5rem;
-    border-radius: 999px;
-    background: var(--cromo-tubo);
+  @media (min-width: 64rem) {
+    .tubo {
+      gap: 3rem;
+    }
   }
 
-  .parada {
+  .parada,
+  .com-conta {
     position: relative;
   }
 
-  .parada::before {
+  .parada::before,
+  .com-conta::before {
     content: '';
     position: absolute;
-    top: 0.1rem;
-    left: -2.5rem;
-    width: 1.625rem;
-    height: 1.625rem;
+    z-index: 2;
+    left: calc(-1 * var(--recuo-fio) - var(--conta) / 2);
+    width: var(--conta);
+    height: var(--conta);
     border-radius: 999px;
     background: var(--cromo-esfera);
+  }
+
+  .parada::before {
+    top: 0.2rem;
+  }
+
+  .com-conta::before {
+    top: 50%;
+    translate: 0 -50%;
   }
 
   .esfera {
@@ -283,6 +385,26 @@
   -webkit-text-fill-color: var(--destaque); /* texto pequeno: cor sólida, não a textura */
   font-size: 1rem;
   letter-spacing: 0.1em;
+}
+
+/* No celular, o texto encosta na margem e cada seção se pendura no fio. */
+@media (max-width: 47.99rem) {
+  .prosa h2 {
+    position: relative;
+    margin-top: 3rem;
+  }
+
+  .prosa h2::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 0.1rem;
+    left: calc(-1 * var(--recuo-fio) - var(--conta) / 2);
+    width: var(--conta);
+    height: var(--conta);
+    border-radius: 999px;
+    background: var(--cromo-esfera);
+  }
 }
 
 .prosa ul {

@@ -1,5 +1,7 @@
 ---
 import ArteCromo from './ArteCromo.astro';
+import CurvaFio from './CurvaFio.astro';
+import MetalLiquido from './MetalLiquido.astro';
 
 interface Props {
   titulo: string;
@@ -15,9 +17,10 @@ const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
 ---
 
 <section class="topo relative overflow-hidden">
+  <MetalLiquido altura={88} />
   <div class="arte"><ArteCromo class="size-full" /></div>
   <div class="pagina relative">
-    <div class="conteudo py-8 lg:py-20">
+    <div class="conteudo pt-5 pb-8 lg:py-20">
       <div class="min-w-0">
         <slot name="antes" />
         {rotulo && <p class="rotulo">{rotulo}</p>}
@@ -29,19 +32,13 @@ const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
       <slot name="lado" />
     </div>
   </div>
+  <CurvaFio sentido="sai-da-arte" />
 </section>
 
 <style>
-  /* Celular: a arte é uma faixa acima do texto. Nunca há texto sobre a imagem. */
-  .topo {
-    display: flex;
-    flex-direction: column;
-  }
-
+  /* Celular: a arte é o MetalLiquido, no topo. Nunca há texto sobre a imagem. */
   .arte {
-    height: 7rem;
-    -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
-    mask-image: linear-gradient(to bottom, #000 35%, transparent);
+    display: none;
   }
 
   .conteudo {
@@ -53,15 +50,16 @@ const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
   /* Computador: a mesma composição da abertura, com a arte à direita. */
   @media (min-width: 64rem) {
     .topo {
-      display: block;
+      z-index: 2; /* cobre o início do fio, que só aparece depois da curva */
+      background: var(--fundo);
     }
 
     .arte {
       position: absolute;
       inset-block: 0;
       right: 0;
+      display: block;
       width: 48%;
-      height: auto;
       --esquerda: linear-gradient(to right, transparent, rgb(0 0 0 / 0.12) 14%, rgb(0 0 0 / 0.55) 30%, #000 50%);
       --base: linear-gradient(to bottom, #000 72%, transparent);
       -webkit-mask-image: var(--esquerda), var(--base);

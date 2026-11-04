@@ -6,41 +6,42 @@ import fitaB from '../assets/arte/fita-b.webp';
 
 interface Props {
   variante?: 'a' | 'b';
-  espelhada?: boolean;
   class?: string;
 }
 
-const { variante = 'a', espelhada = false, class: classe } = Astro.props;
+const { variante = 'a', class: classe } = Astro.props;
 ---
 
-<div class:list={['fita', espelhada && 'fita-espelhada', classe]} aria-hidden="true">
+<div class:list={['fita', classe]} aria-hidden="true">
   <Image
     src={variante === 'a' ? fitaA : fitaB}
     alt=""
     widths={[900, 1400, 1800]}
-    sizes="max(100vw, 44rem)"
+    sizes="100vw"
     loading="lazy"
   />
 </div>
 
 <style>
-  /* No celular a linha é mais larga que a tela: as pontas somem e o traço não fica fino demais. */
+  /* No celular, quem separa as seções é o fio condutor. Oculta, a imagem nem é baixada. */
   .fita {
-    display: flex;
+    display: none;
     justify-content: center;
     overflow: hidden;
     pointer-events: none;
   }
 
+  @media (min-width: 64rem) {
+    .fita {
+      display: flex;
+    }
+  }
+
   .fita img {
-    width: max(100%, 44rem);
+    width: 100%;
     max-width: none;
     height: auto;
     filter: var(--sombra-emblema);
-  }
-
-  .fita-espelhada img {
-    scale: -1 1;
   }
 
   /* A linha desliza um pouco durante a rolagem, sem JavaScript. */

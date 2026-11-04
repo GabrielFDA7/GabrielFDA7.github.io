@@ -1,6 +1,5 @@
 ---
 import { getCollection, render } from 'astro:content';
-import DivisorFita from '../components/DivisorFita.astro';
 import FotoPerfil from '../components/FotoPerfil.astro';
 import TituloSecao from '../components/TituloSecao.astro';
 import TopoPagina from '../components/TopoPagina.astro';
@@ -27,14 +26,12 @@ const alemDoCodigo = [
       <p>Fora do trabalho, construí o <a href="/projetos/nextup">NextUp</a>, uma API em Python em produção, com testes, CI e deploy contínuo.</p>
       <p>Estudo Sistemas de Informação na UFU, com conclusão em dezembro de 2027.</p>
     </div>
-    <FotoPerfil slot="lado" tamanho={220} class="relative p-1" />
+    <div slot="lado" class="foto-lado"><FotoPerfil tamanho={220} class="relative p-1" /></div>
   </TopoPagina>
 
-  <DivisorFita variante="a" />
-
-  <section class="pagina mt-8" aria-labelledby="linha-do-tempo">
+  <section class="pagina mt-4 lg:mt-14" aria-labelledby="linha-do-tempo">
     <TituloSecao id="linha-do-tempo" rotulo="Trajetória" titulo="Experiência" />
-    <ol class="tubo mt-10 max-w-3xl">
+    <ol class="tubo mt-8 max-w-3xl lg:mt-10">
       {linhaDoTempo.map(({ cargo, empresa, contexto, period, Corpo }) => (
         <li class="parada">
           <p class="rotulo">{period}</p>
@@ -57,17 +54,45 @@ const alemDoCodigo = [
 
   <section class="pagina mt-secao grid gap-10 sm:grid-cols-2" aria-label="Formação e idiomas">
     <div>
-      <p class="rotulo">Formação</p>
+      <p class="rotulo com-conta">Formação</p>
       <p class="metal numero-gigante mt-3">2027</p>
       <h2 class="mt-3 text-2xl font-bold tracking-tight">Bacharelado em Sistemas de Informação</h2>
       <p class="mt-1 text-texto-suave">Universidade Federal de Uberlândia · 6º período · conclusão em dez/2027</p>
       <p class="mt-1 text-texto-suave">VIII Iniciação Científica da FAMAT/UFU</p>
     </div>
     <div>
-      <p class="rotulo">Idiomas</p>
+      <!-- Ao lado da Formação, esta coluna não encosta no fio: a esfera só existe quando empilha. -->
+      <p class="rotulo com-conta sm:before:hidden">Idiomas</p>
       <p class="metal numero-gigante mt-3">C1</p>
       <h2 class="mt-3 text-2xl font-bold tracking-tight">Inglês</h2>
       <p class="mt-1 text-texto-suave">FCE, Cambridge</p>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* Celular: a foto vem antes do texto, pequena, no lugar em que a abertura também a mostra. */
+  .foto-lado {
+    order: -1;
+    align-self: flex-start;
+    width: 6.5rem;
+    margin-bottom: -0.75rem;
+  }
+
+  .foto-lado :global(span) {
+    display: block;
+  }
+
+  @media (min-width: 64rem) {
+    .foto-lado {
+      order: 0;
+      align-self: auto;
+      width: auto;
+      margin-bottom: 0;
+    }
+
+    .foto-lado :global(span) {
+      display: inline-block;
+    }
+  }
+</style>

@@ -6,12 +6,12 @@ import Icone from './Icone.astro';
 
 <section class="contato relative mt-secao overflow-hidden" aria-labelledby="contato">
   <div class="arte"><ArteCromo class="size-full" /></div>
-  <div class="pagina relative py-12 lg:py-24">
+  <div class="pagina relative lg:py-24">
     <div class="texto">
-      <p class="rotulo">Contato</p>
+      <p class="rotulo com-conta">Contato</p>
       <h2 id="contato" class="titulo-gigante mt-3 pb-2"><span class="metal">Vamos conversar</span></h2>
       <p class="mt-4 text-lg text-texto-suave">O caminho mais rápido é o e-mail.</p>
-      <div class="mt-8 flex flex-wrap gap-3">
+      <div class="botoes mt-6 lg:mt-8">
         <a class="btn btn-cromo max-w-full whitespace-normal! break-all" href={`mailto:${site.links.email}`}>
           <Icone nome="email" class="size-5 shrink-0" />
           {site.links.email}
@@ -30,28 +30,18 @@ import Icone from './Icone.astro';
 </section>
 
 <style>
-  .contato {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-
+  /* Celular: sem arte aqui. O fechamento em metal é a poça no fim do rodapé. */
   .arte {
-    height: 11rem;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%);
-    mask-image: linear-gradient(to bottom, transparent, #000 40%);
+    display: none;
   }
 
   @media (min-width: 64rem) {
-    .contato {
-      display: block;
-    }
-
     .arte {
       position: absolute;
       inset-block: 0;
       right: 0;
+      display: block;
       width: 50%;
-      height: auto;
       --lado: linear-gradient(to right, transparent, rgb(0 0 0 / 0.15) 16%, rgb(0 0 0 / 0.6) 34%, #000 56%);
       --base: linear-gradient(to bottom, transparent, #000 14%, #000 80%, transparent);
       -webkit-mask-image: var(--lado), var(--base);

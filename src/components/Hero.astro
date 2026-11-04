@@ -1,14 +1,17 @@
 ---
 import { site } from '../config/site';
 import ArteCromo from './ArteCromo.astro';
+import CurvaFio from './CurvaFio.astro';
 import FotoPerfil from './FotoPerfil.astro';
 import Icone from './Icone.astro';
+import MetalLiquido from './MetalLiquido.astro';
 ---
 
 <section class="hero relative overflow-hidden" aria-labelledby="nome">
+  <MetalLiquido altura={128} />
   <div class="arte"><ArteCromo class="size-full" /></div>
   <div class="pagina relative">
-    <div class="texto py-10 lg:py-24">
+    <div class="texto pt-5 pb-2 lg:py-24">
       <div class="flex items-center gap-4">
         <FotoPerfil tamanho={76} />
         <p class="rotulo">Dados · Python · IA</p>
@@ -16,7 +19,7 @@ import Icone from './Icone.astro';
       <h1 id="nome" class="mt-5 pb-2 text-marca"><span class="metal">{site.nome}</span></h1>
       <p class="mt-5 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{site.posicionamento}</p>
       <p class="mt-4 max-w-xl text-texto-suave">{site.apoio}</p>
-      <div class="mt-8 flex flex-wrap items-center gap-2">
+      <div class="botoes mt-8 gap-2!">
         <a class="btn btn-cromo" href="/projetos">Ver projetos</a>
         <a class="btn btn-contorno" href={site.curriculoPadrao}>Baixar currículo</a>
         <a class="btn btn-contorno" href={site.links.github}>
@@ -25,43 +28,50 @@ import Icone from './Icone.astro';
         </a>
         <!-- Agrupados: se a linha quebrar, os dois ícones descem juntos. -->
         <div class="flex gap-2">
-          <a class="btn btn-contorno size-11 p-0!" href={site.links.linkedin} aria-label="LinkedIn">
+          <a class="btn btn-contorno icone-botao p-0!" href={site.links.linkedin} aria-label="LinkedIn">
             <Icone nome="linkedin" />
           </a>
-          <a class="btn btn-contorno size-11 p-0!" href={`mailto:${site.links.email}`} aria-label="E-mail">
+          <a class="btn btn-contorno icone-botao p-0!" href={`mailto:${site.links.email}`} aria-label="E-mail">
             <Icone nome="email" />
           </a>
         </div>
       </div>
     </div>
   </div>
+  <CurvaFio sentido="sai-da-arte" />
 </section>
 
 <style>
-  /* Celular: a arte é uma faixa abaixo do texto. Nunca há texto sobre a imagem. */
-  .hero {
-    display: flex;
-    flex-direction: column-reverse;
+  /* Celular: a arte é o MetalLiquido, no topo. Nunca há texto sobre a imagem. */
+  .arte {
+    display: none;
   }
 
-  .arte {
-    height: 13rem;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  .icone-botao {
+    flex: 1;
+    min-width: 2.75rem;
+  }
+
+  @media (min-width: 40rem) {
+    .icone-botao {
+      flex: none;
+      width: 2.75rem;
+    }
   }
 
   /* Computador: a arte ocupa a metade direita, e o texto fica na esquerda. */
   @media (min-width: 64rem) {
     .hero {
-      display: block;
+      z-index: 2; /* cobre o início do fio, que só aparece depois da curva */
+      background: var(--fundo);
     }
 
     .arte {
       position: absolute;
       inset-block: 0;
       right: 0;
+      display: block;
       width: 56%;
-      height: auto;
       --esquerda: linear-gradient(to right, transparent, rgb(0 0 0 / 0.12) 12%, rgb(0 0 0 / 0.55) 26%, #000 44%);
       --base: linear-gradient(to bottom, #000 80%, transparent);
       -webkit-mask-image: var(--esquerda), var(--base);

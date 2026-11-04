@@ -1,0 +1,73 @@
+---
+// Abaixo de 64rem, a arte vira metal derretido: sangra até as bordas, termina em uma onda com
+// lábio de cromo e escorre em um gargalo que se transforma no fio. Invertida, é a poça onde o
+// fio termina. Nenhum texto fica sobre ela.
+import ArteCromo from './ArteCromo.astro';
+
+interface Props {
+  altura: number;
+  invertido?: boolean;
+  class?: string;
+}
+
+const { altura, invertido = false, class: classe } = Astro.props;
+
+// Comandos relativos: a mesma onda serve para qualquer altura. Vai além de 1024 px, onde o
+// componente deixa de aparecer. O gargalo em x = 14 acompanha --x-fio do global.css.
+const onda = 'c0 -24 8 -36 28 -40 c34 -7 54 14 92 16 s70 -32 118 -30 s62 34 112 26 s66 -34 124 -22 s72 26 130 18 s70 -28 120 -20 s66 28 126 22 s70 -28 120 -20 s66 28 126 22';
+const labio = `c7 2 13 12 14 26`;
+const inicioLabio = `M0 ${altura - 26}`;
+const inicioOnda = `M14 ${altura}`;
+const recorte = `${inicioOnda} ${onda} V0 H0 V${altura - 26} ${labio} z`;
+const tracos = [`${inicioLabio} ${labio}`, `${inicioOnda} ${onda}`];
+---
+
+<div
+  class:list={['metal-liquido', invertido && 'invertido', classe]}
+  style={`height:${altura}px`}
+  aria-hidden="true"
+>
+  <div class="recorte" style={`clip-path:path('${recorte}')`}><ArteCromo class="size-full" /></div>
+  <svg width="1120" height={altura + 2} viewBox={`0 0 1120 ${altura + 2}`} fill="none">
+    {['traco-borda', 'traco-meio', 'traco-brilho'].map((camada) => (
+      tracos.map((d) => <path class:list={['traco', camada]} d={d} />)
+    ))}
+  </svg>
+</div>
+
+<style>
+  .metal-liquido {
+    position: relative;
+    z-index: 2; /* cobre a ponta do fio, que parece nascer de dentro do metal */
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .invertido {
+    scale: 1 -1;
+  }
+
+  .recorte {
+    position: absolute;
+    inset: 0;
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none;
+  }
+
+  @media (min-width: 64rem) {
+    .metal-liquido {
+      display: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .metal-liquido {
+      display: none;
+    }
+  }
+</style>

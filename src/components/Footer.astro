@@ -1,6 +1,7 @@
 ---
 import { site } from '../config/site';
-import DivisorFita from './DivisorFita.astro';
+import CurvaFio from './CurvaFio.astro';
+import MetalLiquido from './MetalLiquido.astro';
 
 const ano = new Date().getFullYear();
 const links = [
@@ -10,13 +11,15 @@ const links = [
 ];
 ---
 
-<footer class="mt-8 overflow-hidden">
-  <DivisorFita variante="b" espelhada />
-  <div class="pagina">
+<footer class="rodape relative mt-8 overflow-hidden">
+  <CurvaFio sentido="volta" />
+  <div class="pagina caixa-assinatura">
     <p class="assinatura metal" aria-hidden="true">{site.nomeCurto}</p>
-    <div class="flex flex-col gap-3 py-6 text-sm text-texto-suave sm:flex-row sm:items-center sm:justify-between">
+  </div>
+  <div class="pagina">
+    <div class="flex flex-col gap-1 pt-4 pb-6 text-sm text-texto-suave sm:flex-row sm:items-center sm:justify-between">
       <p>© {ano} {site.nome}</p>
-      <ul class="flex flex-wrap gap-x-2">
+      <ul class="-ml-2 flex flex-wrap gap-x-2 sm:ml-0">
         {links.map((link) => (
           <li>
             <a href={link.href} class="inline-flex min-h-11 items-center px-2 font-medium text-texto-suave underline hover:text-texto">
@@ -27,9 +30,15 @@ const links = [
       </ul>
     </div>
   </div>
+  <MetalLiquido altura={104} invertido />
 </footer>
 
 <style>
+  /* A assinatura é centralizada na tela, então ignora o recuo que o fio dá ao conteúdo. */
+  .caixa-assinatura {
+    padding-inline: var(--spacing-margem);
+  }
+
   /*
    * A assinatura fica centralizada e sem espaçamento negativo: a textura só existe dentro da
    * caixa do elemento, então uma letra que passa da caixa perde o metal e parece cortada.
@@ -42,5 +51,14 @@ const links = [
     padding-inline-end: 0;
     text-align: center;
     white-space: nowrap;
+  }
+
+  /* No computador, o fio termina na curva: o rodapé cobre o que passaria dela. */
+  @media (min-width: 64rem) {
+    .rodape {
+      z-index: 2;
+      padding-top: 3.5rem;
+      background: var(--fundo);
+    }
   }
 </style>
