@@ -154,6 +154,12 @@
     -webkit-text-fill-color: transparent;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
+    /*
+     * Folga dentro da caixa: a textura termina na borda do elemento. Sem isso, caudas como as
+     * de "g" e "ç" e a última letra, com o espaçamento negativo, ficam cortadas.
+     */
+    padding-block: 0.12em;
+    padding-inline-end: 0.06em;
   }
 
   .titulo-gigante,

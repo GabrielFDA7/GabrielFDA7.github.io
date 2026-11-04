@@ -30,14 +30,17 @@ const links = [
 </footer>
 
 <style>
-  /* A assinatura ocupa a largura da página em qualquer tela. */
+  /*
+   * A assinatura fica centralizada e sem espaçamento negativo: a textura só existe dentro da
+   * caixa do elemento, então uma letra que passa da caixa perde o metal e parece cortada.
+   */
   .assinatura {
     display: block;
-    width: fit-content;
-    font-size: min(9.3vw, 7.5rem);
+    font-size: min(9.4vw, 7.5rem); /* o nome mede cerca de 9em: precisa caber nas margens */
     font-weight: 800;
-    letter-spacing: -0.045em;
-    line-height: 1.05;
+    line-height: 1.3;
+    padding-inline-end: 0;
+    text-align: center;
     white-space: nowrap;
   }
 </style>
