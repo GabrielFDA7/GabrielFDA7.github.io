@@ -4,12 +4,12 @@ slug: analises-sap-bw-power-query
 summary: Estudo plurianual de eficiência entre filiais e pipelines que atualizam relatórios sem intervenção manual.
 role: Solo
 context: profissional
-# PREENCHER: período do estudo com SAP BW; jan–jun/2026 vale para os pipelines em Power Query
-period: jan/2026 – jun/2026
+period: jan/2026 – ago/2026
 status: concluido
 tags: [dados, bi, negocio]
 stack: [SAP BW, Power Query (M), Excel]
-metrics: []
+metrics:
+  - { label: Período analisado, value: 2022–2026 }
 links: {}
 featured: false
 order: 6
@@ -19,11 +19,11 @@ draft: false
 
 ## Problema
 
-<!-- PREENCHER: qual pergunta de negócio motivou o estudo e quem precisava da resposta -->
+A pergunta veio da diretoria: onde a operação poderia ficar mais eficiente sem reduzir a equipe?
 
 ## Solução
 
-**Estudo de eficiência entre filiais.** Um estudo plurianual com exportações do SAP BW, sobre DOL, Receita Líquida e a relação DOL/RL, entregue em Excel e em apresentação para a diretoria.
+**Estudo de eficiência entre filiais (jul–ago/2026).** Um estudo plurianual com exportações do SAP BW, sobre DOL, Receita Líquida e a relação DOL/RL, entregue em Excel e em apresentação para a diretoria.
 
 **Pipelines em Power Query (jan–jun/2026).** Limpam, normalizam e cruzam históricos de vendas, cadastro de clientes e laudos de inspeção, atualizando os relatórios sem intervenção manual.
 
@@ -52,8 +52,9 @@ flowchart TD
 
 ## Resultados
 
-<!-- PREENCHER: resultado sem nenhum valor financeiro real, como anos cobertos ou horas economizadas -->
+- **De 2022 a 2026 analisados**, com uma projeção para o primeiro semestre de 2027.
+- **Resposta entregue direto à diretoria**, em Excel e em apresentação.
 
 ## O que eu aprendi
 
-<!-- PREENCHER: o que eu aprendi ou faria diferente -->
+Aprendi que se especializar em um negócio pode abrir caminho na área de desenvolvimento e análise, só por você entender muito do processo. Nem sempre é preciso estudar apenas código.

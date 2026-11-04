@@ -4,9 +4,7 @@ slug: integracao-api-sis2
 summary: Automação em Python que levanta os part numbers de uma frota de 81 máquinas, antes consultados à mão.
 role: Solo
 context: profissional
-# PREENCHER: período exato; "2026" vem do cargo atual no currículo
-period: '2026'
-# PREENCHER: confirmar o status
+period: set/2026
 status: concluido
 tags: [automacao, backend, industrial]
 stack: [Python, API REST/JSON, SIS2]
@@ -21,36 +19,39 @@ draft: false
 
 ## Problema
 
-Levantar os part numbers de uma frota de 81 máquinas exigia consulta manual, máquina a máquina, no catálogo técnico da Caterpillar.
+Levantar os part numbers de uma frota de 81 máquinas exigia consulta manual, item a item, no catálogo técnico da Caterpillar. A busca era em uma lista enorme e pouco amigável: alguns itens eram fáceis de achar, e outros, quase impossíveis. Também não existia na empresa o catálogo completo de peças de uma máquina.
 
 ## Solução
 
-Uma automação em Python que consome a API JSON do SIS2 e levanta os part numbers da frota inteira.
+Uma automação em Python que recebe a lista de números de série, consome a API JSON do SIS2 e monta uma planilha com as peças de cada máquina.
 
 ## Arquitetura
 
 ```mermaid
 flowchart TD
   accTitle: Fluxo da integração com o SIS2
-  accDescr: Uma lista de máquinas alimenta a automação em Python, que consulta a API JSON do SIS2 e produz o levantamento de part numbers.
+  accDescr: Uma lista de máquinas alimenta a automação em Python, que consulta a API JSON do SIS2, guarda cada resposta e monta a planilha de part numbers.
   L[Frota de 81 máquinas] --> P[Automação em Python]
   P --> A[API JSON do SIS2]
   A --> P
-  P --> R[Levantamento de part numbers]
+  P --> S[Respostas guardadas]
+  S --> R[Planilha de part numbers]
 ```
 
 ## Decisões técnicas
 
-**API em vez de raspagem de tela com Selenium.**
+**API em vez de raspagem de tela com Selenium.** A API entrega tudo o que o projeto precisa em uma requisição. Já a estrutura do site dificulta a raspagem: o código ficaria mais instável, mais lento e com resultados piores. O custo é depender de uma interface que pode mudar sem aviso e de uma sessão que expira durante o lote.
 
-<!-- PREENCHER: por que escolhi a API e qual foi o custo dessa escolha -->
+**Guardar cada resposta antes de processar.** Se a sessão cair no meio do lote, a execução seguinte reaproveita o que já veio e continua de onde parou. O custo é ocupar espaço com arquivos brutos e poder reler um dado antigo.
+
+**Abrir as peças individuais só onde importa.** O detalhamento vale para material rodante e ferramentas de penetração de solo: cerca de 20 chamadas extras por máquina, contra cerca de 587 se fosse a máquina inteira. O custo é o resto do catálogo ficar no nível dos conjuntos.
 
 ## Resultados
 
-- 81 máquinas cobertas, sem consulta manual.
-
-<!-- PREENCHER: tempo antes e depois -->
+- **81 máquinas** cobertas, sem consulta manual.
+- **De um trabalho impossível de medir para uma busca em segundos.** Antes, cada item era procurado à mão. Agora, basta rodar o projeto e consultar a planilha.
+- **Catálogo completo de peças de uma máquina**, algo que não existia na empresa.
 
 ## O que eu aprendi
 
-<!-- PREENCHER: o que eu aprendi ou faria diferente -->
+Aprendi a investigar como um site conversa com o próprio servidor antes de decidir como automatizá-lo.

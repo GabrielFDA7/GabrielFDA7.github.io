@@ -5,11 +5,11 @@ summary: Consultas em lote no SAP, coleta de relatórios em portais internos e R
 role: Solo
 context: profissional
 period: mai/2025 – atual
-# PREENCHER: confirmar o status
 status: em-producao
 tags: [automacao, dados, industrial]
 stack: [Excel VBA, SAP GUI Scripting, Python, Selenium, pandas, PyAutoGUI, openpyxl]
-metrics: []
+metrics:
+  - { label: '50 itens (antes, mais de 30 min)', value: 3 min }
 links: {}
 featured: false
 order: 5
@@ -60,8 +60,9 @@ flowchart TD
 
 ## Resultados
 
-<!-- PREENCHER: itens consultados por dia e horas economizadas -->
+- **De mais de 30 minutos para cerca de 3 minutos** na consulta de 50 itens.
+- **Uso em todo o Brasil:** a Sotreq usa o projeto em nível nacional.
 
 ## O que eu aprendi
 
-<!-- PREENCHER: o que eu aprendi ou faria diferente -->
+Foi meu primeiro projeto usado por pessoas que não tinham contato direto comigo. Aprendi que um projeto precisa ser blindado contra todo tipo de erro que o usuário possa causar, do menor ao maior.

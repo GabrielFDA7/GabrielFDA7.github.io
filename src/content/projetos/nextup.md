@@ -83,8 +83,6 @@ O núcleo não importa nada de rede nem de banco, por isso seus testes rodam off
 - **Decisões medidas:** a faixa de popularidade saiu de 1.257 medições reais, com 83% de estabilidade contra 74% da alternativa.
 - **Processo auditável:** 10 sessões e 70 prompts registrados na íntegra.
 
-<!-- PREENCHER: número de usuários reais, se houver -->
-
 ## O que eu aprendi
 
 **Confira o dado, não o painel.** Entre 22/09 e 27/10/2026, o coletor gravou de 7 a 23 ciclos por dia, contra cerca de 156 esperados. O job que deveria mantê-lo acordado mostrava 100% de sucesso: ele não falhava, só não rodava. Hoje a saúde da coleta se confere no banco.
