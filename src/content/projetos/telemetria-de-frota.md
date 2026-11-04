@@ -2,7 +2,7 @@
 title: Painel de telemetria de frota com insights por IA
 slug: telemetria-de-frota
 summary: Aplicação que consolida a telemetria de uma frota mista e usa o Gemini para sugerir o que melhorar.
-role: Time de 3 — responsável pelo pipeline de dados
+role: Time de 3 — responsável pelo pipeline de dados e tutor da integração com o Gemini
 context: profissional
 period: set/2026 – atual
 status: em-producao
@@ -27,6 +27,8 @@ Um cliente com frota mista, de Caterpillar e outras marcas, não tem uma visão 
 Uma aplicação web em React e Vite que consolida a telemetria. Os relatórios agendados do VisionLink chegam todo dia a um e-mail dedicado, e um pipeline em Python os lê, padroniza, valida e grava. A API do Gemini devolve insights sobre o que melhorar na frota.
 
 **O que foi meu:** o pipeline de dados, da extração à execução diária, passando por normalização e qualidade.
+
+**Integração com o Gemini:** como tutor do squad, dei a ideia e acompanhei de perto cada passo. A implementação foi de outra pessoa do time, sob a minha tutoria.
 
 ## Arquitetura
 
@@ -66,7 +68,7 @@ flowchart TD
 
 - **54 máquinas** monitoradas.
 - **1 relatório processado por dia**, com histórico desde 26/09/2026.
-- O pipeline roda todo dia. A próxima etapa é ligar o painel aos dados reais.
+- **Já em uso:** as análises são feitas sobre os arquivos que o pipeline gera todo dia. O escopo planejado ainda não terminou: falta a carga no banco e a ligação do painel com os dados reais.
 
 ## O que eu aprendi
 

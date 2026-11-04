@@ -48,7 +48,11 @@ flowchart TD
 
 ## Decisões técnicas
 
-<!-- PREENCHER: 2 a 4 escolhas, com o trade-off de cada uma -->
+**Começar em 2022.** Uma base maior traz profundidade e garante que os padrões são reais, e não algo que aconteceu em um ano só. O custo é ter mais dados para tratar e comparar.
+
+**Pesos e métricas próprios para cada porte de filial.** Filiais de tamanhos diferentes não se comparam pelo número bruto. Por isso, usei pesos e métricas personalizadas, somados à experiência do meu gestor. O custo é a comparação depender de critério, e não de uma fórmula simples de reproduzir.
+
+**Projeção de 2027 além da tendência.** Parti dos gastos dos anos anteriores e somei uma análise de mercado e de variáveis possíveis, como as eleições presidenciais no Brasil e as de meio de mandato nos EUA. O custo é o resultado depender dessas premissas, que precisam ser revistas quando o cenário muda.
 
 ## Resultados
 
