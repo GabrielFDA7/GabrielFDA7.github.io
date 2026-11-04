@@ -321,3 +321,30 @@ Lá tem três pastas, pode entrar em todas e dá uma fuçada, alguns nomes estã
 2. O mapa de municípios e o Arquivos-Suporte-Visitas saíram do site, que ficou com 7 projetos.
 3. Quatro pontos em que a resposta diverge da documentação do projeto de telemetria foram levados ao
    Gabriel para confirmar antes da publicação.
+
+### Prompt #014
+**Data:** 04/11/2026
+**Contexto:** Respostas às divergências do projeto de telemetria e às decisões das análises com SAP BW.
+
+```
+1 - Como você bem sabe, sou o tutor do squad da filial que cuida dos projetos. Eu fiz a tutoria da "Pessoa B" para implementarmos o gemini no projeto. Dei a ideia e acompanhei de perto todo o passo a passo da execução.
+
+2 - Mesmo com os arquivos sendo gravados localmente o projeto está em produção. Análises sao feitas em cima desses arquivos, realmente ainda não foi finalizado todo o escopo como haviamos planejado, mas já está sendo usado.
+
+3 - Realmente, por conta de prazo, removi o freio de criação de código por parte da IA no projeto. Havia me esquecido disso, implemente no texto como você acha que deve ser feito.
+
+4 - O início é 26/09.
+
+
+Começamos em 2022 para ter uma grande base de dados para analisar, trazendo mais profundidade e garantindo que os padrões analisados fossem reais e não algo que aconteceu em um ano apenas.
+
+As filiais de tamanhos diferentes foram analisadas com pesos e métricas personalizadas, além da expertise do meu gestor.
+
+2027 foi projetado de acordo com os gastos dos anos prévios, mais uma análise de mercado e possiveis variáveis que entrariam em jogo para o ano que vem, como as eleições presidenciais do Brasil e as midterms dos EUA.
+```
+
+**O que resultou:**
+
+1. O texto do painel de telemetria passou a separar o pipeline da tutoria na integração com o Gemini.
+2. O selo "Em produção" foi mantido, com o escopo que ainda falta descrito no texto.
+3. As decisões técnicas das análises foram escritas, e nenhum `PREENCHER` ficou nos projetos.

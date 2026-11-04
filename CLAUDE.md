@@ -75,6 +75,12 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   conferir fatos, mas nada delas é copiado: nem nome de pasta, nem dado, nem arquivo de credencial.
 - Projetos corporativos podem ser descritos publicamente (autorizado pelo Gabriel em 04/11/2026).
 
+## Autoria no painel de telemetria
+
+O pipeline é do Gabriel. A integração com o Gemini foi implementada por outra pessoa do time, com ideia e
+tutoria do Gabriel: nunca descrever essa parte como código dele. Parte do pipeline foi escrita por IA na
+reta final, por causa do prazo, e o texto do projeto diz isso.
+
 ## Números do NextUp
 
 Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
@@ -131,16 +137,16 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 0 | Plano | Aprovada |
 | 1 | Fundação | Aprovada |
 | 2 | Páginas e componentes, filtro React com testes | Aprovada |
-| 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aguardando aprovação |
-| 4 | Focos por vaga e download do currículo | — |
+| 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aprovada |
+| 4 | Focos por vaga e download do currículo | Aguardando aprovação e os PDFs |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | — |
 | 6 | Publicação no GitHub Pages | — |
 | 7 | (Depois) Versão em inglês | — |
 
 **Pendências combinadas:**
 
-- Antes de integrar a Fase 3: resta 1 `PREENCHER`, nas decisões técnicas das análises com SAP BW. O
-  Gabriel também confirma: autoria da integração com o Gemini e status do painel de telemetria.
+- Antes de publicar: o Gabriel confirma com o gestor se o projeto do SIS2 pode aparecer com esse nome e
+  decide os dois textos suavizados (SIS2 e pergunta de negócio das análises com SAP BW).
 
 - Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
   Os PDFs entram na Fase 4; até lá o botão dá 404.
