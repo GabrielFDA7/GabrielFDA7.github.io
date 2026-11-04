@@ -162,8 +162,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   passar pela mesma limpeza antes de entrar aqui.
 - **Depois da publicação:** medir o Lighthouse no site real e testar em um celular de verdade, em
   especial o reflexo das letras e a fluidez da rolagem. O CI mede um servidor local que imita o Pages.
-- `npm audit` acusa alertas só em dependências de desenvolvimento (katex, via mermaid), que rodam no
-  build sobre diagramas escritos por nós. Em produção, são 0. Rever quando o mermaid atualizar.
+- `npm audit` acusa 5 alertas, todos em dependências de desenvolvimento, e 0 em produção: 3 baixos (katex,
+  via mermaid, sobre diagramas escritos por nós) e 2 moderados (fflate, via satori, que só lê fontes
+  do próprio repositório). A correção sugerida rebaixaria o satori. Rever quando eles atualizarem.
 - Rascunhos (`draft: true`) aparecem no `npm run dev`, com o rótulo "Rascunho", e nunca no build.
 - O CNA Idiomas (LinkedIn do Gabriel) não está nos currículos. No site, aparece só em `/sobre`
   (`naHome: false`), porque a home mostra a experiência na Sotreq, como pede o briefing.
