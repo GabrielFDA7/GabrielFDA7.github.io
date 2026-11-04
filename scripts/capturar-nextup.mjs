@@ -14,6 +14,7 @@ const MINIMO_COM_FILA = 15;
 const INTERVALO_MS = 10 * 60 * 1000;
 const LIMITE_MS = 4 * 60 * 60 * 1000;
 const SAIDA = 'src/assets/projetos';
+const PONTO_NO_MAPA = { x: 0.62, y: 0.42 }; // fração da área do mapa onde o "visitante" toca
 
 async function atracoesComFila() {
   const url = `${APP}/api/parks/${PARQUE}/recommendations?lat=${POSICAO.latitude}&lon=${POSICAO.longitude}&limit=8`;
@@ -49,15 +50,16 @@ for (const { nome, ...opcoes } of vistas) {
       colorScheme,
       locale: 'pt-BR',
       timezoneId: 'America/New_York',
-      geolocation: POSICAO,
-      permissions: ['geolocation'],
     });
     const pagina = await contexto.newPage();
     await pagina.goto(`${APP}/`, { waitUntil: 'networkidle', timeout: 90000 });
     const pular = pagina.getByRole('button', { name: 'Pular' });
     if (await pular.isVisible().catch(() => false)) await pular.click();
-    const localizar = pagina.getByRole('button', { name: 'Usar minha localização' });
-    if (await localizar.isVisible().catch(() => false)) await localizar.click();
+    await pagina.waitForTimeout(800);
+    // Tocar no mapa marca a posição: o app aproxima, numera as opções e desenha a rota.
+    // É a tela que mostra a função do produto.
+    const mapa = await pagina.locator('#mapa').boundingBox();
+    await pagina.mouse.click(mapa.x + mapa.width * PONTO_NO_MAPA.x, mapa.y + mapa.height * PONTO_NO_MAPA.y);
     await pagina.waitForLoadState('networkidle');
     await pagina.waitForTimeout(3500);
     const arquivo = `${SAIDA}/nextup-${nome}-${tema}.webp`;
