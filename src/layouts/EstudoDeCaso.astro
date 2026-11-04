@@ -1,12 +1,12 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import CapaProjeto from '../components/CapaProjeto.astro';
-import FaixaCromo from '../components/FaixaCromo.astro';
+import DivisorFita from '../components/DivisorFita.astro';
 import Icone from '../components/Icone.astro';
-import Metricas from '../components/Metricas.astro';
 import NavProjetos from '../components/NavProjetos.astro';
 import StackChips from '../components/StackChips.astro';
-import { ROTULO_STATUS } from '../lib/projetos';
+import TopoPagina from '../components/TopoPagina.astro';
+import { ROTULO_CONTEXTO, ROTULO_STATUS } from '../lib/projetos';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -22,35 +22,19 @@ const ficha = [
   { termo: 'Período', valor: data.period },
   { termo: 'Meu papel', valor: data.role },
 ];
+// "NextUp — recomendador..." vira um nome grande e uma linha de apoio, como na home.
+const [nome = data.title, ...resto] = data.title.split(' — ');
+const apoio = resto.join(' — ');
 ---
 
 <BaseLayout title={data.title} description={data.summary}>
-  <FaixaCromo />
-  <article class="pagina">
-    <header class="mx-auto max-w-3xl">
-      <p class="pt-4"><a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos">Todos os projetos</a></p>
-      <h1 class="mt-2 text-4xl font-bold leading-tight tracking-tight sm:text-5xl"><span class="cromo-texto">{data.title}</span></h1>
-      <p class="mt-4 text-lg text-texto-suave">{data.summary}</p>
-
-      <dl class="mt-8 grid gap-4 border-y border-linha py-5 sm:grid-cols-3">
-        {ficha.map((item) => (
-          <div>
-            <dt class="text-xs text-texto-suave">{item.termo}</dt>
-            <dd class="mt-0.5 text-sm font-medium">{item.valor}</dd>
-          </div>
-        ))}
-      </dl>
-
-      {data.confidential && (
-        <p class="mt-5 border-l-2 border-quente pl-3 text-sm text-texto-suave">
-          Projeto corporativo: dados e nomes de clientes omitidos.
-        </p>
-      )}
-
-      <div class="mt-6"><StackChips itens={data.stack} /></div>
-
+  <article>
+    <TopoPagina titulo={nome} apoio={apoio || undefined} rotulo={ROTULO_CONTEXTO[data.context]} descricao={data.summary} longo={!apoio}>
+      <p slot="antes" class="mb-4">
+        <a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos">Todos os projetos</a>
+      </p>
       {(data.links.repo || data.links.demo) && (
-        <div class="mt-6 flex flex-wrap gap-3">
+        <div class="mt-8 flex flex-wrap gap-3">
           {data.links.demo && (
             <a class="btn btn-cromo" href={data.links.demo}>
               Abrir demo
@@ -65,41 +49,72 @@ const ficha = [
           )}
         </div>
       )}
+    </TopoPagina>
 
+    <div class="pagina">
       {data.metrics.length > 0 && (
-        <div class="mt-8"><Metricas itens={data.metrics} grande /></div>
+        <dl class="flex flex-wrap gap-x-12 gap-y-6 pb-4">
+          {data.metrics.map((item) => (
+            <div class="flex flex-col-reverse">
+              <dt class="mt-1 text-sm text-texto-suave">{item.label}</dt>
+              <dd class="metal numero-metrica">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
       )}
-    </header>
 
-    {data.coverLargo && (
-      <figure class="tela-larga mx-auto mt-10 max-w-5xl">
-        <CapaProjeto
-          claro={data.coverLargo}
-          escuro={data.coverLargoEscuro}
-          alt={data.coverAlt ?? ''}
-          widths={[640, 960, 1440]}
-          sizes="(min-width: 64rem) 64rem, 100vw"
-          class="w-full rounded-[0.875rem] border border-linha"
-        />
-      </figure>
-    )}
+      <dl class="mt-6 grid max-w-4xl gap-5 sm:grid-cols-[auto_auto_1fr] sm:gap-x-12">
+        {ficha.map((item) => (
+          <div>
+            <dt class="rotulo">{item.termo}</dt>
+            <dd class="mt-1 font-medium">{item.valor}</dd>
+          </div>
+        ))}
+      </dl>
 
-    <div class="prosa mx-auto mt-12 max-w-3xl">
-      {!data.coverLargo && data.cover && (
-        <CapaProjeto
-          claro={data.cover}
-          escuro={data.coverEscuro}
-          alt={data.coverAlt ?? ''}
-          widths={[320, 480, 640]}
-          sizes="(min-width: 40rem) 22rem, 100vw"
-          class="capa"
-        />
+      {data.confidential && (
+        <p class="mt-6 flex items-center gap-3 text-sm text-texto-suave">
+          <span class="esfera shrink-0" aria-hidden="true"></span>
+          Projeto corporativo: dados e nomes de clientes omitidos.
+        </p>
       )}
-      <slot />
+
+      <div class="mt-6"><StackChips itens={data.stack} /></div>
     </div>
 
-    <div class="mx-auto max-w-3xl">
-      <NavProjetos anterior={anterior} proximo={proximo} />
+    <DivisorFita variante="a" class="mt-6" />
+
+    <div class="pagina">
+      {data.coverLargo && (
+        <figure class="moldura-tela mx-auto mt-4 max-w-5xl">
+          <CapaProjeto
+            claro={data.coverLargo}
+            escuro={data.coverLargoEscuro}
+            alt={data.coverAlt ?? ''}
+            widths={[640, 960, 1440]}
+            sizes="(min-width: 64rem) 64rem, 100vw"
+            class="w-full rounded-[0.75rem]"
+          />
+        </figure>
+      )}
+
+      <div class="prosa mx-auto mt-12 max-w-3xl">
+        {!data.coverLargo && data.cover && (
+          <CapaProjeto
+            claro={data.cover}
+            escuro={data.coverEscuro}
+            alt={data.coverAlt ?? ''}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 40rem) 22rem, 100vw"
+            class="capa"
+          />
+        )}
+        <slot />
+      </div>
+
+      <div class="mx-auto max-w-3xl">
+        <NavProjetos anterior={anterior} proximo={proximo} />
+      </div>
     </div>
   </article>
 </BaseLayout>

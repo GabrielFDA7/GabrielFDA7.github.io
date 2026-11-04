@@ -1,9 +1,11 @@
 ---
 import { getCollection, render } from 'astro:content';
-import FaixaCromo from '../components/FaixaCromo.astro';
+import DivisorFita from '../components/DivisorFita.astro';
 import FotoPerfil from '../components/FotoPerfil.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import TituloSecao from '../components/TituloSecao.astro';
+import TopoPagina from '../components/TopoPagina.astro';
 import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
 const experiencias = (await getCollection('experiencia')).toSorted((a, b) => a.data.order - b.data.order);
 const linhaDoTempo = await Promise.all(
@@ -19,73 +21,53 @@ const alemDoCodigo = [
 ---
 
 <BaseLayout title="Sobre" description={`Trajetória, experiência, formação e idiomas de ${site.nome}.`}>
-  <FaixaCromo />
-  <div class="pagina">
-    <div class="mt-4 max-w-3xl">
-      <FotoPerfil tamanho={136} />
-      <h1 class="mt-6 pb-1 text-5xl font-bold tracking-tight"><span class="cromo-texto">Sobre</span></h1>
-      <div class="mt-5 flex flex-col gap-4 text-lg">
-        <p>Entrei na Sotreq, revenda oficial Caterpillar no Brasil, em fevereiro de 2025, como estagiário de Automação e Dados. Em março de 2026 passei a Analista de Leads, e hoje construo pipelines, integrações e automações sobre dados de máquinas e do SAP.</p>
-        <p>Fora do trabalho, construí o <a href="/projetos/nextup">NextUp</a>, uma API em Python em produção, com testes, CI e deploy contínuo.</p>
-        <p>Estudo Sistemas de Informação na UFU, com conclusão em dezembro de 2027.</p>
-      </div>
+  <TopoPagina titulo="Sobre" rotulo={site.nome}>
+    <div class="mt-5 flex max-w-2xl flex-col gap-4 text-lg">
+      <p>Entrei na Sotreq, revenda oficial Caterpillar no Brasil, em fevereiro de 2025, como estagiário de Automação e Dados. Em março de 2026 passei a Analista de Leads, e hoje construo pipelines, integrações e automações sobre dados de máquinas e do SAP.</p>
+      <p>Fora do trabalho, construí o <a href="/projetos/nextup">NextUp</a>, uma API em Python em produção, com testes, CI e deploy contínuo.</p>
+      <p>Estudo Sistemas de Informação na UFU, com conclusão em dezembro de 2027.</p>
     </div>
+    <FotoPerfil slot="lado" tamanho={220} class="relative p-1" />
+  </TopoPagina>
 
-    <section class="mt-secao max-w-3xl" aria-labelledby="linha-do-tempo">
-      <h2 id="linha-do-tempo" class="text-3xl font-bold tracking-tight">Experiência</h2>
-      <ol class="linha mt-8 flex flex-col gap-10">
-        {linhaDoTempo.map(({ cargo, empresa, contexto, period, Corpo }) => (
-          <li class="relative pl-7">
-            <p class="text-sm text-texto-suave">{period}</p>
-            <h3 class="mt-1 text-xl font-semibold tracking-tight">{cargo}</h3>
-            <p class="text-sm text-texto-suave">{empresa}{contexto ? ` · ${contexto}` : ''}</p>
-            <div class="prosa mt-3"><Corpo /></div>
-          </li>
-        ))}
-      </ol>
-    </section>
+  <DivisorFita variante="a" />
 
-    <section class="mt-secao max-w-3xl" aria-labelledby="alem">
-      <h2 id="alem" class="text-3xl font-bold tracking-tight">Além do código do dia a dia</h2>
-      <div class="prosa mt-6">
-        <ul>
-          {alemDoCodigo.map((item) => <li>{item}</li>)}
-        </ul>
-      </div>
-    </section>
+  <section class="pagina mt-8" aria-labelledby="linha-do-tempo">
+    <TituloSecao id="linha-do-tempo" rotulo="Trajetória" titulo="Experiência" />
+    <ol class="tubo mt-10 max-w-3xl">
+      {linhaDoTempo.map(({ cargo, empresa, contexto, period, Corpo }) => (
+        <li class="parada">
+          <p class="rotulo">{period}</p>
+          <h3 class="mt-2 text-2xl font-bold tracking-tight">{cargo}</h3>
+          <p class="text-sm text-texto-suave">{empresa}{contexto ? ` · ${contexto}` : ''}</p>
+          <div class="prosa mt-4"><Corpo /></div>
+        </li>
+      ))}
+    </ol>
+  </section>
 
-    <section class="mt-secao grid max-w-3xl gap-10 sm:grid-cols-2" aria-label="Formação e idiomas">
-      <div>
-        <h2 class="text-3xl font-bold tracking-tight">Formação</h2>
-        <p class="mt-5 font-semibold">Bacharelado em Sistemas de Informação</p>
-        <p class="text-sm text-texto-suave">Universidade Federal de Uberlândia · 6º período · conclusão em dez/2027</p>
-        <p class="mt-3 text-sm text-texto-suave">VIII Iniciação Científica da FAMAT/UFU</p>
-      </div>
-      <div>
-        <h2 class="text-3xl font-bold tracking-tight">Idiomas</h2>
-        <p class="mt-5 font-semibold">Português</p>
-        <p class="text-sm text-texto-suave">Nativo</p>
-        <p class="mt-3 font-semibold">Inglês</p>
-        <p class="text-sm text-texto-suave">C1 · FCE, Cambridge</p>
-      </div>
-    </section>
-  </div>
+  <section class="pagina mt-secao" aria-labelledby="alem">
+    <TituloSecao id="alem" rotulo="Fora do dia a dia" titulo="Além do código" />
+    <div class="prosa mt-8 max-w-3xl">
+      <ul>
+        {alemDoCodigo.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="pagina mt-secao grid gap-10 sm:grid-cols-2" aria-label="Formação e idiomas">
+    <div>
+      <p class="rotulo">Formação</p>
+      <p class="metal numero-gigante mt-3">2027</p>
+      <h2 class="mt-3 text-2xl font-bold tracking-tight">Bacharelado em Sistemas de Informação</h2>
+      <p class="mt-1 text-texto-suave">Universidade Federal de Uberlândia · 6º período · conclusão em dez/2027</p>
+      <p class="mt-1 text-texto-suave">VIII Iniciação Científica da FAMAT/UFU</p>
+    </div>
+    <div>
+      <p class="rotulo">Idiomas</p>
+      <p class="metal numero-gigante mt-3">C1</p>
+      <h2 class="mt-3 text-2xl font-bold tracking-tight">Inglês</h2>
+      <p class="mt-1 text-texto-suave">FCE, Cambridge · Português nativo</p>
+    </div>
+  </section>
 </BaseLayout>
-
-<style>
-  .linha {
-    border-left: 1px solid var(--linha);
-    list-style: none;
-  }
-
-  .linha > li::before {
-    content: '';
-    position: absolute;
-    top: 0.45rem;
-    left: -0.3125rem;
-    width: 0.5625rem;
-    height: 0.5625rem;
-    border-radius: 999px;
-    background: var(--destaque);
-  }
-</style>
