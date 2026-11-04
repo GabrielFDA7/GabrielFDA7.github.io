@@ -4,9 +4,15 @@ interface Publicavel {
   data: { draft: boolean; order: number };
 }
 
-/** Tira os rascunhos e ordena pelo campo `order`. Toda página parte desta lista. */
-export function publicados<T extends Publicavel>(lista: readonly T[]): T[] {
-  return lista.filter((item) => !item.data.draft).toSorted((a, b) => a.data.order - b.data.order);
+/**
+ * Tira os rascunhos e ordena pelo campo `order`. Toda página parte desta lista.
+ * No `npm run dev` os rascunhos aparecem, para revisar como ficam antes de publicar.
+ */
+export function publicados<T extends Publicavel>(
+  lista: readonly T[],
+  { comRascunhos = import.meta.env.MODE === 'development' } = {},
+): T[] {
+  return lista.filter((item) => comRascunhos || !item.data.draft).toSorted((a, b) => a.data.order - b.data.order);
 }
 
 /** Projeto anterior e próximo na ordem do site. Não dá a volta: as pontas ficam sem vizinho. */

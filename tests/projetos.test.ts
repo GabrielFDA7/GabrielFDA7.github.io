@@ -9,6 +9,11 @@ describe('publicados', () => {
     expect(lista.map((p) => p.id)).toEqual(['a']);
   });
 
+  it('mantém os rascunhos quando pedido, como no servidor de desenvolvimento', () => {
+    const lista = publicados([projeto('a', 1), projeto('rascunho', 2, true)], { comRascunhos: true });
+    expect(lista.map((p) => p.id)).toEqual(['a', 'rascunho']);
+  });
+
   it('ordena pelo campo order sem alterar a lista original', () => {
     const original = [projeto('c', 3), projeto('a', 1), projeto('b', 2)];
     expect(publicados(original).map((p) => p.id)).toEqual(['a', 'b', 'c']);
