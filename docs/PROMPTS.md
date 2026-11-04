@@ -187,3 +187,21 @@ Gostei muito da forma que você fez o celular para display do nextup, bem criati
 2. O nome da abertura passou a usar o mesmo metal do resto do site.
 3. As capas do NextUp foram refeitas tocando no mapa, com as opções numeradas e a rota à vista.
 4. Ideias de estrutura apresentadas, para o Gabriel escolher antes de qualquer mudança.
+
+### Prompt #010
+**Data:** 04/11/2026
+**Contexto:** Escolha entre as ideias de estrutura: A (fio condutor), B (arte com borda líquida) e C
+(composição própria no celular).
+
+```
+Manda bala, faz A + B + C
+```
+
+**O que resultou:**
+
+1. Fio de cromo contínuo em todas as páginas, com as seções presas a ele por esferas.
+2. No celular, a arte virou metal derretido no topo, que escorre e vira o fio, e uma poça fecha a página.
+3. No computador, uma curva liga a arte ao fio. A seção de método mudou de lado para os passos ficarem
+   sobre ele.
+4. Celular recomposto: métricas em uma linha, aparelho logo abaixo do nome, linhas de projeto e botões
+   mais compactos. A home foi de cerca de 8,5 para 6,7 telas em 390 px.

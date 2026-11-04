@@ -38,12 +38,20 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   elemento de cromo que pareça parte dela. Os materiais do sistema são:
   - `.metal`: textura de cromo recortada no texto, com reflexo que anda na rolagem. Em títulos e
     números grandes.
-  - `DivisorFita`: dois fios finos de cromo que se cruzam, entre seções. Uma versão com lâminas foi
-    rejeitada em 04/11/2026 por parecer um raio agressivo: a separação precisa ser suave e fina.
+  - **Fio condutor** (`.trilho`, no `BaseLayout`): uma única peça de cromo desce a página inteira, e
+    as seções se penduram nele com esferas (`.com-conta`, `.parada`). É o que amarra o site.
+  - `MetalLiquido`: abaixo de 64rem, a arte sangra no topo, termina em uma onda e escorre em um gargalo
+    que vira o fio. Invertida, é a poça no fim do rodapé. A arte não aparece em outro lugar no celular.
+  - `CurvaFio`: no computador, leva o fio da arte até a margem e o devolve à direita no rodapé.
+  - `DivisorFita`: dois fios finos de cromo que se cruzam, entre seções, só no computador. Uma versão
+    com lâminas foi rejeitada em 04/11/2026 por parecer um raio agressivo: a separação precisa ser
+    suave e fina.
   - `FerramentasIA`: logos das ferramentas em metal, com desenhos do pacote `simple-icons` (CC0).
-  - `.tubo` e `.parada`: tubo de cromo com esferas, para sequências e linhas do tempo.
   - `LinhaProjeto`: lista editorial com número em metal, no lugar de cartões de projeto.
   - `TopoPagina`: a composição da abertura (texto à esquerda, arte à direita) nas páginas internas.
+- **O celular tem composição própria, não é o computador empilhado** (Gabriel, 04/11/2026). Métricas em
+  uma linha (`Metricas`), aparelho logo abaixo do nome do projeto, número e seta na linha do título e
+  botões em grade (`.botoes`), para nenhum cair sozinho.
 - **Texto corrido fica em fundo liso**, nunca sobre imagem nem em degradê. A arte se encaixa ao lado
   ou atrás de objetos, como o aparelho do projeto principal.
 - **Toda a arte é gerada por código**, em `scripts/gerar-arte.mjs` (`npm run arte`). As saídas
@@ -85,6 +93,11 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - Duas opções razoáveis: mostrar as duas com o trade-off em 2 linhas e recomendar uma.
 
 ### Armadilhas já encontradas
+
+- **Sequência com esferas precisa começar na margem do conteúdo.** A esfera é posicionada a partir da
+  margem (`--recuo-fio`). Um `.tubo` em coluna à direita ou centralizado deixa a esfera fora do fio.
+- **O gargalo do `MetalLiquido` está desenhado em x = 14px.** Se mudar `--margem-esquerda` ou
+  `--recuo-fio` no celular, mude o desenho também, ou a arte se solta do fio.
 
 - **Estilo com escopo não atravessa componente.** Uma classe passada a um componente filho não
   recebe o CSS `<style>` do pai. Envolva o filho em um elemento do pai.

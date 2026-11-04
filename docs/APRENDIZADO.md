@@ -249,6 +249,35 @@ metal, e a seta avança.
 **A técnica do link esticado.** Em [LinhaProjeto.astro](../src/components/LinhaProjeto.astro), o `::after`
 do link cobre a linha inteira. Assim toda a área é clicável, mas o leitor de tela anuncia só o título.
 
-**CSS como material.** O tubo e as esferas não são imagens: são degradês (`--cromo-tubo` e
+**CSS como material.** O fio e as esferas não são imagens: são degradês (`--cromo-fio` e
 `--cromo-esfera`, em [tokens.css](../src/styles/tokens.css)). Pesam quase nada e ficam nítidos em
 qualquer tela. A esfera é um `radial-gradient` com a luz deslocada para o canto.
+
+### Como o site foi amarrado, principalmente no celular
+
+**O diagnóstico.** Cada seção estava bonita sozinha, mas nada ligava uma à outra. No celular, a arte
+era um retângulo solto, e o layout era o do computador empilhado. O remédio foi estrutural: uma peça
+só, que atravessa a página.
+
+**O fio é um único elemento.** Em [global.css](../src/styles/global.css), o `.trilho::before` envolve
+`main` e rodapé e vai de cima a baixo. As pontas não são calculadas: quem está na frente cobre o fio.
+A arte (`z-index: 2`) esconde o começo, e assim ele parece nascer de dentro do metal. Isso evita medir
+a altura de cada seção, que mudaria com o texto.
+
+**A posição vem de contas em CSS.** `--x-fio` soma a sobra lateral da página à margem e subtrai o
+recuo. O `max(0px, ...)` cobre a tela menor que o limite da página. As esferas usam o mesmo recuo, e
+por isso caem sobre o fio em qualquer largura. O desvio medido foi de 0 px em quatro larguras.
+
+**A borda líquida.** [MetalLiquido.astro](../src/components/MetalLiquido.astro) usa `clip-path: path()`
+para recortar a arte. O mesmo desenho, com comandos relativos, serve para qualquer altura. Três traços
+sobrepostos, do mais grosso e escuro ao mais fino e claro, imitam o volume de um cilindro em qualquer
+ângulo, coisa que um degradê comum não faz numa curva. A poça do rodapé é o mesmo componente com
+`scale: 1 -1`.
+
+**Composição própria com a mesma marcação.** Em [LinhaProjeto.astro](../src/components/LinhaProjeto.astro),
+`grid-template-areas` desenha o layout de cada tela, e o HTML não se repete. Em
+[ProjetoPrincipal.astro](../src/components/ProjetoPrincipal.astro), a ordem do HTML (nome, aparelho,
+texto) é a do celular. No computador, a grade coloca o aparelho na segunda coluna.
+
+**Decoração oculta não pesa.** Com `display: none`, nem o fundo CSS nem a imagem lazy são baixados. O
+celular não baixa as fitas nem a versão grande da arte.
