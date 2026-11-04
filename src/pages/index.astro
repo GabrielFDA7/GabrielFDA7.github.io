@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Contato from '../components/Contato.astro';
-import DivisorFita from '../components/DivisorFita.astro';
 import ExperienciaResumo from '../components/ExperienciaResumo.astro';
 import Hero from '../components/Hero.astro';
 import LinhaProjeto from '../components/LinhaProjeto.astro';
@@ -30,7 +29,6 @@ const experiencia = (await getCollection('experiencia', (item) => item.data.naHo
       <p class="mt-2"><a class="inline-flex min-h-11 items-center font-medium" href="/projetos">Ver todos os projetos</a></p>
     </section>
   )}
-  <DivisorFita variante="b" class="mt-secao" />
   <MetodoIA />
   <ExperienciaResumo itens={experiencia} />
   <Contato />

@@ -31,19 +31,18 @@ const praticas = [
 ];
 ---
 
-<section class="metodo pagina mt-secao" aria-labelledby="metodo-ia">
-  <div class="cabeca">
+<section class="pagina mt-secao grid gap-x-16 gap-y-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-y-12" aria-labelledby="metodo-ia">
+  <div class="fixo">
     <TituloSecao
       id="metodo-ia"
       rotulo="Método"
       titulo="Como eu trabalho com IA"
       descricao="O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada passo aponta para o arquivo real no repositório."
     />
+    <div class="mt-7 lg:mt-10"><FerramentasIA /></div>
   </div>
 
-  <div class="ferramentas"><FerramentasIA /></div>
-
-  <ol class="tubo passos">
+  <ol class="tubo">
     {praticas.map((pratica) => (
       <li class="parada">
         <h3 class="text-xl font-bold tracking-tight lg:text-2xl">{pratica.titulo}</h3>
@@ -61,38 +60,11 @@ const praticas = [
 </section>
 
 <style>
-  .ferramentas {
-    margin-top: 1.75rem;
-  }
-
-  .passos {
-    margin-top: 2.25rem;
-  }
-
-  /* Computador: os passos ficam na coluna do fio, e os logos acompanham a leitura ao lado. */
   @media (min-width: 64rem) {
-    .metodo {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      grid-template-rows: auto 1fr;
-      column-gap: 5rem;
-    }
-
-    .cabeca {
-      grid-area: 1 / 1;
-    }
-
-    .passos {
-      grid-area: 2 / 1;
-      margin-top: 3rem;
-    }
-
-    .ferramentas {
+    .fixo {
       position: sticky;
-      top: 4rem;
-      grid-area: 1 / 2 / 3 / 3;
+      top: 2rem;
       align-self: start;
-      margin-top: 2.25rem;
     }
   }
 </style>

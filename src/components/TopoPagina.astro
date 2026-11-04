@@ -1,6 +1,5 @@
 ---
 import ArteCromo from './ArteCromo.astro';
-import CurvaFio from './CurvaFio.astro';
 import MetalLiquido from './MetalLiquido.astro';
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
 const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
 ---
 
-<section class="topo relative overflow-hidden">
+<section class="topo relative overflow-clip">
   <MetalLiquido altura={88} />
   <div class="arte"><ArteCromo class="size-full" /></div>
   <div class="pagina relative">
@@ -32,7 +31,6 @@ const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
       <slot name="lado" />
     </div>
   </div>
-  <CurvaFio sentido="sai-da-arte" />
 </section>
 
 <style>
@@ -49,11 +47,6 @@ const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
 
   /* Computador: a mesma composição da abertura, com a arte à direita. */
   @media (min-width: 64rem) {
-    .topo {
-      z-index: 2; /* cobre o início do fio, que só aparece depois da curva */
-      background: var(--fundo);
-    }
-
     .arte {
       position: absolute;
       inset-block: 0;

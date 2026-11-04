@@ -1,13 +1,12 @@
 ---
 import { site } from '../config/site';
 import ArteCromo from './ArteCromo.astro';
-import CurvaFio from './CurvaFio.astro';
 import FotoPerfil from './FotoPerfil.astro';
 import Icone from './Icone.astro';
 import MetalLiquido from './MetalLiquido.astro';
 ---
 
-<section class="hero relative overflow-hidden" aria-labelledby="nome">
+<section class="hero relative overflow-clip" aria-labelledby="nome">
   <MetalLiquido altura={128} />
   <div class="arte"><ArteCromo class="size-full" /></div>
   <div class="pagina relative">
@@ -38,7 +37,6 @@ import MetalLiquido from './MetalLiquido.astro';
       </div>
     </div>
   </div>
-  <CurvaFio sentido="sai-da-arte" />
 </section>
 
 <style>
@@ -61,11 +59,6 @@ import MetalLiquido from './MetalLiquido.astro';
 
   /* Computador: a arte ocupa a metade direita, e o texto fica na esquerda. */
   @media (min-width: 64rem) {
-    .hero {
-      z-index: 2; /* cobre o início do fio, que só aparece depois da curva */
-      background: var(--fundo);
-    }
-
     .arte {
       position: absolute;
       inset-block: 0;

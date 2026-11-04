@@ -27,20 +27,18 @@
 }
 
 /*
- * Geometria do fio de cromo. No celular, os valores são fixos em px porque o gargalo da borda
- * líquida (MetalLiquido) é desenhado em x = 14px e precisa encontrar o fio exatamente.
+ * Geometria do fio de cromo, que só existe abaixo de 64rem. Os valores são fixos em px porque o
+ * gargalo da borda líquida (MetalLiquido) é desenhado em x = 14px e precisa encontrar o fio.
  */
 :root {
   --fio: 4px;
   --conta: 1.125rem;
   --recuo-fio: 20px; /* do centro do fio até o início do conteúdo */
   --margem-esquerda: 34px;
-  --x-fio: calc(max(0px, (100% - var(--container-pagina)) / 2) + var(--margem-esquerda) - var(--recuo-fio) - var(--fio) / 2);
 }
 
 @media (min-width: 64rem) {
   :root {
-    --recuo-fio: 1.5rem;
     --margem-esquerda: var(--spacing-margem);
   }
 }
@@ -89,8 +87,9 @@
   }
 
   /*
-   * O fio condutor: uma única peça de cromo que desce pela página inteira. A arte da abertura
-   * e o rodapé ficam por cima das pontas, então o fio nasce e termina dentro do metal.
+   * O fio condutor do celular: uma única peça de cromo que desce pela página. A arte do topo e
+   * a poça do rodapé ficam por cima das pontas, então o fio nasce e termina dentro do metal.
+   * No computador não há fio nem divisor: quem separa as seções é o espaço (Gabriel, 04/11/2026).
    */
   .trilho {
     position: relative;
@@ -99,15 +98,17 @@
     flex-direction: column;
   }
 
-  .trilho::before {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    inset-block: 0;
-    left: var(--x-fio);
-    width: var(--fio);
-    background: var(--cromo-fio);
-    pointer-events: none;
+  @media (max-width: 63.99rem) {
+    .trilho::before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      inset-block: 0;
+      left: calc(var(--margem-esquerda) - var(--recuo-fio) - var(--fio) / 2);
+      width: var(--fio);
+      background: var(--cromo-fio);
+      pointer-events: none;
+    }
   }
 
   .trilho .pagina {
@@ -297,20 +298,14 @@
   }
 
   /*
-   * Sequências penduradas no fio: a linha do tempo e os passos do método. O `.tubo` precisa
-   * começar na margem do conteúdo, para as esferas caírem exatamente sobre o fio.
+   * Sequências: a linha do tempo e os passos do método. No celular, o `.tubo` precisa começar na
+   * margem do conteúdo, para as esferas caírem sobre o fio. No computador, a esfera é um marcador.
    */
   .tubo {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     list-style: none;
-  }
-
-  @media (min-width: 64rem) {
-    .tubo {
-      gap: 3rem;
-    }
   }
 
   .parada,
@@ -337,6 +332,24 @@
   .com-conta::before {
     top: 50%;
     translate: 0 -50%;
+  }
+
+  @media (min-width: 64rem) {
+    .tubo {
+      gap: 3rem;
+    }
+
+    .parada {
+      padding-left: 2rem;
+    }
+
+    .parada::before {
+      left: 0;
+    }
+
+    .com-conta::before {
+      display: none;
+    }
   }
 
   .esfera {
@@ -556,6 +569,36 @@
   .prosa h2 {
     background-attachment: fixed;
     background-size: cover;
+  }
+}
+
+/*
+ * No toque, o fundo fixo não é confiável (o iPhone o ignora). O mesmo reflexo vem de uma animação
+ * presa à rolagem: a textura desliza enquanto o texto atravessa a tela. Sem suporte, fica parada.
+ */
+@media (prefers-reduced-motion: no-preference) and (hover: none), (prefers-reduced-motion: no-preference) and (max-width: 47.99rem) {
+  @supports (animation-timeline: view()) {
+    .metal,
+    .prosa h2 {
+      /*
+       * Sem o atalho `animation`: o compactador do build o funde com a linha do tempo em uma forma
+       * que o navegador rejeita, e o reflexo some só em produção.
+       */
+      animation-name: reflexo-metal;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+    }
+
+    @keyframes reflexo-metal {
+      from {
+        background-position: 25% 0%;
+      }
+
+      to {
+        background-position: 75% 100%;
+      }
+    }
   }
 }
 

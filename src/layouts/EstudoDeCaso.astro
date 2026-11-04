@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import CapaProjeto from '../components/CapaProjeto.astro';
-import DivisorFita from '../components/DivisorFita.astro';
 import Icone from '../components/Icone.astro';
 import Metricas from '../components/Metricas.astro';
 import NavProjetos from '../components/NavProjetos.astro';
@@ -74,11 +73,9 @@ const apoio = resto.join(' — ');
       <div class="mt-6"><StackChips itens={data.stack} /></div>
     </div>
 
-    <DivisorFita variante="a" class="mt-6" />
-
     <div class="pagina">
       {data.coverLargo && (
-        <figure class="moldura-tela mx-auto mt-8 max-w-5xl lg:mt-4">
+        <figure class="moldura-tela mx-auto mt-8 max-w-5xl lg:mt-12">
           <CapaProjeto
             claro={data.coverLargo}
             escuro={data.coverLargoEscuro}

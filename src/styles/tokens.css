@@ -10,7 +10,7 @@
   color-scheme: light;
 
   /* Metal igual nos dois temas: as bordas escuras dão volume no claro e no escuro. */
-  --cromo-fio:
+  --cromo-fio: /* só no celular */
     repeating-linear-gradient(180deg, transparent 0 14rem, rgb(142 197 255 / 0.55) 18rem, transparent 22rem 34rem, rgb(255 138 92 / 0.4) 37rem, transparent 40rem 52rem),
     linear-gradient(90deg, #39414d, #f4f6f9 34%, #8b95a3 58%, #ffffff 72%, #39414d);
   --fio-borda: #39414d;

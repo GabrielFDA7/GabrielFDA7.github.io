@@ -120,10 +120,6 @@ const LUZ = {
     [0.0, 0.34], [0.2, 0.08], [0.3, 0.03], [0.36, 0.34], [0.4, 0.47], [0.46, 0.2], [0.54, 0.03],
     [0.62, 0.16], [0.68, 0.46], [0.72, 0.22], [0.82, 0.04], [0.92, 0.18], [1.0, 0.42],
   ]),
-  // Fio fino: só uma luz larga no meio. Faixas estreitas virariam hachura em poucos pixels.
-  fio: criarTabela([
-    [0.0, 0.22], [0.28, 0.72], [0.48, 1.0], [0.66, 0.78], [0.84, 0.46], [1.0, 0.2],
-  ]),
   // O emblema é pequeno: precisa de prata aberta, com poucas faixas escuras.
   emblema: criarTabela([
     [0.0, 0.3], [0.2, 0.86], [0.3, 1.0], [0.36, 0.5], [0.4, 0.09], [0.46, 0.62], [0.54, 0.98],
@@ -433,70 +429,10 @@ async function gerarTextura(tema, tabela) {
   console.log(`ok: ${arquivo}`);
 }
 
-// --- Fita: dois fios finos de cromo que separam as seções, sem chamar atenção -----
-
-async function gerarFita({ nome, fios, largura = 2400, alturaPx = 200, espessura = 8 }) {
-  const luz = LUZ.fio;
-  const rgba = new Float32Array(largura * alturaPx * 4);
-  for (const { ondas, peso, amplitude, brilho } of fios) {
-    for (let x = 0; x < largura; x += 1) {
-      const t = x / largura;
-      const envelope = Math.sin(Math.PI * t);
-      const onda = ondas.reduce((soma, [frequencia, fase, forca]) => soma + forca * Math.sin(2 * Math.PI * (t * frequencia + fase)), 0);
-      const centro = alturaPx / 2 + amplitude * onda * envelope ** 0.6;
-      // O fio afina até sumir nas duas pontas: não há começo nem fim marcados.
-      const meia = peso * espessura * envelope ** 1.2 * (0.8 + 0.2 * Math.sin(2 * Math.PI * (t * 3 + brilho)));
-      if (meia < 0.2) continue;
-      const inicio = Math.max(0, Math.floor(centro - meia - 2));
-      const fim = Math.min(alturaPx - 1, Math.ceil(centro + meia + 2));
-      for (let y = inicio; y <= fim; y += 1) {
-        const v = limitar((y - centro) / meia, -1, 1);
-        const cobertura = limitar(meia - Math.abs(y - centro) + 0.5);
-        if (cobertura <= 0) continue;
-        // Um cilindro reflete a faixa de luz de cima a baixo. A fase lenta faz o brilho correr.
-        const leitura = 0.5 + 0.44 * v + 0.14 * Math.sin(2 * Math.PI * (t * 2.2 + brilho));
-        const i = (y * largura + x) * 4;
-        const fundo = 1 - cobertura;
-        // O brilho corre ao longo do fio, com um toque frio de um lado e quente do outro.
-        const tom = Math.sin(2 * Math.PI * (t * 1.6 + brilho));
-        const valor = ler(luz, leitura);
-        rgba[i] = valor * (1 - 0.14 * Math.max(0, tom)) * cobertura + rgba[i] * fundo;
-        rgba[i + 1] = valor * (1 - 0.05 * Math.abs(tom)) * cobertura + rgba[i + 1] * fundo;
-        rgba[i + 2] = valor * (1 - 0.2 * Math.max(0, -tom)) * cobertura + rgba[i + 2] * fundo;
-        rgba[i + 3] = Math.max(rgba[i + 3], cobertura);
-      }
-    }
-  }
-  const bytes = Buffer.alloc(rgba.length);
-  for (let i = 0; i < rgba.length; i += 1) bytes[i] = Math.round(limitar(rgba[i]) * 255);
-  const original = () => sharp(bytes, { raw: { width: largura, height: alturaPx, channels: 4 } });
-  const arquivo = `${SAIDA}/fita-${nome}.webp`;
-  await original().resize(1800).webp({ quality: 90, alphaQuality: 100, effort: 6 }).toFile(arquivo);
-  if (process.env.ARTE_PREVIA) {
-    await original().resize(1400).flatten({ background: '#050608' }).png().toFile(`${process.env.ARTE_PREVIA}/fita-${nome}.png`);
-    await original().resize(1400).flatten({ background: '#eceef1' }).png().toFile(`${process.env.ARTE_PREVIA}/fita-${nome}-claro.png`);
-  }
-  console.log(`ok: ${arquivo}`);
-}
-
 await mkdir(SAIDA, { recursive: true });
 await mkdir('public', { recursive: true });
 await gerarFundo('escuro');
 await gerarFundo('claro');
 await gerarTextura('escuro', 'letrasEscuro');
 await gerarTextura('claro', 'letrasClaro');
-await gerarFita({
-  nome: 'a',
-  fios: [
-    { ondas: [[1.1, 0.05, 0.7], [2.3, 0.4, 0.3]], peso: 1, amplitude: 58, brilho: 0.1 },
-    { ondas: [[1.1, 0.55, 0.6], [1.9, 0.15, 0.4]], peso: 0.55, amplitude: 66, brilho: 0.6 },
-  ],
-});
-await gerarFita({
-  nome: 'b',
-  fios: [
-    { ondas: [[0.9, 0.3, 0.75], [2.1, 0.7, 0.25]], peso: 1, amplitude: 62, brilho: 0.35 },
-    { ondas: [[1.4, 0.85, 0.6], [2.4, 0.2, 0.4]], peso: 0.5, amplitude: 58, brilho: 0.8 },
-  ],
-});
 await gerarEmblema();
