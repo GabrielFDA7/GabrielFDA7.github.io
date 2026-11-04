@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import CapaProjeto from '../components/CapaProjeto.astro';
 import DivisorFita from '../components/DivisorFita.astro';
 import Icone from '../components/Icone.astro';
+import Metricas from '../components/Metricas.astro';
 import NavProjetos from '../components/NavProjetos.astro';
 import StackChips from '../components/StackChips.astro';
 import TopoPagina from '../components/TopoPagina.astro';
@@ -34,7 +35,7 @@ const apoio = resto.join(' — ');
         <a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos">Todos os projetos</a>
       </p>
       {(data.links.repo || data.links.demo) && (
-        <div class="mt-8 flex flex-wrap gap-3">
+        <div class="botoes mt-8">
           {data.links.demo && (
             <a class="btn btn-cromo" href={data.links.demo}>
               Abrir demo
@@ -52,18 +53,9 @@ const apoio = resto.join(' — ');
     </TopoPagina>
 
     <div class="pagina">
-      {data.metrics.length > 0 && (
-        <dl class="flex flex-wrap gap-x-12 gap-y-6 pb-4">
-          {data.metrics.map((item) => (
-            <div class="flex flex-col-reverse">
-              <dt class="mt-1 text-sm text-texto-suave">{item.label}</dt>
-              <dd class="metal numero-metrica">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
+      <div class="pb-4 lg:pt-10"><Metricas itens={data.metrics} /></div>
 
-      <dl class="mt-6 grid max-w-4xl gap-5 sm:grid-cols-[auto_auto_1fr] sm:gap-x-12">
+      <dl class="mt-4 flex max-w-4xl flex-wrap gap-x-8 gap-y-4 sm:mt-6 sm:gap-x-12">
         {ficha.map((item) => (
           <div>
             <dt class="rotulo">{item.termo}</dt>
@@ -86,7 +78,7 @@ const apoio = resto.join(' — ');
 
     <div class="pagina">
       {data.coverLargo && (
-        <figure class="moldura-tela mx-auto mt-4 max-w-5xl">
+        <figure class="moldura-tela mx-auto mt-8 max-w-5xl lg:mt-4">
           <CapaProjeto
             claro={data.coverLargo}
             escuro={data.coverLargoEscuro}

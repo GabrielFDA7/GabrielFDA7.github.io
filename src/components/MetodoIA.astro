@@ -7,12 +7,12 @@ const BASE = 'https://github.com/GabrielFDA7/nextup';
 const praticas = [
   {
     titulo: 'Contexto versionado',
-    texto: 'O agente começa cada sessão lendo a arquitetura, as convenções e as decisões do projeto em um arquivo que evolui junto com o código.',
+    texto: 'O agente começa cada sessão lendo a arquitetura, as convenções e as decisões em um arquivo que evolui com o código.',
     links: [{ rotulo: 'CLAUDE.md', href: `${BASE}/blob/main/CLAUDE.md` }],
   },
   {
     titulo: 'Skills próprias',
-    texto: 'Fluxos que se repetem viram instrução executável. Uma exige medição antes de escolher um algoritmo ou limiar, e outra fecha a sessão com o registro feito.',
+    texto: 'Fluxos repetidos viram instrução executável: uma exige medição antes de escolher um algoritmo ou limiar, e outra fecha a sessão com o registro feito.',
     links: [
       { rotulo: 'medir-antes-de-implementar', href: `${BASE}/blob/main/.claude/skills/medir-antes-de-implementar/SKILL.md` },
       { rotulo: 'fechar-sessao', href: `${BASE}/blob/main/.claude/skills/fechar-sessao/SKILL.md` },
@@ -31,23 +31,24 @@ const praticas = [
 ];
 ---
 
-<section class="pagina mt-secao grid gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]" aria-labelledby="metodo-ia">
-  <div class="fixo">
+<section class="metodo pagina mt-secao" aria-labelledby="metodo-ia">
+  <div class="cabeca">
     <TituloSecao
       id="metodo-ia"
       rotulo="Método"
       titulo="Como eu trabalho com IA"
       descricao="O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada passo aponta para o arquivo real no repositório."
     />
-    <FerramentasIA />
   </div>
 
-  <ol class="tubo">
+  <div class="ferramentas"><FerramentasIA /></div>
+
+  <ol class="tubo passos">
     {praticas.map((pratica) => (
       <li class="parada">
-        <h3 class="text-2xl font-bold tracking-tight">{pratica.titulo}</h3>
+        <h3 class="text-xl font-bold tracking-tight lg:text-2xl">{pratica.titulo}</h3>
         <p class="mt-2 text-texto-suave">{pratica.texto}</p>
-        <ul class="mt-1 flex flex-wrap gap-x-4">
+        <ul class="flex flex-wrap gap-x-4">
           {pratica.links.map((link) => (
             <li>
               <a class="inline-flex min-h-11 items-center font-medium break-all" href={link.href}>{link.rotulo}</a>
@@ -60,11 +61,38 @@ const praticas = [
 </section>
 
 <style>
+  .ferramentas {
+    margin-top: 1.75rem;
+  }
+
+  .passos {
+    margin-top: 2.25rem;
+  }
+
+  /* Computador: os passos ficam na coluna do fio, e os logos acompanham a leitura ao lado. */
   @media (min-width: 64rem) {
-    .fixo {
+    .metodo {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      column-gap: 5rem;
+    }
+
+    .cabeca {
+      grid-area: 1 / 1;
+    }
+
+    .passos {
+      grid-area: 2 / 1;
+      margin-top: 3rem;
+    }
+
+    .ferramentas {
       position: sticky;
-      top: 2rem;
+      top: 4rem;
+      grid-area: 1 / 2 / 3 / 3;
       align-self: start;
+      margin-top: 2.25rem;
     }
   }
 </style>

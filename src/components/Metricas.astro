@@ -1,19 +1,75 @@
 ---
 interface Props {
   itens: readonly { label: string; value: string }[];
-  grande?: boolean;
 }
 
-const { itens, grande = false } = Astro.props;
+const { itens } = Astro.props;
 ---
 
 {itens.length > 0 && (
-  <dl class:list={['flex flex-wrap gap-x-8 gap-y-3', grande && 'gap-x-12']}>
+  <dl class="metricas">
     {itens.map((item) => (
-      <div class="flex flex-col-reverse">
-        <dt class="text-xs text-texto-suave">{item.label}</dt>
-        <dd class:list={['font-semibold tracking-tight', grande ? 'text-2xl sm:text-3xl' : 'text-lg']}>{item.value}</dd>
+      <div class="item flex flex-col-reverse justify-end">
+        <dt class="rotulo-metrica mt-1 text-xs text-texto-suave sm:text-sm">{item.label}</dt>
+        <dd class="metal numero-metrica">{item.value}</dd>
       </div>
     ))}
   </dl>
 )}
+
+<style>
+  /* Celular: uma linha compacta. Em tela apertada, o valor quebra, mas a linha continua inteira. */
+  .metricas {
+    display: grid;
+    grid-auto-columns: auto;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    column-gap: 0.75rem;
+  }
+
+  /* Tela estreita: os três valores não cabem lado a lado sem cortar "produção". */
+  @media (max-width: 23rem) {
+    .metricas {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(2, auto);
+      gap: 0.875rem 1.5rem;
+      justify-content: start;
+    }
+  }
+
+  .item {
+    min-width: 5.25rem;
+  }
+
+  /* O rótulo acompanha a coluna, sem alargá-la: quem define a largura é o valor. */
+  .rotulo-metrica {
+    width: 0;
+    min-width: 100%;
+  }
+
+  .numero-metrica {
+    font-size: clamp(1.1875rem, 4.9vw, 1.75rem); /* acima de 18,66 px em negrito: texto grande */
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  @media (min-width: 40rem) {
+    .metricas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 1.5rem 2.5rem;
+    }
+
+    .rotulo-metrica {
+      width: auto;
+      min-width: 0;
+    }
+
+    .numero-metrica {
+      font-size: clamp(2rem, 1.5rem + 2.2vw, 3.5rem);
+      line-height: 1.04;
+      white-space: nowrap;
+    }
+  }
+</style>
