@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # O Mermaid desenha os diagramas no build, e as verificações abrem o site em um navegador.
+      - run: npx playwright install --with-deps chromium
+
+      - name: Tipos
+        run: npm run check
+
+      - name: Testes
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Links, marcadores e SEO
+        run: node scripts/verificar-dist.mjs --externos
+
+      - name: Navegador (acessibilidade, layout, filtro, tema)
+        run: npm run verificar:navegador
+
+      - name: Lighthouse (95 ou mais no celular)
+        run: npm run lighthouse
