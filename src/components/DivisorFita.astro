@@ -1,5 +1,5 @@
 ---
-// Fita de metal entre as seções. É decorativa: o leitor de tela não precisa dela.
+// Linha fina de cromo entre as seções. É decorativa: o leitor de tela não precisa dela.
 import { Image } from 'astro:assets';
 import fitaA from '../assets/arte/fita-a.webp';
 import fitaB from '../assets/arte/fita-b.webp';
@@ -24,7 +24,7 @@ const { variante = 'a', espelhada = false, class: classe } = Astro.props;
 </div>
 
 <style>
-  /* No celular a fita é mais larga que a tela: as pontas somem e o miolo fica grande. */
+  /* No celular a linha é mais larga que a tela: as pontas somem e o traço não fica fino demais. */
   .fita {
     display: flex;
     justify-content: center;
@@ -43,7 +43,7 @@ const { variante = 'a', espelhada = false, class: classe } = Astro.props;
     scale: -1 1;
   }
 
-  /* A fita desliza um pouco durante a rolagem, sem JavaScript. */
+  /* A linha desliza um pouco durante a rolagem, sem JavaScript. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
       .fita img {

@@ -120,6 +120,10 @@ const LUZ = {
     [0.0, 0.34], [0.2, 0.08], [0.3, 0.03], [0.36, 0.34], [0.4, 0.47], [0.46, 0.2], [0.54, 0.03],
     [0.62, 0.16], [0.68, 0.46], [0.72, 0.22], [0.82, 0.04], [0.92, 0.18], [1.0, 0.42],
   ]),
+  // Fio fino: só uma luz larga no meio. Faixas estreitas virariam hachura em poucos pixels.
+  fio: criarTabela([
+    [0.0, 0.22], [0.28, 0.72], [0.48, 1.0], [0.66, 0.78], [0.84, 0.46], [1.0, 0.2],
+  ]),
   // O emblema é pequeno: precisa de prata aberta, com poucas faixas escuras.
   emblema: criarTabela([
     [0.0, 0.3], [0.2, 0.86], [0.3, 1.0], [0.36, 0.5], [0.4, 0.09], [0.46, 0.62], [0.54, 0.98],
@@ -429,70 +433,48 @@ async function gerarTextura(tema, tabela) {
   console.log(`ok: ${arquivo}`);
 }
 
-// --- Fita: metal derretido que atravessa a página entre as seções ---------------
+// --- Fita: dois fios finos de cromo que separam as seções, sem chamar atenção -----
 
-async function gerarFita({ nome, semente, espinhos, largura = 2400, alturaPx = 520, espessura = 54, amplitude = 150 }) {
-  const fbm = criarRuido(semente);
-  const fbm2 = criarRuido(semente + 11);
-  const lamina = (t, e) => {
-    const d = t < e.t ? (e.t - t) / e.antes : (t - e.t) / e.depois;
-    return d < 1 ? (1 - d) ** 1.7 : 0;
-  };
-  const passos = 1400;
-  const cima = [];
-  const baixo = [];
-  for (let i = 0; i <= passos; i += 1) {
-    const t = i / passos;
-    const x = t * largura;
-    const centro = alturaPx / 2 + amplitude * 2.2 * fbm(t * 2.1 + 3, 0.5, 2);
-    // A fita afina até virar ponta nas duas extremidades, como uma lâmina.
-    const miolo = espessura * Math.sin(Math.PI * t) ** 0.75 * (0.62 + 1.25 * limitar(0.5 + 1.5 * fbm2(t * 4.2, 1.7, 2)));
-    const noLado = (lado) => espinhos.filter((e) => e.lado === lado);
-    const forca = (lado) => noLado(lado).reduce((m, e) => Math.max(m, lamina(t, e)), 0);
-    const altura = (lado) => noLado(lado).reduce((m, e) => Math.max(m, lamina(t, e) * e.altura), 0);
-    // Cada espinho é arrastado no sentido da fita: vira lâmina, como os do emblema.
-    cima.push([x + 34 * forca('cima'), centro - miolo - altura('cima')]);
-    baixo.push([x - 34 * forca('baixo'), centro + miolo + altura('baixo')]);
-  }
-  const pontos = [...cima, ...baixo.reverse()].map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${largura}" height="${alturaPx}"><path fill="#fff" d="M${pontos}Z"/></svg>`;
-  const { data: alfa } = await sharp(Buffer.from(svg))
-    .resize(largura, alturaPx)
-    .ensureAlpha()
-    .extractChannel('alpha')
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-
-  const dentro = new Uint8Array(alfa.length);
-  for (let i = 0; i < alfa.length; i += 1) dentro[i] = alfa[i] > 127 ? 1 : 0;
-  const distancia = transformadaDeDistancia(dentro, largura, alturaPx);
-  const raio = 40;
-  const relevo = new Float32Array(alfa.length);
-  for (let y = 0; y < alturaPx; y += 1) {
+async function gerarFita({ nome, fios, largura = 2400, alturaPx = 200, espessura = 8 }) {
+  const luz = LUZ.fio;
+  const rgba = new Float32Array(largura * alturaPx * 4);
+  for (const { ondas, peso, amplitude, brilho } of fios) {
     for (let x = 0; x < largura; x += 1) {
-      const i = y * largura + x;
-      const t = limitar(distancia[i] / raio);
-      relevo[i] = Math.sqrt(1 - (1 - t) ** 2) + 0.6 * t * fbm((x / alturaPx) * 1.6, (y / alturaPx) * 3.4, 2);
+      const t = x / largura;
+      const envelope = Math.sin(Math.PI * t);
+      const onda = ondas.reduce((soma, [frequencia, fase, forca]) => soma + forca * Math.sin(2 * Math.PI * (t * frequencia + fase)), 0);
+      const centro = alturaPx / 2 + amplitude * onda * envelope ** 0.6;
+      // O fio afina até sumir nas duas pontas: não há começo nem fim marcados.
+      const meia = peso * espessura * envelope ** 1.2 * (0.8 + 0.2 * Math.sin(2 * Math.PI * (t * 3 + brilho)));
+      if (meia < 0.2) continue;
+      const inicio = Math.max(0, Math.floor(centro - meia - 2));
+      const fim = Math.min(alturaPx - 1, Math.ceil(centro + meia + 2));
+      for (let y = inicio; y <= fim; y += 1) {
+        const v = limitar((y - centro) / meia, -1, 1);
+        const cobertura = limitar(meia - Math.abs(y - centro) + 0.5);
+        if (cobertura <= 0) continue;
+        // Um cilindro reflete a faixa de luz de cima a baixo. A fase lenta faz o brilho correr.
+        const leitura = 0.5 + 0.44 * v + 0.14 * Math.sin(2 * Math.PI * (t * 2.2 + brilho));
+        const i = (y * largura + x) * 4;
+        const fundo = 1 - cobertura;
+        // O brilho corre ao longo do fio, com um toque frio de um lado e quente do outro.
+        const tom = Math.sin(2 * Math.PI * (t * 1.6 + brilho));
+        const valor = ler(luz, leitura);
+        rgba[i] = valor * (1 - 0.14 * Math.max(0, tom)) * cobertura + rgba[i] * fundo;
+        rgba[i + 1] = valor * (1 - 0.05 * Math.abs(tom)) * cobertura + rgba[i + 1] * fundo;
+        rgba[i + 2] = valor * (1 - 0.2 * Math.max(0, -tom)) * cobertura + rgba[i + 2] * fundo;
+        rgba[i + 3] = Math.max(rgba[i + 3], cobertura);
+      }
     }
   }
-  const rgb = sombrear({
-    altura: suavizar(relevo, largura, alturaPx, 6, 3),
-    largura,
-    alturaPx,
-    forca: 30,
-    tema: 'emblema',
-    dispersao: () => 0.014,
-    termico: (x, y) => 0.62 * degrau(0.0, 0.18, fbm2((x / alturaPx) * 0.9 + 4, (y / alturaPx) * 0.9, 2)),
-  });
-  const { bytes, canais } = paraBytes(rgb, alfa);
+  const bytes = Buffer.alloc(rgba.length);
+  for (let i = 0; i < rgba.length; i += 1) bytes[i] = Math.round(limitar(rgba[i]) * 255);
+  const original = () => sharp(bytes, { raw: { width: largura, height: alturaPx, channels: 4 } });
   const arquivo = `${SAIDA}/fita-${nome}.webp`;
-  await sharp(bytes, { raw: { width: largura, height: alturaPx, channels: canais } })
-    .resize(1800)
-    .webp({ quality: 82, alphaQuality: 90, effort: 6 })
-    .toFile(arquivo);
+  await original().resize(1800).webp({ quality: 90, alphaQuality: 100, effort: 6 }).toFile(arquivo);
   if (process.env.ARTE_PREVIA) {
-    await sharp(bytes, { raw: { width: largura, height: alturaPx, channels: canais } })
-      .resize(1400).flatten({ background: '#050608' }).png().toFile(`${process.env.ARTE_PREVIA}/fita-${nome}.png`);
+    await original().resize(1400).flatten({ background: '#050608' }).png().toFile(`${process.env.ARTE_PREVIA}/fita-${nome}.png`);
+    await original().resize(1400).flatten({ background: '#eceef1' }).png().toFile(`${process.env.ARTE_PREVIA}/fita-${nome}-claro.png`);
   }
   console.log(`ok: ${arquivo}`);
 }
@@ -505,25 +487,16 @@ await gerarTextura('escuro', 'letrasEscuro');
 await gerarTextura('claro', 'letrasClaro');
 await gerarFita({
   nome: 'a',
-  semente: 12,
-  espinhos: [
-    { t: 0.16, lado: 'cima', altura: 74, antes: 0.07, depois: 0.012 },
-    { t: 0.31, lado: 'baixo', altura: 92, antes: 0.012, depois: 0.075 },
-    { t: 0.44, lado: 'cima', altura: 120, antes: 0.085, depois: 0.014 },
-    { t: 0.58, lado: 'baixo', altura: 104, antes: 0.012, depois: 0.08 },
-    { t: 0.7, lado: 'cima', altura: 96, antes: 0.08, depois: 0.012 },
-    { t: 0.85, lado: 'baixo', altura: 70, antes: 0.01, depois: 0.06 },
+  fios: [
+    { ondas: [[1.1, 0.05, 0.7], [2.3, 0.4, 0.3]], peso: 1, amplitude: 58, brilho: 0.1 },
+    { ondas: [[1.1, 0.55, 0.6], [1.9, 0.15, 0.4]], peso: 0.55, amplitude: 66, brilho: 0.6 },
   ],
 });
 await gerarFita({
   nome: 'b',
-  semente: 57,
-  espinhos: [
-    { t: 0.13, lado: 'baixo', altura: 66, antes: 0.01, depois: 0.06 },
-    { t: 0.27, lado: 'cima', altura: 104, antes: 0.08, depois: 0.013 },
-    { t: 0.4, lado: 'baixo', altura: 118, antes: 0.013, depois: 0.085 },
-    { t: 0.55, lado: 'cima', altura: 126, antes: 0.09, depois: 0.014 },
-    { t: 0.68, lado: 'baixo', altura: 88, antes: 0.012, depois: 0.07 },
-    { t: 0.83, lado: 'cima', altura: 78, antes: 0.07, depois: 0.012 },
+  fios: [
+    { ondas: [[0.9, 0.3, 0.75], [2.1, 0.7, 0.25]], peso: 1, amplitude: 62, brilho: 0.35 },
+    { ondas: [[1.4, 0.85, 0.6], [2.4, 0.2, 0.4]], peso: 0.5, amplitude: 58, brilho: 0.8 },
   ],
-});await gerarEmblema();
+});
+await gerarEmblema();
