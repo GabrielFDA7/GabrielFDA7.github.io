@@ -350,3 +350,21 @@ As filiais de tamanhos diferentes foram analisadas com pesos e métricas persona
 3. As decisões técnicas das análises foram escritas, e nenhum `PREENCHER` ficou nos projetos.
 4. Fase 3 integrada à `main`.
 5. Fase 4 construída: `/foco/dados`, `/foco/ia` e `/foco/backend`, à espera dos PDFs corrigidos.
+
+### Prompt #015
+**Data:** 04/11/2026
+**Contexto:** Resposta sobre os currículos e as duas decisões pendentes.
+
+```
+Você não consegue fazer a alteraão nos PDFs pra mim? Eles foram feitos pelo claude online. Caso não consiga, me dê um prompt para eu colar lá no chat e ele fazer as alterações.
+
+O que você quer que eu responda sobre o SIS2? Pode publicar ele com esse nome, sem problemas.
+
+SIm, a pergunta veio de lá.
+```
+
+**O que resultou:**
+
+1. Os 3 currículos foram corrigidos direto no PDF e entraram em `public/cv/`: sem telefone, sem valor
+   financeiro e com 946 testes, 10 sessões e 70 prompts. Os originais não foram alterados.
+2. O nome SIS2 e a pergunta vinda da diretoria foram confirmados.

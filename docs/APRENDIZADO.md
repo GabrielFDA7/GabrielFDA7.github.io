@@ -325,3 +325,10 @@ que as análises com SAP BW aparecem no foco de dados.
 
 A tag `<meta name="robots" content="noindex">` pede aos buscadores que não listem a página. Sem ela, três
 versões quase iguais da home competiriam com a original no Google.
+
+### Tirar um dado de um PDF é apagar, não cobrir
+
+Um retângulo branco por cima do telefone esconderia o número na tela, mas ele continuaria no arquivo,
+pronto para ser copiado. A correção usou *redaction* (PyMuPDF), que remove o texto do conteúdo da página,
+e reescreveu só o trecho seguinte, na mesma fonte. Depois, a verificação comparou a página linha a linha
+com o original, para garantir que só o previsto mudou.

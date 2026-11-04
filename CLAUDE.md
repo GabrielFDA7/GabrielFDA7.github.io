@@ -138,20 +138,19 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 1 | Fundação | Aprovada |
 | 2 | Páginas e componentes, filtro React com testes | Aprovada |
 | 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aprovada |
-| 4 | Focos por vaga e download do currículo | Aguardando aprovação e os PDFs |
+| 4 | Focos por vaga e download do currículo | Aguardando aprovação |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | — |
 | 6 | Publicação no GitHub Pages | — |
 | 7 | (Depois) Versão em inglês | — |
 
 **Pendências combinadas:**
 
-- Antes de publicar: o Gabriel confirma com o gestor se o projeto do SIS2 pode aparecer com esse nome e
-  decide os dois textos suavizados (SIS2 e pergunta de negócio das análises com SAP BW).
+- O SIS2 pode aparecer com esse nome e a pergunta das análises veio da diretoria (Gabriel, 04/11/2026).
 
 - Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
-- **Faltam os 3 PDFs em `public/cv/`**: `curriculo-dados.pdf`, `curriculo-dev-python.pdf` e
-  `curriculo-ai-engineer.pdf`. Até o Gabriel enviá-los corrigidos, o botão dá 404. Sem telefone e sem
-  valor financeiro: o PDF é público.
+- **Os 3 PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Foram corrigidos a
+  partir dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa
+  passar pela mesma limpeza antes de entrar aqui.
 - Fase 5: quando o sitemap entrar, deixar `/foco/*` de fora.
 - Fase 5: só links internos bloqueiam o deploy; os externos geram aviso. O build falha se houver
   `PREENCHER` na pasta final: os comentários do Markdown **chegam ao HTML**, verificado.
