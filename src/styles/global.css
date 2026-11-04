@@ -78,20 +78,6 @@
     text-transform: uppercase;
   }
 
-  /*
-   * Letras metálicas. Só em texto grande: o tom mais fraco do degradê mira 3:1 (WCAG AA).
-   * Em um <span>, o `clone` repete o reflexo em cada linha quando o título quebra.
-   */
-  .cromo-texto {
-    color: var(--texto);
-    background-image: var(--cromo-texto);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-  }
-
   .regua-cromo {
     height: 1px;
     border: 0;
@@ -432,7 +418,6 @@
 
 /* Sem degradê em texto quando o sistema impõe as próprias cores (alto contraste do Windows). */
 @media (forced-colors: active) {
-  .cromo-texto,
   .metal,
   .prosa h2 {
     -webkit-text-fill-color: currentColor;
