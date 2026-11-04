@@ -1,0 +1,15 @@
+# Dependências e saídas de build
+node_modules/
+dist/
+.astro/
+
+# Ambiente e logs
+.env
+.env.*
+*.log
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
