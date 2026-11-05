@@ -11,5 +11,4 @@ export const TECNOLOGIAS: readonly AreaTecnologia[] = [
   { area: 'Dados e BI', itens: ['pandas', 'SAP BW', 'Power Query', 'Power BI', 'Looker Studio', 'Excel'] },
   { area: 'Automação', itens: ['Selenium', 'SAP GUI Scripting', 'Excel VBA', 'PyAutoGUI', 'pdfplumber'] },
   { area: 'Testes e entrega', itens: ['pytest', 'Playwright', 'Docker', 'Git', 'GitHub Actions', 'Render'] },
-  { area: 'IA', itens: ['Claude Code', 'API Gemini'] },
 ];
