@@ -385,3 +385,19 @@ Pode seguir a fase 5.
 1. Fase 4 integrada à `main`, e o e-mail trocado no site e nos 3 currículos.
 2. Fase 5 construída: imagem de compartilhamento por página, mapa do site, `robots.txt`, JSON-LD,
    verificações automáticas e CI com Lighthouse.
+
+### Prompt #017
+**Data:** 04/11/2026
+**Contexto:** Revisão da Fase 5 no site local, com a foto original em anexo.
+
+```
+Claude, essa é a imagem que você pegou do linkedin.
+
+Ela está com baixa resolução no site atual. Talvez se você usar o arquivo original fique melhor. O enquadramento está top.
+```
+
+**O que resultou:**
+
+1. A foto de 240x240 foi trocada por um recorte de 800x800 do original, no mesmo enquadramento,
+   localizado por comparação de imagem. Só o recorte entrou no repositório.
+2. A foto passou a ser servida também em densidade 3x, para celulares de tela mais densa.
