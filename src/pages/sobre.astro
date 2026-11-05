@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import FotoPerfil from '../components/FotoPerfil.astro';
 import TituloSecao from '../components/TituloSecao.astro';
 import TopoPagina from '../components/TopoPagina.astro';
+import VitrineTecnologias from '../components/VitrineTecnologias.astro';
 import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -41,6 +42,11 @@ const alemDoCodigo = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <section class="pagina mt-secao" aria-labelledby="tecnologias">
+    <TituloSecao id="tecnologias" rotulo="O que uso" titulo="Tecnologias" />
+    <VitrineTecnologias />
   </section>
 
   <section class="pagina mt-secao" aria-labelledby="alem">

@@ -401,3 +401,43 @@ Ela está com baixa resolução no site atual. Talvez se você usar o arquivo or
 1. A foto de 240x240 foi trocada por um recorte de 800x800 do original, no mesmo enquadramento,
    localizado por comparação de imagem. Só o recorte entrou no repositório.
 2. A foto passou a ser servida também em densidade 3x, para celulares de tela mais densa.
+
+### Prompt #018
+**Data:** 04/11/2026
+**Contexto:** Dúvida sobre mostrar as tecnologias no site.
+
+```
+Ficou muito bom. 
+
+Será que é importante ter uma área de tecnologias logo no "Sobre" ou em alguma outra área do site? Onde mostramos todas tecnologias que tenho ou já tem coisa demais?
+```
+
+**O que resultou:** recomendação de uma seção só no Sobre, com um rascunho de tecnologias por área.
+
+### Prompt #019
+**Data:** 04/11/2026
+**Contexto:** Resposta à recomendação de uma lista simples.
+
+```
+Pensei em fazer uma coisa mais animada, vai trocando as tecnologias com algum tipo de animação que faça sentido para o site. Pra colocarmos todas as tecnologias e não ficar tão extenso e nem feio. O que acha?
+
+No máximo 5 ou 6 tecnologias por vez, e vai mudando.
+```
+
+**O que resultou:** proposta de troca por área, com faixa de luz, sem obrigar ninguém a esperar. Como o
+briefing proíbe carrossel, a exceção foi apontada para o Gabriel decidir.
+
+### Prompt #020
+**Data:** 04/11/2026
+**Contexto:** Decisões sobre a lista de tecnologias.
+
+```
+Pode colocar sql, git e power bi.
+
+Só 30 tá bom.
+```
+
+**O que resultou:**
+
+1. `VitrineTecnologias` em `/sobre/`: 30 tecnologias em 6 áreas, com troca a cada 5 segundos.
+2. A pergunta sobre React e Vite ficou sem resposta, então os dois ficaram de fora.

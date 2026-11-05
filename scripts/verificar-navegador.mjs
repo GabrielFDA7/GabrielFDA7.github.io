@@ -6,6 +6,7 @@ import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { FOCOS } from '../src/config/focos.ts';
+import { TECNOLOGIAS } from '../src/config/tecnologias.ts';
 import { servirDist } from './servir-dist.mjs';
 
 const PORTA = 4398;
@@ -125,6 +126,53 @@ await q.goto(`${BASE}/projetos/`);
 conferir(await q.locator('[data-projeto]:visible').count() === total, 'sem JS: a lista completa deve ficar visível');
 conferir(await q.locator('button:visible').count() === 0, 'sem JS: nenhum botão morto visível');
 await semJs.close();
+
+// --- Vitrine de tecnologias ------------------------------------------------------------------
+const TOTAL_TECNOLOGIAS = TECNOLOGIAS.flatMap(({ itens }) => itens).length;
+const UMA_TROCA = 5800; // a troca é a cada 5 s e dura 0,7 s; no meio dela, as duas áreas aparecem
+const paineisVisiveis = (pagina) => pagina.locator('[data-painel]').evaluateAll((lista) => lista.filter((e) => getComputedStyle(e).opacity === '1').map((e) => e.querySelector('h3').textContent));
+const areaAtiva = (pagina) => pagina.locator('[data-areas] button[aria-pressed="true"]').textContent();
+
+await p.goto(`${BASE}/sobre/`, { waitUntil: 'networkidle' });
+const nomesNoHtml = await p.locator('[data-painel] li').count();
+conferir(nomesNoHtml === TOTAL_TECNOLOGIAS, `vitrine: ${nomesNoHtml} tecnologias no HTML, esperava ${TOTAL_TECNOLOGIAS}`);
+conferir(await p.locator('[data-areas] button').count() === TECNOLOGIAS.length, 'vitrine: um botão por área');
+await p.waitForTimeout(UMA_TROCA);
+conferir(await areaAtiva(p) === TECNOLOGIAS[0].area, 'vitrine: não deve trocar fora da tela');
+
+await p.locator('[data-vitrine]').scrollIntoViewIfNeeded();
+await p.mouse.move(0, 0);
+const alturaAntes = await p.locator('.paineis').evaluate((e) => e.getBoundingClientRect().height);
+await p.waitForTimeout(UMA_TROCA);
+const segundaArea = await areaAtiva(p);
+conferir(segundaArea === TECNOLOGIAS[1].area, `vitrine: deve trocar sozinha na tela (está em ${segundaArea})`);
+conferir((await paineisVisiveis(p)).join() === segundaArea, `vitrine: mostra ${await paineisVisiveis(p)} com ${segundaArea} ativa`);
+conferir(alturaAntes === await p.locator('.paineis').evaluate((e) => e.getBoundingClientRect().height), 'vitrine: a altura não pode mudar na troca');
+
+await p.locator('[data-vitrine]').hover();
+const areaNaPausa = await areaAtiva(p);
+await p.waitForTimeout(UMA_TROCA);
+conferir(await areaAtiva(p) === areaNaPausa, 'vitrine: o mouse em cima deve pausar');
+
+const ultimaArea = TECNOLOGIAS.at(-1).area;
+await p.getByRole('button', { name: ultimaArea, exact: true }).click();
+await p.waitForTimeout(800);
+conferir((await paineisVisiveis(p)).join() === ultimaArea, 'vitrine: clicar deve mostrar a área');
+await p.mouse.move(0, 0);
+await p.waitForTimeout(UMA_TROCA);
+conferir(await areaAtiva(p) === ultimaArea, 'vitrine: depois do clique, a troca automática para');
+
+// Sem animação, a lista inteira fica à vista e não sobra botão sem função.
+const calmoSobre = await navegador.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+const semJsSobre = await navegador.newContext({ viewport: { width: 1280, height: 800 }, javaScriptEnabled: false });
+for (const [nome, c] of [['movimento reduzido', calmoSobre], ['sem JS', semJsSobre]]) {
+  const pg = await c.newPage();
+  await pg.goto(`${BASE}/sobre/`);
+  conferir(await pg.locator('[data-areas] button:visible').count() === 0, `vitrine ${nome}: botões devem ficar escondidos`);
+  const opacidades = await pg.locator('[data-painel]').evaluateAll((lista) => lista.map((e) => getComputedStyle(e).opacity));
+  conferir(opacidades.length === TECNOLOGIAS.length && opacidades.every((o) => o === '1'), `vitrine ${nome}: todas as áreas devem aparecer`);
+  await c.close();
+}
 
 // --- Links de foco ---------------------------------------------------------------------------
 for (const [nome, foco] of Object.entries(FOCOS)) {

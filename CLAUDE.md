@@ -59,6 +59,12 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   azul-gelo `#8ec5ff` no escuro. O acento térmico (laranja) é raro e nunca o único sinal de algo.
 - **Continuam proibidos:** gradiente roxo, glassmorphism, barra de nível de habilidade, emoji como
   ícone, animação que atrasa a leitura, carrossel e texto sobre imagem.
+- **Única exceção ao carrossel: `VitrineTecnologias`, em `/sobre/`** (pedido do Gabriel, 04/11/2026). Mostra
+  uma área por vez, com no máximo 6 tecnologias, em `src/config/tecnologias.ts`. Para não atrasar a
+  leitura: os nomes das áreas ficam sempre à vista, clicar mostra a área e para a troca, e o mouse ou
+  o foco pausam. Sem JavaScript ou com movimento reduzido, é uma lista completa e parada. Não
+  estender o padrão a outras seções. React e Vite ficaram fora porque, na telemetria, a parte do
+  Gabriel foi o pipeline e a tutoria. Só entram se ele confirmar.
 - `.metal` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. A textura foi medida: em todo
   pixel, o contraste com o fundo fica acima de 3,7:1 nos dois temas. Se regenerar, meça de novo.
 
@@ -177,7 +183,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   da própria árvore, o que os testes cobrem.
 - **`coverAlt` é um campo a mais no schema do briefing.** Toda capa precisa de texto alternativo, e
   o build falha sem ele.
-- **A foto vem do avatar público do GitHub** (460 px), recortada em `src/assets/foto/gabriel.jpg`.
+- **A foto é um recorte de 800x800 do original enviado pelo Gabriel**, em `src/assets/foto/gabriel.jpg`,
+  no enquadramento que ele aprovou. O original completo não entra no repositório.
 - **Capas do NextUp são capturas do site no ar**, não `docs/img/` do repositório dele, que está
   desatualizado. Refaça com `npm run capturas` quando a interface mudar (Gabriel, 04/11/2026). O
   script toca no mapa, porque é aí que a função aparece: aproximação, opções numeradas e rota.

@@ -1,0 +1,199 @@
+---
+import { TECNOLOGIAS } from '../config/tecnologias';
+---
+
+<!--
+  Sem JavaScript, ou com pedido de menos movimento, é só uma lista completa e parada. O script liga a
+  troca por cima dela, e todas as áreas continuam no HTML, para leitor de tela e buscador.
+-->
+<div class="vitrine mt-8" data-vitrine>
+  <div class="areas" role="group" aria-label="Escolher área de tecnologia" data-areas hidden>
+    {TECNOLOGIAS.map(({ area }, indice) => (
+      <button type="button" class="rotulo area" aria-pressed={indice === 0 ? 'true' : 'false'}>{area}</button>
+    ))}
+  </div>
+  <div class="paineis">
+    {TECNOLOGIAS.map(({ area, itens }, indice) => (
+      <div class:list={['painel', { visivel: indice === 0 }]} data-painel>
+        <h3 class="rotulo titulo-area">{area}</h3>
+        <ul class="nomes">
+          {itens.map((nome) => <li><span class="metal">{nome}</span></li>)}
+        </ul>
+      </div>
+    ))}
+    <div class="feixe" aria-hidden="true" data-feixe></div>
+  </div>
+</div>
+
+<style>
+  .areas:not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .area {
+    min-height: 2.75rem;
+    border-bottom: 2px solid transparent;
+    color: var(--texto-suave);
+    cursor: pointer;
+  }
+
+  .area:hover {
+    color: var(--texto);
+  }
+
+  .area[aria-pressed='true'] {
+    border-bottom-color: var(--destaque);
+    color: var(--destaque);
+  }
+
+  .paineis {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .nomes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15em 0.9em;
+    margin-top: 0.5rem;
+    font-size: clamp(1.625rem, 1.25rem + 1.8vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+
+  .feixe {
+    display: none;
+  }
+
+  /* Com a troca ligada, as áreas ocupam a mesma célula: a altura é a da maior, e nada abaixo pula. */
+  .vitrine.animada .paineis {
+    position: relative;
+    gap: 0;
+    overflow: clip;
+  }
+
+  .vitrine.animada .painel {
+    grid-area: 1 / 1;
+    opacity: 0;
+  }
+
+  .vitrine.animada .painel.visivel {
+    opacity: 1;
+  }
+
+  /* O nome da área já está nos botões; o título continua para quem navega por leitor de tela. */
+  .vitrine.animada .titulo-area {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .vitrine.animada .nomes {
+    margin-top: 0;
+  }
+
+  /* A borda direita do feixe coincide com o corte das áreas: é ela que parece trocar o texto. */
+  .vitrine.animada .feixe {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: linear-gradient(
+      90deg,
+      transparent calc(100% - 7rem),
+      color-mix(in srgb, var(--destaque) 28%, transparent) calc(100% - 2px),
+      var(--texto) calc(100% - 2px)
+    );
+    /* As pontas somem aos poucos, ou o feixe parece uma caixa atravessando o texto. */
+    mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const INTERVALO = 5000;
+  const PASSAGEM: KeyframeAnimationOptions = { duration: 700, easing: 'cubic-bezier(0.45, 0, 0.55, 1)' };
+
+  const vitrine = document.querySelector<HTMLElement>('[data-vitrine]');
+  const grupo = vitrine?.querySelector<HTMLElement>('[data-areas]');
+  const feixe = vitrine?.querySelector<HTMLElement>('[data-feixe]');
+
+  if (vitrine && grupo && feixe && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const paineis = [...vitrine.querySelectorAll<HTMLElement>('[data-painel]')];
+    const botoes = [...grupo.querySelectorAll('button')];
+    let atual = 0;
+    let naTela = false;
+    let pausada = false;
+    let parada = false;
+    let relogio: number | undefined;
+
+    grupo.hidden = false;
+    vitrine.classList.add('animada');
+
+    const mostrar = (proxima: number) => {
+      const sai = paineis[atual];
+      const entra = paineis[proxima];
+      if (proxima === atual || !sai || !entra) return;
+      for (const elemento of [...paineis, feixe]) elemento.getAnimations().forEach((animacao) => animacao.cancel());
+
+      sai.classList.remove('visivel');
+      entra.classList.add('visivel');
+      sai.animate([{ opacity: 1, clipPath: 'inset(0 0 0 0)' }, { opacity: 1, clipPath: 'inset(0 0 0 100%)' }], PASSAGEM);
+      entra.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], PASSAGEM);
+      feixe.animate(
+        [
+          { opacity: 0, transform: 'translateX(-100%)' },
+          { opacity: 1, offset: 0.12 },
+          { opacity: 1, offset: 0.88 },
+          { opacity: 0, transform: 'translateX(0)' },
+        ],
+        PASSAGEM,
+      );
+      botoes.forEach((botao, indice) => botao.setAttribute('aria-pressed', String(indice === proxima)));
+      atual = proxima;
+    };
+
+    // O relógio só anda com a seção na tela e sem ninguém interagindo.
+    const atualizarRelogio = () => {
+      const deveAndar = naTela && !pausada && !parada;
+      if (deveAndar && relogio === undefined) {
+        relogio = window.setInterval(() => {
+          if (!document.hidden) mostrar((atual + 1) % paineis.length);
+        }, INTERVALO);
+      } else if (!deveAndar && relogio !== undefined) {
+        clearInterval(relogio);
+        relogio = undefined;
+      }
+    };
+
+    const pausar = (valor: boolean) => {
+      pausada = valor;
+      atualizarRelogio();
+    };
+
+    botoes.forEach((botao, indice) => {
+      botao.addEventListener('click', () => {
+        parada = true;
+        atualizarRelogio();
+        mostrar(indice);
+      });
+    });
+    // Só mouse: no toque, o "entrar" fica preso até o próximo toque em outro lugar.
+    vitrine.addEventListener('pointerenter', (evento) => { if (evento.pointerType === 'mouse') pausar(true); });
+    vitrine.addEventListener('pointerleave', (evento) => { if (evento.pointerType === 'mouse') pausar(false); });
+    vitrine.addEventListener('focusin', () => pausar(true));
+    vitrine.addEventListener('focusout', () => pausar(false));
+
+    new IntersectionObserver(([entrada]) => {
+      naTela = Boolean(entrada?.isIntersecting);
+      atualizarRelogio();
+    }, { threshold: 0.4 }).observe(vitrine);
+  }
+</script>

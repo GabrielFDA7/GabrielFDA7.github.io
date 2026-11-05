@@ -382,3 +382,13 @@ os arquivos. Medir errado leva a otimizar o que não é problema.
 `build.format: 'file'` deixaria `projetos.html` ao lado da pasta `projetos/`. Local, tudo passava. No
 GitHub Pages, `/projetos` poderia cair na pasta e dar 404. Por isso cada página é uma pasta, com link
 terminando em `/`, que é o formato mais previsível nesse tipo de hospedagem.
+
+### Animação como camada, não como base
+
+A [VitrineTecnologias](../src/components/VitrineTecnologias.astro) nasce como uma lista comum, completa. O
+script é que liga a troca por cima dela. Isso se chama **aprimoramento progressivo**: sem JavaScript, ou
+com pedido de menos movimento no sistema, ninguém perde conteúdo.
+
+Dois detalhes evitam os problemas comuns de um carrossel. As áreas ocupam a mesma célula do grid, então a
+altura é sempre a da maior, e nada abaixo pula. E o relógio só anda com a seção na tela e sem ninguém
+interagindo: clicar em uma área para a troca, porque quem clicou quer ler aquilo.
