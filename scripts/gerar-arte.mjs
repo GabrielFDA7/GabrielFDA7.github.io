@@ -112,9 +112,11 @@ const LUZ = {
     [0.95, 0.94], [1.0, 0.6],
   ]),
   // Texturas para letras: o tom mais fraco precisa manter 3:1 contra o fundo de cada tema.
+  // No escuro, o teto fica abaixo do branco e a faixa é estreita: branco puro no preto chama atenção
+  // demais, e o site precisa parecer profissional (Gabriel, 05/11/2026).
   letrasEscuro: criarTabela([
-    [0.0, 0.62], [0.2, 0.96], [0.3, 1.0], [0.36, 0.56], [0.4, 0.47], [0.46, 0.74], [0.54, 1.0],
-    [0.62, 0.8], [0.68, 0.48], [0.72, 0.72], [0.82, 1.0], [0.92, 0.78], [1.0, 0.5],
+    [0.0, 0.66], [0.2, 0.8], [0.3, 0.84], [0.36, 0.68], [0.4, 0.6], [0.46, 0.72], [0.54, 0.84],
+    [0.62, 0.76], [0.68, 0.61], [0.72, 0.71], [0.82, 0.84], [0.92, 0.74], [1.0, 0.62],
   ]),
   letrasClaro: criarTabela([
     [0.0, 0.34], [0.2, 0.08], [0.3, 0.03], [0.36, 0.34], [0.4, 0.47], [0.46, 0.2], [0.54, 0.03],
@@ -405,7 +407,7 @@ async function gerarEmblema() {
 
 // --- Textura das letras: metal recortado no formato do texto -------------------
 
-async function gerarTextura(tema, tabela) {
+async function gerarTextura(tema, tabela, forcaDaCor = 1) {
   const largura = 1800;
   const alturaPx = 1125;
   const fbm = criarRuido(90);
@@ -417,7 +419,7 @@ async function gerarTextura(tema, tabela) {
     forca: 165,
     tema: tabela,
     // Dispersão alta: é ela que põe as franjas de azul e laranja nas letras.
-    dispersao: (x, y) => 0.016 + 0.012 * degrau(-0.1, 0.25, fbm((x / alturaPx) * 1.4, (y / alturaPx) * 1.4, 2)),
+    dispersao: (x, y) => forcaDaCor * (0.016 + 0.012 * degrau(-0.1, 0.25, fbm((x / alturaPx) * 1.4, (y / alturaPx) * 1.4, 2))),
     termico: () => 0,
   });
   const { bytes, canais } = paraBytes(rgb);
@@ -433,6 +435,6 @@ await mkdir(SAIDA, { recursive: true });
 await mkdir('public', { recursive: true });
 await gerarFundo('escuro');
 await gerarFundo('claro');
-await gerarTextura('escuro', 'letrasEscuro');
+await gerarTextura('escuro', 'letrasEscuro', 0.3); // só um resíduo de cor, para continuar sendo cromo
 await gerarTextura('claro', 'letrasClaro');
 await gerarEmblema();
