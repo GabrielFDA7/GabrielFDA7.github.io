@@ -25,19 +25,6 @@ Levantar os part numbers de uma frota de 81 máquinas exigia consulta manual, it
 
 Uma automação em Python que recebe a lista de números de série, consome a API JSON do SIS2 e monta uma planilha com as peças de cada máquina.
 
-## Arquitetura
-
-```mermaid
-flowchart TD
-  accTitle: Fluxo da integração com o SIS2
-  accDescr: Uma lista de máquinas alimenta a automação em Python, que consulta a API JSON do SIS2, guarda cada resposta e monta a planilha de part numbers.
-  L[Frota de 81 máquinas] --> P[Automação em Python]
-  P --> A[API JSON do SIS2]
-  A --> P
-  P --> S[Respostas guardadas]
-  S --> R[Planilha de part numbers]
-```
-
 ## Decisões técnicas
 
 **API em vez de raspagem de tela com Selenium.** A API entrega tudo o que o projeto precisa em uma requisição. Já a estrutura do site dificulta a raspagem: o código ficaria mais instável, mais lento e com resultados piores. O custo é depender de uma interface que pode mudar sem aviso e de uma sessão que expira durante o lote.

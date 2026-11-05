@@ -52,18 +52,31 @@ Os dados vêm ao vivo da API pública ThemeParks.wiki. Desde 28/10/2026, a prime
 
 ```mermaid
 flowchart TD
-  accTitle: Arquitetura do NextUp
-  accDescr: O visitante usa a interface, que chama a API. A API aplica o ranking e busca filas na ThemeParks.wiki, com cache. Um coletor grava o histórico no PostgreSQL a cada 5 minutos.
-  V[Visitante no celular] --> W[Interface: HTML, CSS, JS e Leaflet]
-  W --> A[API FastAPI e núcleo do ranking]
-  A --> C[Cliente com cache]
-  C --> T[API ThemeParks.wiki]
-  K[Coletor: a cada 5 min] --> C
-  K --> B[(PostgreSQL)]
-  A --> B
+  accTitle: Camadas do NextUp
+  accDescr: A interface chama a API. A API usa o core, que contém a lógica pura e depende só dos models. A API e o coletor, que roda a cada 5 minutos, usam a periferia: a camada clients, que busca as filas na ThemeParks.wiki com cache, e a camada storage, que guarda o histórico no PostgreSQL.
+  W[Interface web] --> A[API FastAPI]
+  K[Coletor]
+  subgraph Puro [Lógica pura]
+    C[core] --> M[models]
+  end
+  subgraph Periferia [Periferia]
+    H[clients]
+    S[storage]
+  end
+  A --> C
+  A --> H
+  A --> S
+  K --> H
+  K --> S
+  H --> T[ThemeParks]
+  S --> B[(PostgreSQL)]
 ```
 
-O núcleo não importa nada de rede nem de banco, por isso seus testes rodam offline. Essa regra não vive só na documentação: `test_arquitetura.py` lê o código-fonte e falha se ela for quebrada.
+**A regra é a direção das dependências.** O `core`, onde está o ranking, recebe objetos prontos e não sabe de onde eles vieram. Só a periferia fala com a rede e com o banco: `clients` busca as filas na ThemeParks.wiki, com cache, e `storage` guarda o histórico no PostgreSQL. Por isso os testes do algoritmo rodam offline, em milissegundos, sem depender de a API estar no ar nem de o parque estar aberto.
+
+**A regra é testada, não só documentada.** `test_arquitetura.py` lê a árvore sintática de cada módulo, sem executá-lo, e falha se `core` ou `models` importarem `httpx`, `sqlalchemy` ou as camadas da periferia.
+
+**Dois caminhos até os dados.** A API responde a quem está no parque. O coletor grava as filas mesmo sem ninguém acessando o site, porque sem histórico não existe tendência. Uma falha da fonte não derruba o coletor: ele continua vivo para quando ela voltar.
 
 ## Decisões técnicas
 
@@ -74,6 +87,8 @@ O núcleo não importa nada de rede nem de banco, por isso seus testes rodam off
 **Personalização no navegador, sem conta.** Exigir cadastro de quem pergunta "para onde vou agora" mataria o produto. O custo é os dados não viajarem entre aparelhos.
 
 **SQLite no desenvolvimento, PostgreSQL em produção.** Quem clona o repositório roda os testes sem instalar banco. O custo é o comportamento poder divergir entre os dois, por isso há testes de fuso horário e de unicidade.
+
+**Ping externo para manter o coletor acordado.** O plano gratuito do Render hiberna sem acessos, e o coletor dorme junto. O agendamento do GitHub Actions parecia resolver e sempre ficava verde, mas a medição mostrou 244 execuções em 37 dias, quando deveriam ser cerca de 5.300. Hoje o ping principal é externo, e o Actions ficou de reserva. O custo é depender de mais um serviço.
 
 ## Resultados
 

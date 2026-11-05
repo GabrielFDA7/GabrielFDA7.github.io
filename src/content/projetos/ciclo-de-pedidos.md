@@ -27,27 +27,6 @@ Os pedidos, as faturas e as cotações de um cliente chegavam em PDF, e o time t
 
 **Parte 2, acompanhamento (set/2026).** O Agendador de Tarefas extrai relatórios do SAP todo dia, e o Python os trata. O resultado alimenta um relatório em Looker Studio, com busca e filtros, publicado em um Google Sites.
 
-## Arquitetura
-
-```mermaid
-flowchart TD
-  accTitle: Fluxo do extrator e do acompanhamento de pedidos
-  accDescr: PDFs passam pelo extrator desktop e viram planilhas. Em paralelo, o Agendador de Tarefas extrai relatórios do SAP todo dia, que são tratados em Python e publicados em Looker Studio dentro de um Google Sites.
-  subgraph Extrator
-    direction TB
-    PDF[PDFs de pedidos e faturas] --> X[Aplicação desktop: pdfplumber e pandas]
-    X --> XL[Planilhas prontas]
-  end
-  subgraph Acompanhamento
-    direction TB
-    SAP[Relatórios do SAP] --> AG[Agendador de Tarefas, todo dia]
-    AG --> PY[Tratamento em Python]
-    PY --> LS[Looker Studio]
-    LS --> GS[Google Sites]
-  end
-  Extrator ~~~ Acompanhamento
-```
-
 ## Decisões técnicas
 
 **Executável único.** Assim o extrator roda nas máquinas corporativas sem instalar Python. O custo é um arquivo maior e uma nova geração do executável a cada mudança.

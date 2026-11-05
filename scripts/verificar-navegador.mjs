@@ -127,6 +127,30 @@ conferir(await q.locator('[data-projeto]:visible').count() === total, 'sem JS: a
 conferir(await q.locator('button:visible').count() === 0, 'sem JS: nenhum botão morto visível');
 await semJs.close();
 
+// --- Seta das linhas de projeto ---------------------------------------------------------------
+// A seta sobe de camada ao passar o mouse e já engoliu o clique: precisa levar ao estudo de caso.
+for (const { nome: vista, ...opcoes } of VISTAS) {
+  const c = await navegador.newContext(opcoes);
+  const pg = await c.newPage();
+  await pg.goto(`${BASE}/projetos/`, { waitUntil: 'networkidle' });
+  const destino = await pg.locator('.linha a').first().getAttribute('href');
+  const seta = pg.locator('.seta').first();
+  await seta.scrollIntoViewIfNeeded();
+  const caixa = await seta.boundingBox();
+  const [x, y] = [caixa.x + caixa.width / 2, caixa.y + caixa.height / 2];
+  if (opcoes.hasTouch) {
+    await pg.touchscreen.tap(x, y);
+  } else {
+    await pg.mouse.move(x, y);
+    await pg.waitForTimeout(300);
+    await pg.mouse.down();
+    await pg.mouse.up();
+  }
+  await pg.waitForURL(`${BASE}${destino}`, { timeout: 3000 }).catch(() => {});
+  conferir(new URL(pg.url()).pathname === destino, `seta ${vista}: foi para ${new URL(pg.url()).pathname}, esperava ${destino}`);
+  await c.close();
+}
+
 // --- Vitrine de tecnologias ------------------------------------------------------------------
 const TOTAL_TECNOLOGIAS = TECNOLOGIAS.flatMap(({ itens }) => itens).length;
 const UMA_TROCA = 5800; // a troca é a cada 5 s e dura 0,7 s; no meio dela, as duas áreas aparecem
@@ -260,7 +284,9 @@ for (const colorScheme of ['dark', 'light']) {
   }
   await c.close();
 }
-await p.goto(`${BASE}${estudos[0]}`, { waitUntil: 'networkidle' });
+const comDiagrama = ['/projetos/nextup/', '/projetos/telemetria-de-frota/'];
+for (const rota of comDiagrama) conferir(estudos.includes(rota), `${rota}: deve ser um estudo de caso publicado`);
+await p.goto(`${BASE}${comDiagrama[0]}`, { waitUntil: 'networkidle' });
 const corDoNo = () => p.locator('.prosa svg[aria-roledescription] .node rect').first().evaluate((e) => getComputedStyle(e).fill);
 const corAntes = await corDoNo();
 await p.locator('#alternar-tema').click();

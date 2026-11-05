@@ -65,8 +65,10 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   o foco pausam. Sem JavaScript ou com movimento reduzido, é uma lista completa e parada. Não
   estender o padrão a outras seções. React e Vite ficaram fora porque, na telemetria, a parte do
   Gabriel foi o pipeline e a tutoria. Só entram se ele confirmar.
-- `.metal` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. A textura foi medida: em todo
-  pixel, o contraste com o fundo fica acima de 3,7:1 nos dois temas. Se regenerar, meça de novo.
+- `.metal` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. Se regenerar a textura, meça de
+  novo em todo pixel. Em 05/11/2026, a escura ficou entre 6,4:1 e 13,8:1, depois de sair de 3,7:1 e 19,9:1.
+- **No tema escuro, o metal é sóbrio** (Gabriel, 05/11/2026: "muito chamativo", "mais profissional"). Prata
+  sem branco puro e com pouca cor: não voltar a subir o teto de `letrasEscuro` nem a força da cor.
 
 ## Conteúdo e confidencialidade
 
@@ -129,6 +131,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 - **Estilo com escopo não atravessa componente.** Uma classe passada a um componente filho não
   recebe o CSS `<style>` do pai. Envolva o filho em um elemento do pai.
+- **Elemento sobre um link esticado precisa de `pointer-events: none`.** A seta da `LinhaProjeto` sobe de
+  camada com o `translate` do hover e engolia o clique, mesmo com o link cobrindo a linha inteira.
 - **Quebra de linha antes de tag inline pode comer o espaço.** Em texto corrido, mantenha a frase
   na mesma linha ou use `{' '}`.
 - **Ano sozinho no frontmatter vira número.** Escreva `period: "2026"`, com aspas.
@@ -190,6 +194,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   script toca no mapa, porque é aí que a função aparece: aproximação, opções numeradas e rota.
 - **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
   nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
+- **"Arquitetura" é opcional e só existe com decisão real para mostrar** (Gabriel, 05/11/2026). Hoje só em
+  NextUp e Telemetria. Um fluxo linear que repete a seção "Solução" não ganha diagrama. Em projeto novo,
+  tire os fatos do código e das decisões documentadas. Na telemetria, a aplicação com Gemini fica fora
+  do diagrama, porque a parte do Gabriel é o pipeline.
 
 - **Foco novo é uma entrada em `src/config/focos.ts`.** `Inicio.astro` é a composição única da home e
   dos focos, e `selecionarParaFoco` decide a lista: projetos com as tags do foco primeiro, mesmo fora

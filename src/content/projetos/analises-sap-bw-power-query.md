@@ -27,25 +27,6 @@ A pergunta veio da diretoria: onde a operação poderia ficar mais eficiente sem
 
 **Pipelines em Power Query (jan–jun/2026).** Limpam, normalizam e cruzam históricos de vendas, cadastro de clientes e laudos de inspeção, atualizando os relatórios sem intervenção manual.
 
-## Arquitetura
-
-```mermaid
-flowchart TD
-  accTitle: Fluxo das análises
-  accDescr: Exportações do SAP BW alimentam o estudo em Excel e a apresentação para a diretoria. Históricos de vendas, cadastro de clientes e laudos de inspeção passam pelo Power Query e atualizam os relatórios.
-  subgraph Estudo
-    direction TB
-    BW[Exportações do SAP BW] --> X[Excel]
-    X --> D[Apresentação para a diretoria]
-  end
-  subgraph Pipelines
-    direction TB
-    V[Histórico de vendas, cadastro de clientes e laudos de inspeção] --> PQ[Power Query]
-    PQ --> R[Relatórios atualizados]
-  end
-  Estudo ~~~ Pipelines
-```
-
 ## Decisões técnicas
 
 **Começar em 2022.** Uma base maior traz profundidade e garante que os padrões são reais, e não algo que aconteceu em um ano só. O custo é ter mais dados para tratar e comparar.

@@ -441,3 +441,23 @@ Só 30 tá bom.
 
 1. `VitrineTecnologias` em `/sobre/`: 30 tecnologias em 6 áreas, com troca a cada 5 segundos.
 2. A pergunta sobre React e Vite ficou sem resposta, então os dois ficaram de fora.
+
+### Prompt #021
+**Data:** 05/11/2026
+**Contexto:** Revisão da vitrine, do tema escuro e dos estudos de caso.
+
+```
+Remove a parte de IA das tecnologias e acho que precisamos deixar o efeito no modo escuro um pouco mais sóbrio. Acho que está muito chamativo, na versão branca está um pouco mais escuro e acaba ficando mais profissional. 
+
+Como podemos contornar isso? Está lindo, mas algo me diz que não está tão profissional.
+
+Outra coisa, a setinha que deveria levar aos projetos não funciona e a parte de arquitetura deles está muito simples, capaz que é melhor nem ter ela em todos os projetos se for pra ficar assim. Também precisamos melhorar.
+```
+
+**O que resultou:**
+
+1. A área de IA saiu da vitrine, que ficou com 28 tecnologias em 5 áreas.
+2. As letras de metal do tema escuro viraram prata mais contida, sem branco puro e com pouca cor.
+3. A seta das linhas de projeto voltou a funcionar, com um teste para isso não voltar.
+4. "Arquitetura" ficou só em NextUp e Telemetria, com diagramas e textos refeitos a partir do código e das
+   decisões documentadas. Cada um dos dois ganhou também uma decisão técnica nova.

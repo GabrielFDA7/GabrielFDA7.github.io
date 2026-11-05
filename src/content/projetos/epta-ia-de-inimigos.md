@@ -28,17 +28,6 @@ Um jogo de ação isométrico em Unity 6 e C#, feito em equipe na EPTA (Equipe d
 
 **O que foi meu:** a IA dos inimigos, com uma máquina de estados de patrulha, perseguição, antecipação de golpe e recuperação, além dos ScriptableObjects e do loot.
 
-## Arquitetura
-
-```mermaid
-flowchart TD
-  accTitle: Estados da IA dos inimigos
-  accDescr: A máquina de estados tem quatro estados, na ordem patrulha, perseguição, antecipação de golpe e recuperação.
-  A[Patrulha] --> B[Perseguição]
-  B --> C[Antecipação de golpe]
-  C --> D[Recuperação]
-```
-
 O projeto usa scripts orientados a eventos e ScriptableObjects para separar o balanceamento (atributos, magias e probabilidades de loot) do código das entidades.
 
 ## Resultados

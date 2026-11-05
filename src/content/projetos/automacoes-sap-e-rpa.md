@@ -29,31 +29,6 @@ Três frentes no mesmo caso:
 - **Pipelines em Python com Selenium.** Navegam, autenticam e baixam relatórios, que depois são tratados em pandas.
 - **RPA do tratamento de leads.** Usa Python com PyAutoGUI e openpyxl, além de macros VBA.
 
-## Arquitetura
-
-```mermaid
-flowchart TD
-  accTitle: As três frentes de automação
-  accDescr: Pedidos passam por verificadores em Excel VBA, que executam transações no SAP e cruzam os resultados. Portais internos passam por Selenium e pandas. Os leads são tratados por RPA em Python e VBA.
-  subgraph Verificadores
-    direction TB
-    P[Pedidos] --> V[Excel VBA]
-    V --> S[SAP GUI Scripting]
-    S --> C[Resultados cruzados com os pedidos]
-  end
-  subgraph Relatorios [Relatórios]
-    direction TB
-    I[Portais internos] --> L[Python e Selenium]
-    L --> D[Tratamento em pandas]
-  end
-  subgraph Leads
-    direction TB
-    B[Base de leads] --> R[RPA: PyAutoGUI, openpyxl e VBA]
-  end
-  Verificadores ~~~ Relatorios
-  Relatorios ~~~ Leads
-```
-
 ## Decisões técnicas
 
 **SAP GUI Scripting em vez de RFC ou BAPI.** O script usa a sessão do próprio operador, o que dispensa permissões diretas de RFC e BAPI. O custo é depender da interface gráfica aberta durante a execução.

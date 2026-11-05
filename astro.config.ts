@@ -36,7 +36,14 @@ export default defineConfig({
               theme: 'base',
               fontFamily: 'Arial, Helvetica, sans-serif',
               // Nós estreitos e próximos: o diagrama precisa continuar legível em 360 px.
-              flowchart: { curve: 'basis', wrappingWidth: 130, nodeSpacing: 22, rankSpacing: 32 },
+              // A margem abaixo do título do grupo evita que ele encoste na primeira caixa.
+              flowchart: {
+                curve: 'basis',
+                wrappingWidth: 130,
+                nodeSpacing: 14,
+                rankSpacing: 32,
+                subGraphTitleMargin: { top: 6, bottom: 12 },
+              },
             },
           },
         ],

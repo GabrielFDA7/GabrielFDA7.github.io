@@ -392,3 +392,16 @@ com pedido de menos movimento no sistema, ninguém perde conteúdo.
 Dois detalhes evitam os problemas comuns de um carrossel. As áreas ocupam a mesma célula do grid, então a
 altura é sempre a da maior, e nada abaixo pula. E o relógio só anda com a seção na tela e sem ninguém
 interagindo: clicar em uma área para a troca, porque quem clicou quer ler aquilo.
+
+### Um diagrama precisa dizer o que o texto não diz
+
+Quase todo projeto tinha um diagrama de arquitetura, mas a maioria só repetia a seção "Solução" em caixas.
+Isso não mostra domínio; mostra um formulário preenchido. Um bom diagrama responde a uma pergunta: no
+NextUp, "por que o algoritmo testa sem internet?"; na telemetria, "o que acontece quando o arquivo vem
+errado?". Sem pergunta assim, é melhor não ter diagrama.
+
+### Por que a seta não clicava
+
+O link da linha tem um `::after` que cobre a linha inteira. Mas `translate` cria um novo contexto de
+empilhamento, e a seta passava a ficar por cima dele: o clique caía nela, que não é link. Com
+`pointer-events: none`, o navegador ignora a seta e entrega o clique ao que está embaixo.

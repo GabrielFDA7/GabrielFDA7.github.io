@@ -529,7 +529,8 @@
 }
 
 .prosa svg[aria-roledescription] .edgeLabel rect,
-.prosa svg[aria-roledescription] .labelBkg {
+.prosa svg[aria-roledescription] .labelBkg,
+.prosa svg[aria-roledescription] .edgeLabel :is(span, p) {
   fill: var(--superficie) !important;
   background: var(--superficie) !important;
 }
