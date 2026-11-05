@@ -80,6 +80,8 @@ const destaque = data.metrics[0];
       linear-gradient(var(--fundo), var(--fundo)) padding-box,
       var(--cromo-borda) border-box;
     border: 1px solid transparent;
+    /* É só um sinal visual: o clique precisa passar para o link que cobre a linha inteira. */
+    pointer-events: none;
   }
 
   .dados {
