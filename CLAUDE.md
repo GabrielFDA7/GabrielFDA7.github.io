@@ -167,7 +167,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 2 | Páginas e componentes, filtro React com testes | Aprovada |
 | 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aprovada |
 | 4 | Focos por vaga e download do currículo | Aprovada |
-| 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aguardando aprovação |
+| 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aprovada |
 | 6 | Publicação no GitHub Pages | — |
 | 7 | (Depois) Versão em inglês | — |
 
