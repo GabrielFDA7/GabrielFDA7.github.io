@@ -1,7 +1,7 @@
 ---
 title: Integração com a API do SIS2 (Caterpillar)
 slug: integracao-api-sis2
-summary: Automação em Python que levanta os part numbers de uma frota de 81 máquinas, antes consultados à mão.
+summary: Automação em Python que levanta as peças de qualquer máquina Caterpillar pelo número de série, em vez de horas de consulta à mão.
 role: Solo
 context: profissional
 period: set/2026
@@ -9,7 +9,7 @@ status: concluido
 tags: [automacao, backend, industrial]
 stack: [Python, API REST/JSON, SIS2]
 metrics:
-  - { label: Máquinas cobertas, value: '81' }
+  - { label: Máquinas na primeira demanda, value: '81' }
 links: {}
 featured: true
 order: 3
@@ -19,11 +19,15 @@ draft: false
 
 ## Problema
 
-Levantar os part numbers de uma frota de 81 máquinas exigia consulta manual, item a item, no catálogo técnico da Caterpillar. A busca era em uma lista enorme e pouco amigável: alguns itens eram fáceis de achar, e outros, quase impossíveis. Também não existia na empresa o catálogo completo de peças de uma máquina.
+Levantar as peças que compõem uma máquina era um trabalho todo à mão no SIS2, o catálogo técnico da Caterpillar. O site não foi feito para isso: a lista é enorme e pouco amigável, alguns itens são fáceis de achar e outros, quase impossíveis. Uma máquina podia levar horas.
+
+A demanda veio do meu gestor. Ele precisava mostrar o resultado de uma campanha de reposicionamento de preços em 81 máquinas e me pediu as peças de cada uma. O pedido era só o levantamento. Automatizar foi ideia minha, porque eu não queria fazer aquilo à mão.
 
 ## Solução
 
-Uma automação em Python que recebe a lista de números de série, consome a API JSON do SIS2 e monta uma planilha com as peças de cada máquina.
+Uma automação em Python. A pessoa escolhe as máquinas pelos números de série, o programa consome a API JSON do SIS2 e devolve uma planilha com as peças de cada máquina, separadas por grupo, como material rodante ou ferramentas de penetração de solo, e com o detalhamento até a peça individual.
+
+O projeto nasceu das 81 máquinas da campanha, mas não está preso a elas. Funciona com qualquer máquina e em qualquer quantidade.
 
 ## Decisões técnicas
 
@@ -31,14 +35,14 @@ Uma automação em Python que recebe a lista de números de série, consome a AP
 
 **Guardar cada resposta antes de processar.** Se a sessão cair no meio do lote, a execução seguinte reaproveita o que já veio e continua de onde parou. O custo é ocupar espaço com arquivos brutos e poder reler um dado antigo.
 
-**Abrir as peças individuais só onde importa.** O detalhamento vale para material rodante e ferramentas de penetração de solo: cerca de 20 chamadas extras por máquina, contra cerca de 587 se fosse a máquina inteira. O custo é o resto do catálogo ficar no nível dos conjuntos.
+**O detalhamento é escolha de quem usa.** A máquina inteira sempre vem no nível dos conjuntos. Abrir cada conjunto até a peça individual pode valer para a máquina toda ou só para os grupos que interessam. Na campanha, eram material rodante e ferramentas de penetração de solo: cerca de 20 chamadas extras por máquina, contra cerca de 587 para a máquina inteira. O custo de abrir tudo é o tempo de execução crescer na mesma proporção.
 
 ## Resultados
 
-- **81 máquinas** cobertas, sem consulta manual.
-- **De um trabalho impossível de medir para uma busca em segundos.** Antes, cada item era procurado à mão. Agora, basta rodar o projeto e consultar a planilha.
+- **81 máquinas** levantadas na primeira demanda, sem consulta manual.
+- **De horas por máquina para uma busca em segundos.** Basta escolher os números de série e consultar a planilha.
 - **Catálogo completo de peças de uma máquina**, algo que não existia na empresa.
 
 ## O que eu aprendi
 
-Aprendi a investigar como um site conversa com o próprio servidor antes de decidir como automatizá-lo.
+Aprendi a investigar como um site conversa com o próprio servidor antes de decidir como automatizá-lo. E que o pedido nem sempre é o problema inteiro: me pediram uma lista, e a ferramenta que sobrou serve para qualquer máquina.
