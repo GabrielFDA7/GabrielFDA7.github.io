@@ -405,3 +405,48 @@ errado?". Sem pergunta assim, é melhor não ter diagrama.
 O link da linha tem um `::after` que cobre a linha inteira. Mas `translate` cria um novo contexto de
 empilhamento, e a seta passava a ficar por cima dele: o clique caía nela, que não é link. Com
 `pointer-events: none`, o navegador ignora a seta e entrega o clique ao que está embaixo.
+
+### O estudo de caso é lido com pressa
+
+Quem recruta passa poucos minutos em cada projeto. Por isso a página abre com três frases: o problema, o que
+eu fiz e o resultado. Quem quiser, continua lendo; quem não quiser, já sabe o essencial.
+
+Número também precisa dizer alguma coisa. "54 máquinas" não diz se o projeto deu certo; "de 8 a 10 minutos
+para 1" diz. A regra agora é simples: número só entra quando mostra uma mudança.
+
+### Elemento fixo não pode ser mais alto que a tela
+
+A coluna lateral ficava presa ao rolar a página (`position: sticky`). No NextUp, com muitas tecnologias, ela
+tinha 751 px, mais que a altura útil de um notebook comum. A parte de baixo, com o índice, nunca aparecia.
+A correção foi deixar fixo só o índice, que é curto, e deixar a ficha rolar com o texto.
+
+### Preto puro cansa, e a arte precisa acompanhar
+
+O fundo escuro virou um grafite com um toque de azul, como o claro tem um toque de cinza. Mas a arte de cromo
+tinha o próprio preto, e ficou uma mancha mais escura que a página. A correção foi no script que gera a arte:
+cada pixel escuro sobe até o fundo novo, sem mexer nos brilhos (`v' = piso + (1 - piso) * v`). Como o script
+é determinístico, só os arquivos esperados mudaram, e isso foi conferido comparando o hash de cada um.
+
+### Antes de culpar o código, meça a versão anterior
+
+Depois de uma mudança, o Lighthouse reprovou páginas que nem tinham sido alteradas. Em vez de sair
+"otimizando", a versão do último commit foi medida nas mesmas condições: o resultado mostrou que a máquina
+estava ocupada, não que o código tinha piorado. Comparar com uma referência evita consertar o que não quebrou.
+
+### Duas versões de imagem, uma só baixada
+
+A imagem do topo tem versão clara e escura. Carregar as duas de imediato faz uma disputar banda com a outra.
+A solução foi a mesma da arte: as duas imagens ficam com carregamento preguiçoso, e um `preload` com
+`media` por tema adianta só a que vai aparecer.
+
+### Editar um PDF sem refazer o documento
+
+Sem o arquivo original editável, a frase da EPTA foi trocada direto nos PDFs. A linha antiga foi apagada de
+verdade (*redaction*), e a nova foi escrita com a fonte que já estava dentro do próprio arquivo, medida antes
+para garantir que cabia. Depois, o texto do PDF inteiro foi comparado com o anterior: só aquela linha mudou.
+
+### O teste automático não substitui olhar
+
+As verificações automáticas passavam, e mesmo assim o pente fino achou problemas: o índice inalcançável, os
+números soltos que ainda estavam na home, uma frase que prometia uma seção que não existia mais. O teste
+automático confere regras conhecidas; achar o que ninguém pensou em conferir exige navegar como um visitante.

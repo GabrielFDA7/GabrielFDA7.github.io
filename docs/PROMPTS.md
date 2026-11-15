@@ -599,3 +599,122 @@ Ah entendi. Pode manter que a máquina de estados foi minha.
 
 **O que resultou:** a página da EPTA voltou a citar as máquinas de estados do Shard Swarm e do Geobionte,
 com os estados de cada um.
+
+### Prompt #026
+**Data:** 15/11/2026
+**Contexto:** Início de sessão, com as mudanças de 13/11 ainda sem commit.
+
+```
+Abra um localhost do projeto e me fale as pendências da última sessão
+```
+
+**O que resultou:** servidor local no ar e a lista de pendências: commit da sessão anterior, um arquivo
+solto na raiz, o registro no APRENDIZADO e o que dependia do Gabriel (capturas da EPTA, versão nova do ciclo
+de pedidos, aprovação da Fase 5).
+
+### Prompt #027
+**Data:** 15/11/2026
+**Contexto:** Resposta à lista de pendências.
+
+```
+1 - pode commitar tudo.
+
+2 -  Qual a diferença entre os arquivos?
+
+3 - Vamos alterar mais uma coisa ainda antes de registrar. Estou sentindo que  a parte que mostra os resultados no projeto está jogando contra em vez de jogar a favor. Não senti que nada daqueles resultados deveriam ser mostrados, eles não são relevantes.
+
+Acho que podemos remover essa parte ou então reformular, mas não tenho ideia do que colocar no lugar.
+
+Além disso, acho que a forma que as páginas de projetos tem as informações dispostas está muto ruim. Pode criar uma versão diferente para compararmos? Dá uma analisada e procura outros portfólios para termos uma ideia de como é feito.
+```
+
+**O que resultou:**
+
+1. Build e todas as verificações, e 9 commits da sessão de 13/11, um por assunto.
+2. O arquivo solto era uma cópia do briefing, com outra quebra de linha.
+3. Pesquisa sobre estudos de caso: quem recruta lê rápido, a parte de cada um precisa ser explícita e
+   número só ajuda quando mostra mudança.
+4. Versão B do estudo de caso, só no `npm run dev`: três frases na abertura (problema, o que eu fiz,
+   resultado), sem a faixa de métricas e sem a seção "Resultados", com ficha e índice numa coluna lateral.
+
+### Prompt #028
+**Data:** 15/11/2026
+**Contexto:** Comparação entre a versão atual e a versão B.
+
+```
+Sim, pode apagar.
+
+Ficou infinitamente melhor na versão B, podemos mudar para essa versão.
+
+Uma coisa que pensei, nos projetos que temos imagens, acho que seria válido colocar a imagem principal do projeto no lugar daquele forma cromática que vem ao lado do título. O que acha?
+
+As páginas estão muito genéricas. No que não tem foto, acho que mantemos daquele jeito mesmo, me fale o que acha sobre.
+```
+
+**O que resultou:**
+
+1. Versão B como a única, com o campo `resumo` obrigatório e as seções "Resultados" removidas. No NextUp, os
+   946 testes e o deploy foram para a frase de resultado.
+2. Em NextUp, telemetria e EPTA, a imagem do projeto na moldura de cromo no lugar da arte, no computador.
+3. Preload só da imagem do tema visível, depois de o Lighthouse mostrar as duas versões disputando banda.
+4. Sem foto, a arte continua: imagem decorativa nova seria pior que ela.
+
+### Prompt #029
+**Data:** 15/11/2026
+**Contexto:** Tema escuro.
+
+```
+Uma coisa que estou achando ruim no modo escuro é o preto puro.
+
+No modo branco, eu consigo perceber que o branco não é o #fffff, ele tem uma tom a mais de alguma outra cor no meio. Enquanto isso, no modo escuro o preto parece ser o preto puro. Acho que podemos dar uma neutralizada nisso, o que acha?
+```
+
+**O que resultou:** fundo escuro de `#050608` para o grafite `#111317`, com superfícies e linhas junto. A arte
+escura passou a terminar no novo fundo, no próprio script. O metal das letras ficou entre 5,9:1 e 12,6:1.
+
+### Prompt #030
+**Data:** 15/11/2026
+**Contexto:** Fim dos ajustes visuais.
+
+```
+Ficou muito melhor e acho que finalizamos com os detalhes, demorou mas foi.
+
+Agora quero que você passe um pente fino no projeto. Teste fim a fim para identificar problemas que haviam passado despercebidos e liste para que arrumemos.
+
+Também fique a vontade para analisar a estrutura e como as informações estão dispostas, pode verificar nos sites de referência. As mudanças para melhor ainda são bem vindas.
+```
+
+**O que resultou:** teste das 14 páginas em quatro larguras e dois temas, dos links externos, dos currículos
+e das interações. Lista com 11 itens, em três prioridades, e uma proposta de estrutura.
+
+### Prompt #031
+**Data:** 15/11/2026
+**Contexto:** Aprovação da lista.
+
+```
+Muito bem, comece. Vá me perguntando se é para fazer o próximo item quando acabar o atual.
+```
+
+**O que resultou** (cada item depois de uma pergunta ao Gabriel):
+
+1. Só o índice "Nesta página" fica fixo: a coluna inteira passava da tela em 1366x768 no NextUp.
+2. Números da home e da lista trocados por números que mostram mudança. A Inteligência ficou sem número.
+3. Abertura de `/projetos/` e a imagem de compartilhamento com a estrutura atual.
+4. Área de clique de 36 px nos links do índice.
+5. Período do ciclo no padrão, frase dos estados da EPTA, repetição do Sobre e aviso próprio na
+   Inteligência ("valores financeiros omitidos").
+6. Currículos baixam como `Gabriel-de-Angelis-curriculo-<foco>.pdf`.
+7. Campo `principal` nos focos: `/foco/dados/` abre pela telemetria, com a tela larga na moldura.
+
+### Prompt #032
+**Data:** 15/11/2026
+**Contexto:** Pergunta sobre os itens que dependiam de conteúdo do Gabriel.
+
+```
+Vamos fazer apenas o da EPTA, mas quero que você faça pra mim kkk, consegue não? Os currículos estão aqui no computador em algum lugar.
+```
+
+**O que resultou:** só havia os PDFs, sem fonte editável. A linha da EPTA foi apagada por *redaction* nos três
+currículos e reescrita com a Inter já embutida neles: "Criei 8 dos 13 inimigos de um roguelike em Unity e
+programei em C# dois deles, os drops e o inventário." A comparação linha a linha mostrou que só ela mudou.
+Os originais em Downloads ficaram como estavam. Depois, o Gabriel pediu para registrar e encerrar a sessão.
