@@ -10,6 +10,10 @@ tags: [automacao, dados, bi]
 stack: [Python, pdfplumber, pandas, openpyxl, CustomTkinter, PyInstaller, SAP, Looker Studio, Google Sites]
 metrics:
   - { label: 'Por documento (antes, de 8 a 10 min)', value: 1 min }
+resumo:
+  problema: "Pedidos, faturas e cotações de um cliente chegavam em PDF e eram digitados à mão, e o cliente dependia do vendedor para saber do pedido."
+  feito: "Fiz sozinho um extrator em Python para os PDFs e um painel atualizado todo dia a partir do SAP."
+  resultado: "Cada documento caiu de 8 a 10 minutos para 1, e o cliente consulta o próprio pedido sem perguntar a ninguém."
 links: {}
 featured: true
 order: 4
@@ -32,12 +36,6 @@ Os pedidos, as faturas e as cotações de um cliente chegavam em PDF, e o time t
 **Executável único.** Assim o extrator roda nas máquinas corporativas sem instalar Python. O custo é um arquivo maior e uma nova geração do executável a cada mudança.
 
 **Looker Studio e Google Sites.** Entregam o acompanhamento ao cliente sem custo de infraestrutura. O custo é ficar limitado ao que essas ferramentas oferecem.
-
-## Resultados
-
-- **De 8 a 10 minutos para 1 minuto por documento**, em um volume de 10 a 20 documentos por dia.
-- **Em uso até hoje**, com o acompanhamento atualizado todo dia para o cliente.
-- **O status do pedido deixou de depender do vendedor:** o cliente consulta sozinho.
 
 ## O que eu aprendi
 

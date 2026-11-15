@@ -12,6 +12,10 @@ metrics:
   - { label: Testes automatizados, value: '946' }
   - { label: Coleta de filas, value: a cada 5 min }
   - { label: Status, value: Em produção }
+resumo:
+  problema: "No parque, a fila menor nem sempre compensa: se ela fica longe, a caminhada come o tempo que se ganharia."
+  feito: "Fiz sozinho, do algoritmo que soma caminhada e fila ao app com mapa e GPS, publicado no Render."
+  resultado: "Está no ar para o Magic Kingdom, com 946 testes automatizados e deploy a cada push. Cada recomendação mostra a conta que a justifica."
 links:
   repo: https://github.com/GabrielFDA7/nextup
   demo: https://nextup-rcux.onrender.com
@@ -89,14 +93,6 @@ flowchart TD
 **SQLite no desenvolvimento, PostgreSQL em produção.** Quem clona o repositório roda os testes sem instalar banco. O custo é o comportamento poder divergir entre os dois, por isso há testes de fuso horário e de unicidade.
 
 **Ping externo para manter o coletor acordado.** O plano gratuito do Render hiberna sem acessos, e o coletor dorme junto. O agendamento do GitHub Actions parecia resolver e sempre ficava verde, mas a medição mostrou 244 execuções em 37 dias, quando deveriam ser cerca de 5.300. Hoje o ping principal é externo, e o Actions ficou de reserva. O custo é depender de mais um serviço.
-
-## Resultados
-
-- **946 testes** automatizados: 745 na suíte rápida e 201 de interface em navegador. Nenhum toca a internet.
-- **CI** em Python 3.11, 3.12 e 3.13, com lint, formatação e um job que sobe a imagem Docker e confere que ela não roda como root.
-- **Deploy contínuo** no Render a cada push na branch principal.
-- **Decisões medidas:** a faixa de popularidade saiu de 1.257 medições reais, com 83% de estabilidade contra 74% da alternativa.
-- **Processo auditável:** 10 sessões e 70 prompts registrados na íntegra.
 
 ## O que eu aprendi
 

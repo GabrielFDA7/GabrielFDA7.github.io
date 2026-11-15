@@ -18,6 +18,8 @@ const projetos = defineCollection({
         tags: z.array(z.enum(TAGS)).min(1),
         stack: z.array(z.string().min(1)),
         metrics: z.array(z.object({ label: z.string().min(1), value: z.string().min(1) })).max(3),
+        // Abertura do estudo de caso: uma frase para cada pergunta de quem lê com pressa.
+        resumo: z.object({ problema: z.string().min(1), feito: z.string().min(1), resultado: z.string().min(1) }),
         links: z.object({ repo: z.url().optional(), demo: z.url().optional() }),
         // Capas: a estreita (celular) vai no destaque da home, e a larga (computador) no
         // estudo de caso. As versões `Escuro` são opcionais e acompanham o tema do site.

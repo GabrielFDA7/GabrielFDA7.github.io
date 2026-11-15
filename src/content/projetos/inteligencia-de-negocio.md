@@ -10,6 +10,10 @@ tags: [dados, bi, negocio]
 stack: [SAP BW, Power Query (M), Excel, PowerPoint]
 metrics:
   - { label: Período analisado, value: 2022–2026 }
+resumo:
+  problema: "A diretoria pediu às filiais que cortassem gastos ao máximo, e a frente mais atacada era a folha de pagamento."
+  feito: "Em dupla com o meu gestor, tratei os dados do resultado de todas as filiais e montei a apresentação para a diretoria."
+  resultado: "Mostramos que a meta de redução cabia sem cortar pessoas, e ninguém da filial foi demitido."
 links: {}
 featured: false
 order: 6
@@ -36,12 +40,6 @@ Com isso, estruturei uma apresentação para a diretoria com três partes: o que
 **Pesos e métricas próprios para cada porte de filial.** Filiais de tamanhos diferentes não se comparam pelo número bruto. Por isso, usei pesos e métricas personalizadas, somados à experiência do meu gestor. O custo é a comparação depender de critério, e não de uma fórmula simples de reproduzir.
 
 **Projeção de 2027 além da tendência.** Parti dos gastos dos anos anteriores e somei uma análise de mercado e de variáveis possíveis, como as eleições presidenciais no Brasil e as de meio de mandato nos EUA. O custo é o resultado depender dessas premissas, que precisam ser revistas quando o cenário muda.
-
-## Resultados
-
-- **De 2022 a 2026 analisados**, com uma projeção para o primeiro semestre de 2027.
-- **Equipe mantida:** ninguém da filial foi demitido.
-- **Apresentação entregue à diretoria**, com propostas de corte que atingiam a meta sem reduzir a equipe.
 
 ## O que eu aprendi
 

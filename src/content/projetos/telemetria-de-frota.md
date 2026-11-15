@@ -11,6 +11,10 @@ stack: [Python, pandas, PostgreSQL (Supabase), Parquet, pytest, VisionLink, Reac
 metrics:
   - { label: Máquinas monitoradas, value: '54' }
   - { label: Relatório processado, value: 1 por dia }
+resumo:
+  problema: "Uma frota mista tinha os dados em um site por fabricante, sem uma visão única de consumo e ociosidade."
+  feito: "Fiz o pipeline que lê os relatórios diários, valida e grava no banco, e defini as 10 análises do painel. A integração com o Gemini foi de outra pessoa do time, com a minha tutoria."
+  resultado: "Desde 10/11/2026 o pipeline grava todo dia no PostgreSQL. A primeira carga levou 45 dias de histórico, sem falha."
 links: {}
 coverLargo: ../../assets/projetos/telemetria-visao-geral.webp
 coverAlt: "Visão geral da aplicação de telemetria em demonstração: indicadores de máquinas, consumo e eficiência, gráfico de consumo por dia e a situação da frota."
@@ -80,14 +84,6 @@ O diagrama mostra o pipeline, que é a minha parte. As tabelas ficam no PostgreS
 **Custo zero como requisito.** A solução precisava funcionar sem gasto de infraestrutura.
 
 **Base pensada para replicar.** A estrutura foi desenhada para servir a outros clientes, e não só a este.
-
-## Resultados
-
-- **54 máquinas** monitoradas.
-- **1 relatório processado por dia**, com histórico desde 26/09/2026.
-- **No banco desde 10/11/2026:** a primeira carga levou 45 dias de histórico, com 2.454 linhas e nenhuma falha.
-- **34 testes** no pipeline.
-- **10 análises do painel** definidas e conferidas com os dados reais. O escopo ainda não fechou: parte das regras ainda espera as views do banco.
 
 ## O que eu aprendi
 

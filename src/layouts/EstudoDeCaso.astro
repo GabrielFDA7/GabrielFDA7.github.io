@@ -1,8 +1,13 @@
 ---
+/*
+ * Estudo de caso. A abertura responde a quem lê com pressa: o problema, o que eu fiz e o resultado,
+ * em uma frase cada (campo `resumo`). A ficha e o índice ficam numa coluna lateral no computador.
+ * Projeto com imagem a mostra no lugar da arte de cromo, na moldura de cromo.
+ */
+import type { MarkdownHeading } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import CapaProjeto from '../components/CapaProjeto.astro';
 import Icone from '../components/Icone.astro';
-import Metricas from '../components/Metricas.astro';
 import NavProjetos from '../components/NavProjetos.astro';
 import StackChips from '../components/StackChips.astro';
 import TopoPagina from '../components/TopoPagina.astro';
@@ -11,102 +16,254 @@ import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   projeto: CollectionEntry<'projetos'>;
+  headings: MarkdownHeading[];
   anterior?: CollectionEntry<'projetos'>;
   proximo?: CollectionEntry<'projetos'>;
 }
 
-const { projeto, anterior, proximo } = Astro.props;
+const { projeto, headings, anterior, proximo } = Astro.props;
 const { data } = projeto;
-const ficha = [
-  { termo: 'Status', valor: ROTULO_STATUS[data.status] },
-  { termo: 'Período', valor: data.period },
-  { termo: 'Meu papel', valor: data.role },
-];
 // "NextUp — recomendador..." vira um nome grande e uma linha de apoio, como na home.
 const [nome = data.title, ...resto] = data.title.split(' — ');
 const apoio = resto.join(' — ');
+// "Time de 3 — responsável por...": o que vem antes do travessão é a equipe; o resto já está no resumo.
+const equipe = data.role.split(' — ')[0];
+const secoes = headings.filter((h) => h.depth === 2);
+const resumo = [
+  { termo: 'O problema', texto: data.resumo.problema },
+  { termo: 'O que eu fiz', texto: data.resumo.feito },
+  { termo: 'Resultado', texto: data.resumo.resultado },
+];
+// A tela larga tem preferência; a capa quadrada ou de celular entra quando é a única.
+const imagem = data.coverLargo
+  ? { claro: data.coverLargo, escuro: data.coverLargoEscuro, larga: true }
+  : data.cover
+    ? { claro: data.cover, escuro: data.coverEscuro, larga: false }
+    : undefined;
 ---
 
-<BaseLayout title={data.title} description={data.summary} imagem={data.slug}>
+<BaseLayout title={data.title} description={data.summary} imagem={data.slug} arteNoComputador={!imagem}>
   <article>
-    <TopoPagina titulo={nome} apoio={apoio || undefined} rotulo={ROTULO_CONTEXTO[data.context]} descricao={data.summary} longo={!apoio}>
+    <TopoPagina titulo={nome} apoio={apoio || undefined} rotulo={ROTULO_CONTEXTO[data.context]} descricao={data.summary} longo={!apoio} semArte={!!imagem}>
       <p slot="antes" class="mb-4">
         <a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos/">Todos os projetos</a>
       </p>
-      {(data.links.repo || data.links.demo) && (
-        <div class="botoes mt-8">
-          {data.links.demo && (
-            <a class="btn btn-cromo" href={data.links.demo}>
-              Abrir demo
-              <Icone nome="externo" class="size-4" />
-            </a>
-          )}
-          {data.links.repo && (
-            <a class="btn btn-contorno" href={data.links.repo}>
-              <Icone nome="github" />
-              Código
-            </a>
-          )}
-        </div>
-      )}
-    </TopoPagina>
-
-    <div class="pagina">
-      <div class="pb-4 lg:pt-10"><Metricas itens={data.metrics} /></div>
-
-      <dl class="mt-4 flex max-w-4xl flex-wrap gap-x-8 gap-y-4 sm:mt-6 sm:gap-x-12">
-        {ficha.map((item) => (
-          <div>
-            <dt class="rotulo">{item.termo}</dt>
-            <dd class="mt-1 font-medium">{item.valor}</dd>
-          </div>
-        ))}
-      </dl>
-
-      {data.confidential && (
-        <p class="mt-6 flex items-center gap-3 text-sm text-texto-suave">
-          <span class="esfera shrink-0" aria-hidden="true"></span>
-          Projeto corporativo: dados e nomes de clientes omitidos.
-        </p>
-      )}
-
-      <div class="mt-6"><StackChips itens={data.stack} /></div>
-    </div>
-
-    <div class="pagina">
-      {data.coverLargo && (
-        <figure class="mx-auto mt-8 max-w-5xl lg:mt-12">
+      {imagem && (
+        <figure slot="lado" class:list={['imagem-topo', { larga: imagem.larga }]}>
           <div class="moldura-tela">
             <CapaProjeto
-              claro={data.coverLargo}
-              escuro={data.coverLargoEscuro}
+              claro={imagem.claro}
+              escuro={imagem.escuro}
               alt={data.coverAlt ?? ''}
-              widths={[640, 960, 1440]}
-              sizes="(min-width: 64rem) 64rem, 100vw"
+              widths={imagem.larga ? [640, 960, 1440] : [320, 480, 640]}
+              sizes={imagem.larga ? '(min-width: 64rem) 36rem, 100vw' : '(min-width: 64rem) 26rem, 100vw'}
+              prioridade
               class="w-full rounded-[0.75rem]"
             />
           </div>
           {data.coverLegenda && <figcaption class="mt-3 text-sm text-texto-suave">{data.coverLegenda}</figcaption>}
         </figure>
       )}
+    </TopoPagina>
 
-      <div class="prosa mx-auto mt-12 max-w-3xl">
-        {!data.coverLargo && data.cover && (
-          <CapaProjeto
-            claro={data.cover}
-            escuro={data.coverEscuro}
-            alt={data.coverAlt ?? ''}
-            widths={[320, 480, 640]}
-            sizes="(min-width: 40rem) 22rem, 100vw"
-            class="capa"
-          />
+    <div class="pagina">
+      <ol class="resumo" aria-label="Em resumo">
+        {resumo.map((item) => (
+          <li class="parada">
+            <p class="rotulo">{item.termo}</p>
+            <p class="mt-2 text-lg leading-snug font-medium lg:text-xl">{item.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="pagina corpo">
+      <aside class="lateral" aria-label="Sobre o projeto">
+        <dl class="ficha">
+          <div>
+            <dt class="rotulo">Equipe</dt>
+            <dd>{equipe}</dd>
+          </div>
+          <div>
+            <dt class="rotulo">Período</dt>
+            <dd>{data.period}</dd>
+          </div>
+          <div>
+            <dt class="rotulo">Status</dt>
+            <dd>{ROTULO_STATUS[data.status]}</dd>
+          </div>
+          <div class="toda-linha">
+            <dt class="rotulo">Tecnologias</dt>
+            <dd class="mt-2"><StackChips itens={data.stack} /></dd>
+          </div>
+        </dl>
+
+        {data.confidential && (
+          <p class="mt-6 flex items-start gap-3 text-sm text-texto-suave">
+            <span class="esfera mt-0.5 shrink-0" aria-hidden="true"></span>
+            Projeto corporativo: dados e nomes de clientes omitidos.
+          </p>
         )}
-        <slot />
-      </div>
 
-      <div class="mx-auto max-w-3xl">
+        {(data.links.repo || data.links.demo) && (
+          <div class="links">
+            {data.links.demo && (
+              <a class="btn btn-cromo" href={data.links.demo}>
+                Abrir demo
+                <Icone nome="externo" class="size-4" />
+              </a>
+            )}
+            {data.links.repo && (
+              <a class="btn btn-contorno" href={data.links.repo}>
+                <Icone nome="github" />
+                Código
+              </a>
+            )}
+          </div>
+        )}
+
+        {secoes.length > 1 && (
+          <nav class="indice" aria-label="Nesta página">
+            <p class="rotulo">Nesta página</p>
+            <ol class="mt-3 flex flex-col gap-2 text-sm">
+              {secoes.map((secao) => (
+                <li><a class="text-texto-suave no-underline hover:text-destaque" href={`#${secao.slug}`}>{secao.text}</a></li>
+              ))}
+            </ol>
+          </nav>
+        )}
+      </aside>
+
+      <div class="prosa estudo min-w-0">
+        <slot />
         <NavProjetos anterior={anterior} proximo={proximo} />
       </div>
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  /* A imagem do projeto no lugar da arte: no celular, logo abaixo do resumo do título. */
+  .imagem-topo {
+    width: 100%;
+  }
+
+  .imagem-topo:not(.larga) {
+    max-width: 22rem;
+  }
+
+  @media (min-width: 64rem) {
+    .imagem-topo {
+      flex: 0 0 auto;
+      width: 36%;
+      max-width: 26rem;
+    }
+
+    .imagem-topo.larga {
+      width: 46%;
+      max-width: 36rem;
+    }
+  }
+
+  /* Três frases que respondem, sem rolar, o que um recrutador quer saber. */
+  .resumo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    list-style: none;
+    padding-top: 0.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .resumo {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3rem;
+      padding-top: 1rem;
+    }
+  }
+
+  .ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    gap: 1.25rem 2rem;
+  }
+
+  .ficha dd:not(.mt-2) {
+    margin-top: 0.25rem;
+    font-weight: 500;
+  }
+
+  .toda-linha {
+    grid-column: 1 / -1;
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .indice {
+    display: none;
+  }
+
+  .corpo {
+    margin-top: 3rem;
+  }
+
+  .estudo {
+    margin-top: 1rem;
+  }
+
+  /* Computador: ficha e índice numa coluna que acompanha a leitura. */
+  @media (min-width: 64rem) {
+    .corpo {
+      display: grid;
+      grid-template-columns: 15rem minmax(0, 46rem);
+      gap: 5rem;
+      justify-content: center;
+      margin-top: 4rem;
+    }
+
+    .lateral {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+
+    .ficha,
+    .links {
+      grid-template-columns: 1fr;
+    }
+
+    .indice {
+      display: block;
+      margin-top: 2.5rem;
+    }
+
+    .estudo {
+      margin-top: -4.5rem; /* o primeiro h2 tem margem própria; alinha o topo com a ficha */
+    }
+  }
+
+  .estudo :global(h2) {
+    scroll-margin-top: 6rem;
+  }
+
+  /*
+   * "**Decisão.** Explicação": a decisão vira um subtítulo e a explicação fica embaixo. Só a partir
+   * de "Decisões técnicas": antes dela, o negrito é um rótulo com dois-pontos ("O que foi meu:").
+   */
+  .estudo :global(h2[id='decisões-técnicas'] ~ p > strong:first-child) {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1.125rem;
+    letter-spacing: -0.01em;
+  }
+
+  .estudo :global(h2[id='decisões-técnicas'] ~ p:has(> strong:first-child)) {
+    margin-top: 1.75rem;
+  }
+</style>

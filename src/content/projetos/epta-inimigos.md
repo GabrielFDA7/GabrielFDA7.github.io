@@ -10,6 +10,10 @@ tags: [jogos]
 stack: [Unity 6, C#, ScriptableObjects]
 metrics:
   - { label: Inimigos que criei, value: 8 de 13 }
+resumo:
+  problema: "O jogo da equipe precisava de inimigos, cada um com história, visual, movimento, ataque e recompensa."
+  feito: "Criei 8 dos 13 inimigos, da história à ideia de design, e programei em C# dois deles, o sistema de drops e o primeiro inventário."
+  resultado: "O jogo está em beta fechado, com o primeiro bioma em testes."
 links:
   repo: https://github.com/EntertainmentEpta/LeavingPlerotus
 cover: ../../assets/projetos/epta-capa.webp
@@ -46,11 +50,6 @@ Um jogo assim depende dos inimigos. Cada um precisa de uma história, de um visu
 Os dois inimigos funcionam como máquinas de estados: cada um está sempre em um estado, com regras próprias, e um acontecimento faz ele passar para o próximo. O Shard Swarm alterna entre forma unida, quando fica vulnerável e acumula carga, disparo e reagrupamento. O Geobionte vaga, busca minério, se funde a ele e se transforma, ou foge se for impedido.
 
 Os ScriptableObjects separam o balanceamento, como atributos e chance de drop, do código dos inimigos. Assim, quem ajusta o jogo mexe nos números sem tocar na lógica.
-
-## Resultados
-
-- **8 dos 13 inimigos** do bestiário foram criados por mim, sem contar o chefe do primeiro bioma.
-- **Jogo em beta fechado**, com o primeiro bioma fechado e em testes.
 
 ## O que eu aprendi
 

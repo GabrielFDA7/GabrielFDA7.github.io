@@ -10,6 +10,10 @@ tags: [automacao, dados, industrial]
 stack: [Excel VBA, SAP GUI Scripting, Tabela dinâmica]
 metrics:
   - { label: '50 itens (antes, mais de 30 min)', value: 3 min }
+resumo:
+  problema: "A transação de preço e estoque do SAP não exportava nada, e conferir uma lista de 1.000 peças passava de 8 horas de cliques."
+  feito: "Fiz sozinho duas macros em VBA que conduzem o SAP e montam uma planilha com o preço e o estoque de cada peça."
+  resultado: "50 itens passaram de mais de 30 minutos para cerca de 3, e a Sotreq usa as macros no Brasil inteiro."
 links: {}
 featured: false
 order: 5
@@ -43,12 +47,6 @@ A pessoa cola a lista de peças na planilha. A macro abre a transação, cola a 
 **Montar uma matriz na memória e gravar de uma vez.** Escrever célula por célula no Excel é lento. A macro guarda as linhas de cada peça em uma matriz e grava todas de uma vez. O custo é um código um pouco menos direto de ler.
 
 **Conferir as peças na entrada.** Ao colar a lista, a célula que não tem um código de peça válido fica vermelha. A macro também aceita o código com hífen ou no meio de uma frase e o limpa antes de consultar. O custo é um formato novo de código ser marcado como erro até a regra ser atualizada.
-
-## Resultados
-
-- **De mais de 30 minutos para cerca de 3 minutos** na consulta de 50 itens.
-- **Planilha pronta para análise**, com preço e estoque de cada peça em cada centro, algo que a transação não oferecia.
-- **Uso em todo o Brasil:** a Sotreq usa o projeto em nível nacional.
 
 ## O que eu aprendi
 

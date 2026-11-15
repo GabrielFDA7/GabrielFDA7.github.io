@@ -535,22 +535,6 @@
   background: var(--superficie) !important;
 }
 
-.prosa .capa {
-  width: 100%;
-  max-width: 22rem;
-  max-height: 34rem;
-  border: 1px solid var(--linha);
-  border-radius: 0.875rem;
-  object-fit: cover;
-  object-position: top;
-}
-
-@media (min-width: 40rem) {
-  .prosa .capa {
-    float: right;
-    margin: 0 0 1.5rem 2rem;
-  }
-}
 
 /* Imagem no meio do Markdown, na mesma moldura de cromo da capa. O parágrafo logo depois dela é a legenda. */
 .prosa p > img {
