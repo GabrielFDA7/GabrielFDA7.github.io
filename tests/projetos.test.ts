@@ -1,7 +1,8 @@
+import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { FOCOS } from '../src/config/focos';
 import { TAGS } from '../src/config/tags';
-import { publicados, selecionarParaFoco, vizinhos } from '../src/lib/projetos';
+import { comPrincipal, publicados, selecionarParaFoco, vizinhos } from '../src/lib/projetos';
 
 const projeto = (id: string, order: number, draft = false) => ({ id, data: { order, draft } });
 const comTags = (id: string, tags: string[], featured = false) => ({ id, data: { tags, featured } });
@@ -33,7 +34,25 @@ describe('selecionarParaFoco', () => {
   });
 });
 
+describe('comPrincipal', () => {
+  const lista = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+  const ids = (principal?: string) => comPrincipal(lista, principal).map((p) => p.id);
+
+  it('põe o principal na frente e mantém a ordem dos demais', () => {
+    expect(ids('c')).toEqual(['c', 'a', 'b']);
+  });
+
+  it('devolve a lista igual quando não há principal ou ele não está nela', () => {
+    expect(ids()).toEqual(['a', 'b', 'c']);
+    expect(ids('nao-existe')).toEqual(['a', 'b', 'c']);
+  });
+});
+
 describe('FOCOS', () => {
+  it.each(Object.entries(FOCOS).filter(([, foco]) => foco.principal))('%s aponta para um projeto que existe', (_nome, foco) => {
+    expect(existsSync(`src/content/projetos/${foco.principal}.md`)).toBe(true);
+  });
+
   it.each(Object.entries(FOCOS))('%s tem chamada, tags válidas e currículo em /cv/', (_nome, foco) => {
     expect(foco.chamada.length).toBeGreaterThan(0);
     expect(foco.tags.length).toBeGreaterThan(0);

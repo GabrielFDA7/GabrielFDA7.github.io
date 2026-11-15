@@ -11,6 +11,8 @@ export interface Foco {
   curriculo: string;
   /** Leva a seção "Como eu trabalho com IA" para logo depois da abertura. */
   iaPrimeiro?: boolean;
+  /** Projeto que abre a página no lugar do NextUp: o nome do arquivo em src/content/projetos/, sem .md. */
+  principal?: string;
 }
 
 export const FOCOS: Record<string, Foco> = {
@@ -18,6 +20,8 @@ export const FOCOS: Record<string, Foco> = {
     chamada: 'Transformo dados de máquinas, SAP e APIs em decisão',
     tags: ['dados', 'bi'],
     curriculo: '/cv/Gabriel-de-Angelis-curriculo-dados.pdf',
+    // Para vaga de dados, o pipeline de telemetria mostra mais que um recomendador de parque (Gabriel, 15/11/2026).
+    principal: 'telemetria-de-frota',
   },
   ia: {
     chamada: 'Construo software com IA no método, não só no discurso',

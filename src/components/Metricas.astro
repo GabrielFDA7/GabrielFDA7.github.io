@@ -47,6 +47,11 @@ const { itens } = Astro.props;
     min-width: 100%;
   }
 
+  /* Um número só não divide a linha com ninguém: o rótulo usa a largura que precisar. */
+  .item:only-child .rotulo-metrica {
+    width: auto;
+  }
+
   .numero-metrica {
     font-size: clamp(1.1875rem, 4.9vw, 1.75rem); /* acima de 18,66 px em negrito: texto grande */
     line-height: 1.15;

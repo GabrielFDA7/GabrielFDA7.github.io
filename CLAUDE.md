@@ -231,6 +231,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Foco novo é uma entrada em `src/config/focos.ts`.** `Inicio.astro` é a composição única da home e
   dos focos, e `selecionarParaFoco` decide a lista: projetos com as tags do foco primeiro, mesmo fora
   dos destaques, e depois os demais destaques. Focos ficam fora do menu e têm `noindex`.
+  O campo `principal` escolhe o projeto que abre a página: em `/foco/dados/`, a telemetria (Gabriel,
+  15/11/2026). Projeto principal sem captura de celular aparece com a tela larga na moldura de cromo.
 
 ## Comandos
 

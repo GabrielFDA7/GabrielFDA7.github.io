@@ -28,6 +28,15 @@ export function selecionarParaFoco<T extends Selecionavel>(lista: readonly T[], 
   return [...lista.filter(combina), ...lista.filter((item) => item.data.featured && !combina(item))];
 }
 
+/**
+ * Põe o projeto escolhido como principal na frente, sem mudar a ordem dos demais. Se ele não estiver
+ * na lista, ela volta igual: o foco nunca mostra um projeto que a seleção deixou de fora.
+ */
+export function comPrincipal<T extends { id: string }>(lista: readonly T[], principal?: string): T[] {
+  const escolhido = lista.find((item) => item.id === principal);
+  return escolhido ? [escolhido, ...lista.filter((item) => item !== escolhido)] : [...lista];
+}
+
 /** Projeto anterior e próximo na ordem do site. Não dá a volta: as pontas ficam sem vizinho. */
 export function vizinhos<T>(lista: readonly T[], indice: number): { anterior?: T; proximo?: T } {
   return { anterior: lista[indice - 1], proximo: lista[indice + 1] };
