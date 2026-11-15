@@ -44,7 +44,9 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
     que vira o fio. Invertida, é a poça no fim do rodapé. A arte não aparece em outro lugar no celular.
   - `FerramentasIA`: logos das ferramentas em metal, com desenhos do pacote `simple-icons` (CC0).
   - `LinhaProjeto`: lista editorial com número em metal, no lugar de cartões de projeto.
-  - `TopoPagina`: a composição da abertura (texto à esquerda, arte à direita) nas páginas internas.
+  - `TopoPagina`: a composição da abertura (texto à esquerda, arte à direita) nas páginas internas. Em
+    estudo de caso com imagem, a imagem do projeto, na moldura de cromo, toma o lugar da arte no computador
+    (Gabriel, 15/11/2026). No celular, o `MetalLiquido` continua, e a imagem vem logo abaixo do texto.
 - **No computador, nada de fio nem divisor entre seções** (Gabriel, 04/11/2026: "chega de inovação").
   Quem separa as seções é o espaço. Divisores em forma de raio e de fios finos já foram testados e
   rejeitados. Não proponha outro elemento decorativo sem o Gabriel pedir.
@@ -209,6 +211,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Capas do NextUp são capturas do site no ar**, não `docs/img/` do repositório dele, que está
   desatualizado. Refaça com `npm run capturas` quando a interface mudar (Gabriel, 04/11/2026). O
   script toca no mapa, porque é aí que a função aparece: aproximação, opções numeradas e rota.
+- **O estudo de caso abre com o `resumo`** (Gabriel, 15/11/2026): o problema, o que eu fiz e o resultado, uma
+  frase cada, obrigatório no schema. Não há faixa de métricas nem seção "Resultados" na página, porque número
+  solto ("54 máquinas", "1 por dia") não diz se o projeto deu certo. O resultado é uma frase com contexto.
+  `metrics` hoje só alimenta a home. Ficha e índice ficam numa coluna lateral fixa no computador.
 - **Imagens de projeto entram sem mudar a home nem a lista.** Capa por `cover` ou `coverLargo`, e o resto no Markdown, na seção que a imagem comprova. O parágrafo logo depois de uma imagem no Markdown vira legenda. Na telemetria, toda tela diz que é demonstração com dados fictícios e de quem é o trabalho, porque a aplicação e o Gemini são de outra frente. A tela de insights foi recortada para tirar a coluna com as unidades (Gabriel, 06/11/2026). Imagem no meio do texto leva a mesma moldura de cromo da capa (Gabriel, 13/11/2026).
 - **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
   nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
