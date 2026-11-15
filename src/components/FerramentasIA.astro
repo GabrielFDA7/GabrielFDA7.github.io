@@ -17,9 +17,9 @@ const mascara = (caminho: string) => {
 };
 ---
 
-<ul class="logos grid max-w-lg grid-cols-4 gap-x-3 lg:gap-x-6" aria-label="Ferramentas de IA que eu uso">
+<ul class="logos flex max-w-lg justify-between gap-x-3" aria-label="Ferramentas de IA que eu uso">
   {ferramentas.map(({ nome, icone }) => (
-    <li>
+    <li class="flex flex-col items-center text-center">
       <span class="logo block size-10 lg:size-14" style={mascara(icone.path)} aria-hidden="true"></span>
       <span class="mt-2 block text-xs font-semibold tracking-tight lg:mt-3 lg:text-sm">{nome}</span>
     </li>
