@@ -10,14 +10,16 @@ interface Props {
   descricao?: string | undefined;
   /** Títulos longos, como os de estudo de caso, usam uma escala menor. */
   longo?: boolean;
+  /** Sem a arte à direita no computador: o slot `lado` traz a imagem do projeto no lugar dela. */
+  semArte?: boolean;
 }
 
-const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
+const { titulo, rotulo, apoio, descricao, longo = false, semArte = false } = Astro.props;
 ---
 
-<section class="topo relative overflow-clip">
+<section class:list={['topo relative overflow-clip', { 'com-imagem': semArte }]}>
   <MetalLiquido altura={88} />
-  <div class="arte"><ArteCromo class="size-full" /></div>
+  {!semArte && <div class="arte"><ArteCromo class="size-full" /></div>}
   <div class="pagina relative">
     <div class="conteudo pt-5 pb-8 lg:py-20">
       <div class="min-w-0">
@@ -69,6 +71,21 @@ const { titulo, rotulo, apoio, descricao, longo = false } = Astro.props;
 
     .conteudo > :first-child {
       max-width: 60%;
+    }
+
+    /* Com a imagem do projeto ao lado, o texto divide a largura com ela, e o título longo diminui. */
+    .com-imagem .conteudo {
+      gap: 4rem;
+    }
+
+    .com-imagem .conteudo > :first-child {
+      flex: 1 1 0;
+      max-width: none;
+    }
+
+    .com-imagem .titulo-longo {
+      font-size: clamp(2.25rem, 1rem + 2.6vw, 3.5rem);
+      text-wrap: balance;
     }
   }
 </style>

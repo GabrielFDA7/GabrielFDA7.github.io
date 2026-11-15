@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 
 interface Props {
   claro: ImageMetadata;
@@ -8,14 +8,41 @@ interface Props {
   widths: number[];
   sizes: string;
   class?: string;
+  /** Imagem na abertura da página: é o maior elemento da primeira tela, então chega antes de tudo. */
+  prioridade?: boolean;
 }
 
-const { claro, escuro, alt, widths, sizes, class: classe } = Astro.props;
+const { claro, escuro, alt, widths, sizes, class: classe, prioridade = false } = Astro.props;
+const gerar = (src: ImageMetadata) => getImage({ src, widths, sizes, format: 'webp' });
+const [imgClaro, imgEscuro] = await Promise.all([gerar(claro), escuro && gerar(escuro)]);
+
+// Com uma imagem só, ela carrega já. Com duas, ambas ficam lazy (a escondida nem é baixada), e um
+// preload por tema adianta só a visível, como a arte de cromo faz no BaseLayout.
+const ansiosa = prioridade && !imgEscuro;
+const variantes = [
+  { img: imgClaro, classe: imgEscuro && 'so-tema-claro', tema: '(prefers-color-scheme: light)' },
+  imgEscuro && { img: imgEscuro, classe: 'so-tema-escuro', tema: '(prefers-color-scheme: dark)' },
+].filter((v) => !!v);
 ---
 
 <!--
   O botão de tema não muda o que um <picture> escolhe, então são duas imagens, e o CSS
   mostra uma. Com loading="lazy", a imagem escondida nem chega a ser baixada.
 -->
-<Image src={claro} alt={alt} widths={widths} sizes={sizes} loading="lazy" class:list={[classe, escuro && 'so-tema-claro']} />
-{escuro && <Image src={escuro} alt={alt} widths={widths} sizes={sizes} loading="lazy" class:list={[classe, 'so-tema-escuro']} />}
+{prioridade && imgEscuro && variantes.map(({ img, tema }) => (
+  <link rel="preload" as="image" type="image/webp" imagesrcset={img.srcSet.attribute} imagesizes={sizes} media={tema} fetchpriority="high" />
+))}
+{variantes.map(({ img, classe: tema }) => (
+  <img
+    src={img.src}
+    srcset={img.srcSet.attribute}
+    sizes={sizes}
+    alt={alt}
+    width={img.attributes.width}
+    height={img.attributes.height}
+    loading={ansiosa ? 'eager' : 'lazy'}
+    fetchpriority={ansiosa ? 'high' : undefined}
+    decoding="async"
+    class:list={[classe, tema]}
+  />
+))}

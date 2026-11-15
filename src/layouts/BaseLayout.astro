@@ -13,9 +13,11 @@ interface Props {
   noindex?: boolean;
   /** Nome da imagem de compartilhamento gerada em /og/. */
   imagem?: string;
+  /** false quando a página troca a arte do computador por outra imagem (estudo de caso com foto). */
+  arteNoComputador?: boolean;
 }
 
-const { title, description = site.descricao, noindex = false, imagem = 'inicio' } = Astro.props;
+const { title, description = site.descricao, noindex = false, imagem = 'inicio', arteNoComputador = true } = Astro.props;
 const tituloCompleto = title ? `${title} · ${site.nomeCurto}` : `${site.nomeCurto} · ${site.posicionamento}`;
 const canonica = new URL(Astro.url.pathname, Astro.site);
 const imagemOg = new URL(`/og/${imagem}.jpg`, Astro.site);
@@ -23,7 +25,8 @@ const arte = await enderecosDaArte();
 const ESCURO = '(prefers-color-scheme: dark)';
 const CLARO = '(prefers-color-scheme: light)';
 const CELULAR = '(max-width: 47.99rem)';
-const COMPUTADOR = '(min-width: 48rem)';
+// Entre 48rem e 64rem, a arte grande ainda aparece no MetalLiquido; acima disso, só se a página a usar.
+const COMPUTADOR = arteNoComputador ? '(min-width: 48rem)' : '(min-width: 48rem) and (max-width: 63.99rem)';
 // A arte é o maior elemento da abertura, mas fica no CSS, onde o navegador a descobre tarde. Só a
 // versão do tema e do tamanho certos é pré-carregada; o mesmo corte do ArteCromo.
 const preArte = [
