@@ -227,10 +227,12 @@ const imagem = data.coverLargo
       margin-top: 4rem;
     }
 
+    /*
+     * Só o índice acompanha a leitura. A coluna inteira fixa passava da altura da tela em notebook
+     * (1366x768) quando o projeto tinha muitas tecnologias, e o índice ficava inalcançável.
+     */
     .lateral {
-      position: sticky;
-      top: 6rem;
-      align-self: start;
+      align-self: stretch;
     }
 
     .ficha,
@@ -239,6 +241,8 @@ const imagem = data.coverLargo
     }
 
     .indice {
+      position: sticky;
+      top: 6rem;
       display: block;
       margin-top: 2.5rem;
     }
