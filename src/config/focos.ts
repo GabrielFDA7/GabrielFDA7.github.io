@@ -17,17 +17,17 @@ export const FOCOS: Record<string, Foco> = {
   dados: {
     chamada: 'Transformo dados de máquinas, SAP e APIs em decisão',
     tags: ['dados', 'bi'],
-    curriculo: '/cv/curriculo-dados.pdf',
+    curriculo: '/cv/Gabriel-de-Angelis-curriculo-dados.pdf',
   },
   ia: {
     chamada: 'Construo software com IA no método, não só no discurso',
     tags: ['ia'],
-    curriculo: '/cv/curriculo-ai-engineer.pdf',
+    curriculo: '/cv/Gabriel-de-Angelis-curriculo-ia.pdf',
     iaPrimeiro: true,
   },
   backend: {
     chamada: 'APIs em Python testadas e em produção',
     tags: ['backend'],
-    curriculo: '/cv/curriculo-dev-python.pdf',
+    curriculo: '/cv/Gabriel-de-Angelis-curriculo-python.pdf',
   },
 };

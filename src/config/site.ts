@@ -7,7 +7,7 @@ export const site = {
     'Trabalho com Python, dados e automação na Sotreq, revenda oficial Caterpillar no Brasil. Estudo Sistemas de Informação na UFU.',
   descricao:
     'Portfólio de Gabriel Faria de Angelis: produtos com dados, Python e IA, com testes, CI e deploy em produção.',
-  curriculoPadrao: '/cv/curriculo-dev-python.pdf',
+  curriculoPadrao: '/cv/Gabriel-de-Angelis-curriculo-python.pdf',
   links: {
     github: 'https://github.com/GabrielFDA7',
     linkedin: 'https://www.linkedin.com/in/gabriel-de-angelis',

@@ -187,7 +187,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   sistema de drops e primeiro inventário. As máquinas de estados dos dois inimigos são dele (Gabriel,
   13/11/2026), mesmo com os arquivos alterados depois por outras pessoas.
 
-- Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
+- Currículo do botão da home: a versão Python (`Gabriel-de-Angelis-curriculo-python.pdf`), confirmada pelo
+  Gabriel em 04/11/2026. Os PDFs se chamam `Gabriel-de-Angelis-curriculo-<foco>.pdf` (15/11/2026): é com esse
+  nome que chegam no computador de quem baixa.
 - **Os 3 PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Foram corrigidos a
   partir dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa
   passar pela mesma limpeza antes de entrar aqui.
