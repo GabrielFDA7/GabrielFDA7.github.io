@@ -47,7 +47,7 @@ Um jogo assim depende dos inimigos. Cada um precisa de uma história, de um visu
 - o **sistema de drops**: a essência cai sempre, e as partes do corpo dependem de sorte, em quatro raridades;
 - o **primeiro inventário**, em grade, com cada item definido em um ScriptableObject.
 
-Os dois inimigos funcionam como máquinas de estados: cada um está sempre em um estado, com regras próprias, e um acontecimento faz ele passar para o próximo. O Shard Swarm alterna entre forma unida, quando fica vulnerável e acumula carga, disparo e reagrupamento. O Geobionte vaga, busca minério, se funde a ele e se transforma, ou foge se for impedido.
+Os dois inimigos funcionam como máquinas de estados: cada um está sempre em um estado, com regras próprias, e um acontecimento faz ele passar para o próximo. O Shard Swarm alterna entre três estados: forma unida (quando fica vulnerável e acumula carga), disparo e reagrupamento. O Geobionte vaga, busca minério, se funde a ele e se transforma, ou foge se for impedido.
 
 Os ScriptableObjects separam o balanceamento, como atributos e chance de drop, do código dos inimigos. Assim, quem ajusta o jogo mexe nos números sem tocar na lógica.
 

@@ -12,4 +12,4 @@ order: 1
 - Extração diária do SAP, tratada em Python, em um dashboard de acompanhamento para o cliente.
 - Automações RPA e cruzamento de bases em Power Query e SQL para priorizar propostas comerciais.
 - Análises com SAP BW sobre eficiência entre filiais.
-- Tutor do squad de estagiários e instrutor de workshops internos de Python.
+- Tutor do squad de estagiários e instrutor de workshops internos de Python (Pandas e Selenium).

@@ -4,7 +4,7 @@ slug: ciclo-de-pedidos
 summary: Extrator de dados de PDFs para o time de vendas e um painel para o cliente acompanhar os próprios pedidos, todo dia.
 role: Solo
 context: profissional
-period: desde jan/2026
+period: jan/2026 – atual
 status: em-producao
 tags: [automacao, dados, bi]
 stack: [Python, pdfplumber, pandas, openpyxl, CustomTkinter, PyInstaller, SAP, Looker Studio, Google Sites]
