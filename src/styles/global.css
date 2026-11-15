@@ -552,6 +552,26 @@
   }
 }
 
+/* Imagem no meio do Markdown, na mesma moldura de cromo da capa. O parágrafo logo depois dela é a legenda. */
+.prosa p > img {
+  width: 100%;
+  height: auto;
+  border: 0.375rem solid transparent;
+  border-radius: 1.125rem;
+  background: var(--cromo-borda) border-box;
+}
+
+.prosa p:has(> img) {
+  margin-top: 2rem;
+}
+
+.prosa p:has(> img) + p {
+  margin-top: 0.75rem;
+  margin-bottom: 2rem;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
 /* Sem degradê em texto quando o sistema impõe as próprias cores (alto contraste do Windows). */
 @media (forced-colors: active) {
   .metal,

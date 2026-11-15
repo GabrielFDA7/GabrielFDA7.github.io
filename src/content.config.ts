@@ -26,6 +26,8 @@ const projetos = defineCollection({
         coverLargo: image().optional(),
         coverLargoEscuro: image().optional(),
         coverAlt: z.string().min(1).optional(),
+        // Texto visível abaixo da capa larga, para dizer de quem é a tela e se os dados são fictícios.
+        coverLegenda: z.string().min(1).optional(),
         featured: z.boolean(),
         order: z.number().int(),
         confidential: z.boolean(),

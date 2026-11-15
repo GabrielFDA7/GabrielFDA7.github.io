@@ -75,15 +75,18 @@ const apoio = resto.join(' — ');
 
     <div class="pagina">
       {data.coverLargo && (
-        <figure class="moldura-tela mx-auto mt-8 max-w-5xl lg:mt-12">
-          <CapaProjeto
-            claro={data.coverLargo}
-            escuro={data.coverLargoEscuro}
-            alt={data.coverAlt ?? ''}
-            widths={[640, 960, 1440]}
-            sizes="(min-width: 64rem) 64rem, 100vw"
-            class="w-full rounded-[0.75rem]"
-          />
+        <figure class="mx-auto mt-8 max-w-5xl lg:mt-12">
+          <div class="moldura-tela">
+            <CapaProjeto
+              claro={data.coverLargo}
+              escuro={data.coverLargoEscuro}
+              alt={data.coverAlt ?? ''}
+              widths={[640, 960, 1440]}
+              sizes="(min-width: 64rem) 64rem, 100vw"
+              class="w-full rounded-[0.75rem]"
+            />
+          </div>
+          {data.coverLegenda && <figcaption class="mt-3 text-sm text-texto-suave">{data.coverLegenda}</figcaption>}
         </figure>
       )}
 
