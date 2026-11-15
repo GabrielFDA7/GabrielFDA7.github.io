@@ -89,6 +89,11 @@ O pipeline é do Gabriel. A integração com o Gemini foi implementada por outra
 tutoria do Gabriel: nunca descrever essa parte como código dele. Parte do pipeline foi escrita por IA na
 reta final, por causa do prazo, e o texto do projeto diz isso.
 
+Desde 10/11/2026 o pipeline grava no PostgreSQL do Supabase, e a aplicação lê as views do banco. As
+views são de outra pessoa do time. O Gabriel também definiu as 10 análises do painel (regras, fonte e
+gráfico), conferidas em pandas e em um protótipo em HTML. Os fatos vêm de `docs/ESTADO-ATUAL.md`,
+`docs/analises-do-painel.md` e do ADR 0002 do projeto, na pasta dele no OneDrive.
+
 ## Números do NextUp
 
 Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
@@ -164,7 +169,19 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 **Pendências combinadas:**
 
-- O SIS2 pode aparecer com esse nome e a pergunta das análises veio da diretoria (Gabriel, 04/11/2026).
+- O SIS2 pode aparecer com esse nome (Gabriel, 04/11/2026). O extrator serve para qualquer máquina; as 81
+  foram só a primeira demanda (Gabriel, 13/11/2026). Existe uma versão em que o usuário escolhe o detalhamento.
+- **Ciclo de pedidos:** só o que o Gabriel escreveu. A versão nova (DuckDB, Google Sheets) entra quando ele
+  pedir. Na análise de negócio, a equipe foi mantida; saídas voluntárias não entram no texto.
+- **Projetos reescritos em 13/11/2026, com endereço novo:** "Automações SAP e RPA" virou
+  `verificadores-sap` (só os verificadores de preço e disponibilidade; coleta de relatórios e RPA de leads
+  saíram), "Análises de negócio" virou `inteligencia-de-negocio` (só o estudo de gastos da filial; os
+  pipelines de Power Query saíram) e a EPTA virou `epta-inimigos`.
+- **EPTA:** o repositório do jogo é público (`EntertainmentEpta/LeavingPlerotus`). O jogo tem 13 inimigos
+  (tabela do GDD v1.4, sem o chefe), e 8 foram criados pelo Gabriel (Gabriel, 13/11/2026). O nome é
+  Leaving Plerotus, provisório; o "Living" do README está errado. O código do Gabriel, pelos commits: Shard Swarm, Geobionte,
+  sistema de drops e primeiro inventário. As máquinas de estados dos dois inimigos são dele (Gabriel,
+  13/11/2026), mesmo com os arquivos alterados depois por outras pessoas.
 
 - Currículo do botão da home: `curriculo-dev-python.pdf`, confirmado pelo Gabriel em 04/11/2026.
 - **Os 3 PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Foram corrigidos a
@@ -192,6 +209,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Capas do NextUp são capturas do site no ar**, não `docs/img/` do repositório dele, que está
   desatualizado. Refaça com `npm run capturas` quando a interface mudar (Gabriel, 04/11/2026). O
   script toca no mapa, porque é aí que a função aparece: aproximação, opções numeradas e rota.
+- **Imagens de projeto entram sem mudar a home nem a lista.** Capa por `cover` ou `coverLargo`, e o resto no Markdown, na seção que a imagem comprova. O parágrafo logo depois de uma imagem no Markdown vira legenda. Na telemetria, toda tela diz que é demonstração com dados fictícios e de quem é o trabalho, porque a aplicação e o Gemini são de outra frente. A tela de insights foi recortada para tirar a coluna com as unidades (Gabriel, 06/11/2026). Imagem no meio do texto leva a mesma moldura de cromo da capa (Gabriel, 13/11/2026).
 - **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
   nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
 - **"Arquitetura" é opcional e só existe com decisão real para mostrar** (Gabriel, 05/11/2026). Hoje só em

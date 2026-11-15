@@ -461,3 +461,141 @@ Outra coisa, a setinha que deveria levar aos projetos não funciona e a parte de
 3. A seta das linhas de projeto voltou a funcionar, com um teste para isso não voltar.
 4. "Arquitetura" ficou só em NextUp e Telemetria, com diagramas e textos refeitos a partir do código e das
    decisões documentadas. Cada um dos dois ganhou também uma decisão técnica nova.
+
+### Prompt #022
+**Data:** 05/11/2026 e 06/11/2026
+**Contexto:** Fotos dos projetos e centralização das ferramentas de IA.
+
+```
+Abre o localhost desse projeto, por favor.
+
+Como vamos adicionar fotos dos projetos ao site, sem alterar muito o layout. Tem ideias?
+
+Opus, você tem alguma ideia melhor do que as que o seu modelo irmão deu?
+
+Irei enviar as imagens de alguns que tenho.
+Você consegue ver a ordem das imagens que eu anexar?
+
+Beleza, vou enviar.
+Corrija a centralização das tecnologias com o nome delas na sessão "Como eu trabalho com IA"
+
+Imagem 1 - EPTA, capa do jogo;
+Imagem 2 - Telemetria - visão geral;
+Imagem 3 - Telemetria - Insights de IA.
+Imagem 4 - Telemetria - Visão geral, destaques da frota;
+Imagem 5 - Telemetria, Login.
+
+Acho que esses são os únicos projetos que conseguimos ter foto.
+```
+
+**O que resultou:**
+
+1. Logos de "Como eu trabalho com IA" centralizados com os nomes.
+2. Capas em EPTA e Telemetria, com a home e a lista sem mudança.
+3. Na telemetria, duas telas no texto e legendas que dizem de quem é cada uma e que os dados são fictícios.
+4. Só 4 das 5 imagens chegaram: "destaques da frota" ficou de fora.
+
+### Prompt #023
+**Data:** 13/11/2026
+**Contexto:** Respostas sobre as imagens da telemetria e revisão do texto de cinco projetos. A primeira
+parte chegou colada e sem quebras de linha.
+
+```
+1 - Sim, posso publicá-las.2 - É um e-mail fictício.3 - Pode sim.4 - Também não tem problema.Precisamos atualizar o projeto de telemetria, como eu posso te conectar ao projeto para você entender tudo o que mudou? Quer redigir um prompt para eu colar lá e ele entregar as respostas do jeito que você precisa para adicionar ao portfólio?Reparei que nesse projeto, as outras duas telas não tem a moldura de metal que existe nas outras, foi proposital? Acho que talvez seria melhor manter.Vamos reformular o projeto da API so SIS2:Na verdade, o projeto levanta as peças de qualquer máquina e em qualquer quantidade. Ele foi desenhado e projetado numa época que a minha demanda era entender todas as peças dessas 81 máquinas, mas ele não é preso a elas.Problema:O problema era que levantar as peças que compunham uma máquina era muito sofrido, anteriormente era feito completamente a mão e poderia levar horas apenas para uma máquina, visto que o site (SIS2) é pouco user friendly para essa questão. O que me motivou a criar esse projeto? O meu gestor precisava demonstrar resultado numa campanha de reposicionamento de preços que algumas máquinas específicas sofreram. No caso, são as 81 máquinas que já são citadas.O pedido dele era pra eu simplesmente levantar as peças, não me deu uma específicação para eu automatizar o processo ou melhorar, só queria o resultado, a parte de facilitar tudo veio de mim, eu mesmo não queria sofrer a dor de ter que fazer manual kkk.A solução:Essa parte está fiel, é realmente uma automação em Python, que usando os números de série de máquinas selecionadas pelo usuário, se conecta com a API JSON do site SIS2, puxa os dadaos da máquina e devolve uma planilha em Excel com as peças de cada máquina, já separada por grupo (tipo de peça) e com uma granulação do dado profunda.Decisões técnicas:Precisamos mudar apenas a última parte, em que fala que Abrir as peças individuais só onde importa.Isso realmente acontece, mas é uma limitação imposta por mim, acho que ficaria mais bonito fala que é uma escolha do usuário se ele quer analisar a máquina inteira ou se quer focar em grupos específicos da máquina, no caso da demnada, era realmente só material rodante e fps, mas eu criei a solução pensando em já facilitar para a máquina completa.Automação do ciclo de pedidos de um cliente: do PDF ao dashboard:Acho que podemos mudar a descrição para algo do tipo "Extrator de dados de PDFs para o time de vendas e um painel para acompanhamento diário de pedidos para o cliente."Problema:Acho que podemos manter a primeira parte, mas para a segunda, devemos escrever "O cliente também não tinha visibiliadade do status das próprias entregas, dependia do vendedor responsável para entender se seu pedido já havia sido faturado, separado para coleta, enviado ou concluído."A primera parte da solução está boa, mas acho que podemos melhorar a segunda. Acho que também podemos nos conectar ao diretório do projeto para você entender melhor do que se trata. Pode gerar um prompt também ou siga a mesma ideia da primeira solução que pedi mais acima.Automações SAP e RPA:Esse projeto está completamente desconexo. Essas três coisas realemente acontecem, mas não são ligadas e ainda ficaram má descritas na página.A parte de verificadores de preço e disponibilidade é a parte que merece mais destaque, acho que devemos remover as outras partes dessa página.O problema:Na Sotreq, os grandes clientes possuem listas de preços que são diferentes dos preços da maioria dos clientes, possuem condições especiais. Um dos vendedores havia solicitado que extraíssemos os preços das peças para montarmos uma nova lista para um cliente, com mais de 1000 itens. Esse processo era feito todo manualmente, por uma transação do SAP (YLP_PARTS), essa é uma transação específica da empresa (verifique esse fato, por favor), por ela era possível inserir uma lista de itens e esses itens eram buscados no catalogo da CAT e da Sotreq (alcance global) e retornava onde cada peça tinha estoque. O problema era que, apesar de conseguirmos colocar muitos itens a transação demorava exageradamente para rodar e entregar os itens em uma forma inicial de visualização, nessa forma, era possível apenas ver o preço e algumas outras específicações do item, porém, não era possível ver a disponibilidade e onde ela estava.Para ver isso, o usuário deveria clicar item a item dentro da transação, ela demorava mais uns 30 segundos e finalmente retornava a disponibilidade. Porém, isso não era extraível, não tinha como o usuário criar uma planilha automaticamente ou um txt. Foi então que eu pensei em uma forma de automatizar todo o processo, desde a inserção dos itens na transação, ao clique um a um e copiar de uma forma não usual (por conta do SAP) e jogar os dados de disponibilidade numa matriz, que seria contruída para todos os itens e após todo o processo, colocada em uma planilha do excel, já estruturada e com uma tabela dinâmica que facilitava a visualização do item para o usuário.Os outros tópicos já estão bem definidos, mas mesmo assim, veja se consegue extrair alguma coisa desse texto para melhorá-los.
+
+Essa primeira parte da mensagem ficou bem mal formata, precisei colar ela aqui no chat.
+
+Análise de negócios com SAP e Power Query:
+
+Um estudo feito para analisar a eficiência de gastos da filiail de Uberlândia da Sotreq, comparando com as outras filiais da regional.
+
+Acho que podemos remover esse projeto, não faz sentido ficar falando de DRE, ou talvez reformular para algo como "Análise e inteligência de negócio".
+
+Problema:
+
+A empresa reformulou o modelo de trabalho e a diretoria exigiu que as filiais reduzissem os gastos ao máximo possível, com isso, a principal frente atacada foi a folha de pagamento.
+
+Como uma forma de defender nossa estrutura eu e meu superior direto iniciamos uma jornada pela DRE da empresa toda, verificando cada filial, onde gastavam, qual era a porcentagem de conversão, etc. Analisamos todas as contas do balanço e percebemos que não era necessário cortar funcionários para que a meta de redução de custos fosse atingida.
+
+Dessa forma, estruturei uma apresentação que demonstrava todos os resultados que encontramos, reunia as nossas ideias para corte de custos e ainda justificava manter todos os nossos funcionários (que era a principal dor da nossa filial, não queriamos cortar pessoas).
+
+A análise foi feita em cima da DRE da Sotreq, a partir do SAP BW, lá montamos um fluxo de extração das contas para fazermos as análises e tratamos os dados com o Power query.  A partir dai, montamos gráficos e demonstrações de resultado que defendiam nosso posicionamento.
+
+O aprendizado que ficou para essa tarefa foi que o conhecimento da operação que você trabalha vale tanto quanto o conhecimento em tecnologias de desenvolvimento. Além disso, ferramentas básicas como o Excel, Power Point e Power query já fazem um trabalho excelente para tarefas mais básicas.
+
+(pode reformular esse texto se sentir que é necessário)
+
+A parte de decisões técnicas está bem estruturada, pode manter.
+
+
+EPTA:
+
+A EPTA (Equipe de propulsão e tecnologia aeroespacial) é uma equipe universitária da UFU que constrói foguetes, satélites e tecnologia aeroespacial.
+A equipe é dividida em vários times, cada um toma conta de uma área que faz ser possível o desenvolvimento dos foguetes. Temos a equipe de propulsão, recuperação, aeroinâmica, etc.
+Dentre a lista das equipes, temos a equipe de entertainment, e é dessa equipe que eu participo.
+O entertainment é uma das frentes da ETPA que não participa diretamente na construção e desenvolvimento dos foguetes. O intuito da equipe é promover a popularidade da equipe e trazer investimento para que consigamos concluir os projetos aeroespaciais.
+
+A principalm forma de fazer isso atualmente é o Leaving Plerotus (nome provisório), um jogo roguelike isométrico em que um trabalhador espacial acaba passando por problemas e preso em um planeta hóstil, que nunca antes havia sido explorado. O objetivo do personagem principal é reconstruir sua nave e sair do planeta, mas para isso ele terá que transpor todos os desafios que essa terra inexplorada apresenta.
+
+Nesse projeto, participei muito da criação da lore, formulando a ideia inicial e depois desenvolvendo com meus colegas de time. Além disso, quando houve a divisão de tarefas iniciais, optei por cuidar da parte de criação dos inimigos, criando desde lore, ideia de design (eu não desenhava, apenas descrevia como queria o inimigo), padrão de movimento, padrão de ataques, drops dos inimigos, primeiro sistema de inventário. 
+Não tenho o projeto aqui nesse computador, mas está no github. Você consegue analisar sem eu ter que clonar?
+
+Eu ainda vou baixar a versão mais nova do jogo para tirar uns prints e colocarmos no portfólio.
+
+Aqueles resultados que aparecem logo abaixo do nome estão ruins. Coloque um número exato de inimigos
+
+Qualque dúvida, pergunte!
+```
+
+**O que resultou:**
+
+1. As imagens no meio do texto ganharam a mesma moldura de cromo da capa.
+2. Telemetria atualizada direto da pasta do projeto, sem prompt intermediário: gravação no Supabase, as 10
+   análises do painel, a regra que separa máquina parada de aparelho mudo e 34 testes.
+3. SIS2: serve para qualquer máquina, a motivação da campanha e o detalhamento como escolha de quem usa.
+4. Ciclo de pedidos: resumo e problema novos, e a parte 2 com a decisão de não usar Power BI.
+5. Verificadores SAP: só preço e disponibilidade, conferidos no código das macros. A YLP_PARTS é
+   transação própria da empresa, pelo prefixo Y.
+6. A análise de negócio virou "Análise e inteligência de negócio", com o texto novo.
+7. EPTA: lido o repositório público do jogo, com 13 inimigos no bestiário e o que foi do Gabriel pelos commits.
+
+### Prompt #024
+**Data:** 13/11/2026
+**Contexto:** Respostas às perguntas sobre os projetos reescritos.
+
+```
+No SIS2, tenho uma versão com a possibilidade de escolha.
+
+2 - Por enquanto pode falar só do que eu escrevi, logo mais atualizaremos o portfólio.
+
+3 - Sim
+
+4 - Sim, a equipe foi completamente mantida, apenas uma pessoa se demitiu e outra foi remanejada de cargo, mas por livre e espontânea vontade, acho que não vale colocar isso.
+
+5 - É Leaving Plerotus;
+
+Coloque que eu fiz 8 de 13 inimigos;
+
+O que é uma máquina de estados?
+
+Sim, continua
+```
+
+**O que resultou:**
+
+1. SIS2 mantido: o detalhamento é escolha de quem usa.
+2. Ciclo de pedidos sem a decisão sobre o Power BI, que vinha do plano da versão nova.
+3. Análise de negócio com o resultado "ninguém da filial foi demitido".
+4. EPTA com "8 de 13 inimigos" na métrica e nos resultados.
+5. Explicação de máquina de estados. A frase saiu do texto até o Gabriel dizer se escreveu essa parte.
+
+### Prompt #025
+**Data:** 13/11/2026
+**Contexto:** Resposta à explicação sobre máquina de estados.
+
+```
+Ah entendi. Pode manter que a máquina de estados foi minha.
+```
+
+**O que resultou:** a página da EPTA voltou a citar as máquinas de estados do Shard Swarm e do Geobionte,
+com os estados de cada um.
