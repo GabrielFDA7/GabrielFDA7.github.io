@@ -14,6 +14,11 @@ import sharp from 'sharp';
 
 const SAIDA = 'src/assets/arte';
 
+// Fundo do tema escuro, o mesmo `--fundo` de src/styles/tokens.css. O preto da arte escura termina
+// nele, para a arte não formar uma mancha mais escura que a página (Gabriel, 15/11/2026).
+const FUNDO_ESCURO = '#111317';
+const PISO_ESCURO = [1, 3, 5].map((i) => Number.parseInt(FUNDO_ESCURO.slice(i, i + 2), 16) / 255);
+
 // --- Ruído -------------------------------------------------------------------
 
 function criarRuido(semente) {
@@ -239,6 +244,10 @@ async function gerarFundo(tema) {
     dispersao: (x, y) => 0.0035 + 0.006 * degrau(0.0, 0.3, fbm((x / alturaPx) * 0.9, (y / alturaPx) * 0.9, 2)),
     termico: (x, y) => (tema === 'escuro' ? 0.95 : 0.4) * degrau(-0.04, 0.14, fbm((x / alturaPx) * 1.1 + 9, (y / alturaPx) * 1.1 + 2, 2)),
   });
+  if (tema === 'escuro') {
+    // Eleva o preto até o fundo sem tocar no brilho máximo: v' = piso + (1 - piso) * v.
+    for (let i = 0; i < rgb.length; i += 1) rgb[i] = PISO_ESCURO[i % 3] + (1 - PISO_ESCURO[i % 3]) * rgb[i];
+  }
   const { bytes, canais } = paraBytes(rgb);
   const arquivo = `${SAIDA}/cromo-${tema}.webp`;
   await sharp(bytes, { raw: { width: largura, height: alturaPx, channels: canais } })
@@ -397,9 +406,9 @@ async function gerarEmblema() {
   await original.clone().resize(192).webp({ quality: 90, alphaQuality: 100 }).toFile(`${SAIDA}/emblema.webp`);
   await original.clone().resize(900).webp({ quality: 84, alphaQuality: 90 }).toFile(`${SAIDA}/emblema-grande.webp`);
   await original.clone().resize(64).png({ compressionLevel: 9 }).toFile('public/favicon.png');
-  await original.clone().resize(180).flatten({ background: '#050608' }).png({ compressionLevel: 9 }).toFile('public/apple-touch-icon.png');
+  await original.clone().resize(180).flatten({ background: FUNDO_ESCURO }).png({ compressionLevel: 9 }).toFile('public/apple-touch-icon.png');
   if (process.env.ARTE_PREVIA) {
-    await original.clone().resize(720).flatten({ background: '#050608' }).png().toFile(`${process.env.ARTE_PREVIA}/emblema-escuro.png`);
+    await original.clone().resize(720).flatten({ background: FUNDO_ESCURO }).png().toFile(`${process.env.ARTE_PREVIA}/emblema-escuro.png`);
     await original.clone().resize(720).flatten({ background: '#eceef1' }).png().toFile(`${process.env.ARTE_PREVIA}/emblema-claro.png`);
   }
   console.log('ok: emblema e favicons');

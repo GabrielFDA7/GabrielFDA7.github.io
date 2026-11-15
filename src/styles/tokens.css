@@ -67,10 +67,10 @@
     --cromo-letras: url('../assets/arte/letras-escuro.webp');
 
     /* Cromo negro */
-    --fundo: #050608;
-    --superficie: #0e1014;
-    --superficie-2: #181b21;
-    --linha: #2c313a;
+    --fundo: #111317;
+    --superficie: #181b20;
+    --superficie-2: #21252b;
+    --linha: #343a44;
     --texto: #eff2f6;
     --texto-suave: #a6aeba;
     --destaque: #8ec5ff;
@@ -79,7 +79,7 @@
     --foco: #8ec5ff;
 
     --cromo-botao: linear-gradient(180deg, #f8fafc 0%, #ccd3dc 46%, #929ca9 52%, #e1e6ec 100%);
-    --cromo-botao-texto: #050608;
+    --cromo-botao-texto: #111317;
     --cromo-borda: linear-gradient(115deg, #59616d, #f4f6f8 28%, #3a404a 46%, #cfd6df 62%, #ff8a5c 78%, #8ec5ff 90%, #59616d);
     --cromo-regua: linear-gradient(90deg, transparent, #59616d 18%, #8ec5ff 62%, #ff8a5c 80%, transparent);
     --sombra-emblema: none;
@@ -90,10 +90,10 @@
   color-scheme: dark;
   --cromo-letras: url('../assets/arte/letras-escuro.webp');
 
-  --fundo: #050608;
-  --superficie: #0e1014;
-  --superficie-2: #181b21;
-  --linha: #2c313a;
+  --fundo: #111317;
+  --superficie: #181b20;
+  --superficie-2: #21252b;
+  --linha: #343a44;
   --texto: #eff2f6;
   --texto-suave: #a6aeba;
   --destaque: #8ec5ff;
@@ -102,7 +102,7 @@
   --foco: #8ec5ff;
 
   --cromo-botao: linear-gradient(180deg, #f8fafc 0%, #ccd3dc 46%, #929ca9 52%, #e1e6ec 100%);
-  --cromo-botao-texto: #050608;
+  --cromo-botao-texto: #111317;
   --cromo-borda: linear-gradient(115deg, #59616d, #f4f6f8 28%, #3a404a 46%, #cfd6df 62%, #ff8a5c 78%, #8ec5ff 90%, #59616d);
   --cromo-regua: linear-gradient(90deg, transparent, #59616d 18%, #8ec5ff 62%, #ff8a5c 80%, transparent);
   --sombra-emblema: none;

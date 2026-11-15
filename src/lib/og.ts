@@ -57,7 +57,7 @@ export async function gerarImagemOg({ rotulo, titulo, apoio }: DadosOg): Promise
       ],
     },
   );
-  const imagem = await sharp({ create: { width: LARGURA, height: ALTURA, channels: 3, background: '#050608' } })
+  const imagem = await sharp({ create: { width: LARGURA, height: ALTURA, channels: 3, background: '#111317' } })
     .composite([
       { input: arte, left: esquerda, top: 0 },
       { input: Buffer.from(svg), left: 0, top: 0 },
