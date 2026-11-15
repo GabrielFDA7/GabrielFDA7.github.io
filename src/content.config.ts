@@ -33,6 +33,8 @@ const projetos = defineCollection({
         featured: z.boolean(),
         order: z.number().int(),
         confidential: z.boolean(),
+        // Aviso dos projetos confidenciais; sem ele, vale o padrão sobre dados e nomes de clientes.
+        avisoConfidencial: z.string().min(1).optional(),
         draft: z.boolean(),
       })
       .refine((projeto) => !(projeto.confidential && projeto.links.repo), {

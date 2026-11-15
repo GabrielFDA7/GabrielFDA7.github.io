@@ -101,7 +101,7 @@ const imagem = data.coverLargo
         {data.confidential && (
           <p class="mt-6 flex items-start gap-3 text-sm text-texto-suave">
             <span class="esfera mt-0.5 shrink-0" aria-hidden="true"></span>
-            Projeto corporativo: dados e nomes de clientes omitidos.
+            {data.avisoConfidencial ?? 'Projeto corporativo: dados e nomes de clientes omitidos.'}
           </p>
         )}
 

@@ -17,6 +17,7 @@ links: {}
 featured: false
 order: 6
 confidential: true
+avisoConfidencial: 'Projeto corporativo: valores financeiros omitidos.'
 draft: false
 ---
 
