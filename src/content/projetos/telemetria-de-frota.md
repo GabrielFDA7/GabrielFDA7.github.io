@@ -9,8 +9,7 @@ status: em-producao
 tags: [dados, ia, industrial]
 stack: [Python, pandas, PostgreSQL (Supabase), Parquet, pytest, VisionLink, React, Vite, API Gemini]
 metrics:
-  - { label: Máquinas monitoradas, value: '54' }
-  - { label: Relatório processado, value: 1 por dia }
+  - { label: 'Histórico na 1ª carga, sem falha', value: 45 dias }
 resumo:
   problema: "Uma frota mista tinha os dados em um site por fabricante, sem uma visão única de consumo e ociosidade."
   feito: "Fiz o pipeline que lê os relatórios diários, valida e grava no banco, e defini as 10 análises do painel. A integração com o Gemini foi de outra pessoa do time, com a minha tutoria."

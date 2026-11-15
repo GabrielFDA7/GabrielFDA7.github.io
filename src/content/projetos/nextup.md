@@ -10,8 +10,6 @@ tags: [backend, dados, ia, web]
 stack: [Python, FastAPI, Pydantic, httpx, PostgreSQL, SQLAlchemy, Alembic, JavaScript, Leaflet, pytest, respx, Playwright, ruff, Docker, GitHub Actions, Render, Claude Code]
 metrics:
   - { label: Testes automatizados, value: '946' }
-  - { label: Coleta de filas, value: a cada 5 min }
-  - { label: Status, value: Em produção }
 resumo:
   problema: "No parque, a fila menor nem sempre compensa: se ela fica longe, a caminhada come o tempo que se ganharia."
   feito: "Fiz sozinho, do algoritmo que soma caminhada e fila ao app com mapa e GPS, publicado no Render."

@@ -9,7 +9,7 @@ status: concluido
 tags: [automacao, backend, industrial]
 stack: [Python, API REST/JSON, SIS2]
 metrics:
-  - { label: Máquinas na primeira demanda, value: '81' }
+  - { label: 'Por máquina (antes, horas)', value: segundos }
 resumo:
   problema: "Levantar as peças de uma máquina no catálogo da Caterpillar era trabalho manual e podia levar horas."
   feito: "Automatizei por iniciativa própria: um programa em Python consulta a API do SIS2 pelo número de série e devolve uma planilha."

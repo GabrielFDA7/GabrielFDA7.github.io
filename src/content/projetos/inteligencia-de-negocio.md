@@ -8,8 +8,7 @@ period: jul/2026 – ago/2026
 status: concluido
 tags: [dados, bi, negocio]
 stack: [SAP BW, Power Query (M), Excel, PowerPoint]
-metrics:
-  - { label: Período analisado, value: 2022–2026 }
+metrics: []
 resumo:
   problema: "A diretoria pediu às filiais que cortassem gastos ao máximo, e a frente mais atacada era a folha de pagamento."
   feito: "Em dupla com o meu gestor, tratei os dados do resultado de todas as filiais e montei a apresentação para a diretoria."

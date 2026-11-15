@@ -275,6 +275,7 @@
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1.15;
+    text-wrap: balance; /* sem palavra sozinha na última linha */
   }
 
   .titulo-navegacao {

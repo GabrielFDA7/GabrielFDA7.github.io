@@ -216,7 +216,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **O estudo de caso abre com o `resumo`** (Gabriel, 15/11/2026): o problema, o que eu fiz e o resultado, uma
   frase cada, obrigatório no schema. Não há faixa de métricas nem seção "Resultados" na página, porque número
   solto ("54 máquinas", "1 por dia") não diz se o projeto deu certo. O resultado é uma frase com contexto.
-  `metrics` hoje só alimenta a home. Ficha e índice ficam numa coluna lateral fixa no computador.
+  `metrics` só aparece na home e em `/projetos/`, e só com número que mostra mudança ou contagem que
+  impressiona com contexto ("1 min, antes 8 a 10"; "946 testes"). Na dúvida, `metrics: []` (Gabriel, 15/11/2026). Ficha e índice ficam numa coluna lateral fixa no computador.
 - **Imagens de projeto entram sem mudar a home nem a lista.** Capa por `cover` ou `coverLargo`, e o resto no Markdown, na seção que a imagem comprova. O parágrafo logo depois de uma imagem no Markdown vira legenda. Na telemetria, toda tela diz que é demonstração com dados fictícios e de quem é o trabalho, porque a aplicação e o Gemini são de outra frente. A tela de insights foi recortada para tirar a coluna com as unidades (Gabriel, 06/11/2026). Imagem no meio do texto leva a mesma moldura de cromo da capa (Gabriel, 13/11/2026).
 - **Diagramas escritos para caber em 360 px:** `flowchart TD`, subgrupos empilhados e no máximo três
   nós lado a lado. Cada um leva `accTitle` e `accDescr`, que viram o texto para leitor de tela.
