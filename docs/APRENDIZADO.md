@@ -20,7 +20,7 @@ sem o JavaScript que o gerou. É por isso que dá para hospedar de graça no Git
 
 ### Tokens: as cores têm nome de função
 
-Em vez de escrever `#050608` em cada componente, o código usa nomes como `bg-fundo` e `text-destaque`.
+Em vez de escrever `#111317` em cada componente, o código usa nomes como `bg-fundo` e `text-destaque`.
 Quem define o valor é [src/styles/tokens.css](../src/styles/tokens.css). Trocar o tema é trocar os
 valores desses nomes, e nenhum componente precisa saber qual tema está ativo.
 

@@ -57,7 +57,7 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   ou atrás de objetos, como o aparelho do projeto principal.
 - **Toda a arte é gerada por código**, em `scripts/gerar-arte.mjs` (`npm run arte`). As saídas
   ficam versionadas e o build não roda o script. Não usar imagem de banco nem de terceiros.
-- **Dois temas:** cromo negro (`#050608`) e prata polida (`#eceef1`). Azul `#1f4e8c` no claro,
+- **Dois temas:** cromo negro (`#111317`, grafite, não preto puro: Gabriel, 15/11/2026) e prata polida (`#eceef1`). Azul `#1f4e8c` no claro,
   azul-gelo `#8ec5ff` no escuro. O acento térmico (laranja) é raro e nunca o único sinal de algo.
 - **Continuam proibidos:** gradiente roxo, glassmorphism, barra de nível de habilidade, emoji como
   ícone, animação que atrasa a leitura, carrossel e texto sobre imagem.
@@ -68,7 +68,9 @@ Referência: chrome artwork, só no estilo. As imagens de referência não entra
   estender o padrão a outras seções. React e Vite ficaram fora porque, na telemetria, a parte do
   Gabriel foi o pipeline e a tutoria. Só entram se ele confirmar.
 - `.metal` só em texto grande: o tom mais fraco mira 3:1, não 4,5:1. Se regenerar a textura, meça de
-  novo em todo pixel. Em 05/11/2026, a escura ficou entre 6,4:1 e 13,8:1, depois de sair de 3,7:1 e 19,9:1.
+  novo em todo pixel. Em 05/11/2026, a escura ficou entre 6,4:1 e 13,8:1, depois de sair de 3,7:1 e 19,9:1. Com o
+  fundo `#111317` (15/11/2026), ficou entre 5,9:1 e 12,6:1. O preto da arte escura termina no fundo
+  (`FUNDO_ESCURO` em `gerar-arte.mjs`): se mudar `--fundo`, mude lá também e rode `npm run arte`.
 - **No tema escuro, o metal é sóbrio** (Gabriel, 05/11/2026: "muito chamativo", "mais profissional"). Prata
   sem branco puro e com pouca cor: não voltar a subir o teto de `letrasEscuro` nem a força da cor.
 
