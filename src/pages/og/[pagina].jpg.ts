@@ -9,7 +9,7 @@ export const getStaticPaths = (async () => {
   const projetos = publicados(await getCollection('projetos'));
   const paginas: { pagina: string; dados: DadosOg }[] = [
     { pagina: 'inicio', dados: { rotulo: 'Dados · Python · IA', titulo: site.nome, apoio: site.posicionamento } },
-    { pagina: 'projetos', dados: { rotulo: site.nomeCurto, titulo: 'Projetos', apoio: 'Estudos de caso com problema, arquitetura, decisões e resultado.' } },
+    { pagina: 'projetos', dados: { rotulo: site.nomeCurto, titulo: 'Projetos', apoio: 'O problema, o que foi meu e as decisões de cada projeto.' } },
     { pagina: 'sobre', dados: { rotulo: site.nomeCurto, titulo: 'Sobre', apoio: 'Trajetória, experiência, formação e idiomas.' } },
     ...Object.entries(FOCOS).map(([nome, foco]) => ({
       pagina: `foco-${nome}`,
