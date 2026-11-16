@@ -170,7 +170,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aprovada |
 | 4 | Focos por vaga e download do currículo | Aprovada |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aprovada |
-| 6 | Publicação no GitHub Pages | Em andamento |
+| 6 | Publicação no GitHub Pages | Aprovada |
 | 7 | (Depois) Versão em inglês | — |
 
 **Pendências combinadas:**
@@ -196,8 +196,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   partir dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa
   passar pela mesma limpeza antes de entrar aqui.
 - **No ar desde 16/11/2026.** O Lighthouse no site real deu 99 a 100 em desempenho e 100 nas outras três
-  categorias, nas 4 páginas medidas. Falta testar em um celular de verdade, em especial o reflexo das letras e
-  a fluidez da rolagem.
+  categorias, nas 4 páginas medidas. O Gabriel conferiu em um celular de verdade e aprovou (16/11/2026).
 - `npm audit` acusa 5 alertas, todos em dependências de desenvolvimento, e 0 em produção: 3 baixos (katex,
   via mermaid, sobre diagramas escritos por nós) e 2 moderados (fflate, via satori, que só lê fontes
   do próprio repositório). A correção sugerida rebaixaria o satori. Rever quando eles atualizarem.

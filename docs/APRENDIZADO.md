@@ -450,3 +450,35 @@ para garantir que cabia. Depois, o texto do PDF inteiro foi comparado com o ante
 As verificações automáticas passavam, e mesmo assim o pente fino achou problemas: o índice inalcançável, os
 números soltos que ainda estavam na home, uma frase que prometia uma seção que não existia mais. O teste
 automático confere regras conhecidas; achar o que ninguém pensou em conferir exige navegar como um visitante.
+
+## Fase 6: Publicação
+
+### O que existe agora
+
+O site está no ar em https://gabrielfda7.github.io. Cada push na `main` dispara o workflow
+[Publicar](../.github/workflows/publicar.yml), e ninguém precisa subir arquivo à mão.
+
+### O site que vai ao ar é o mesmo que foi verificado
+
+O Publicar não faz um build próprio. Ele chama o CI inteiro como primeira etapa, e o `dist/` que passou em
+todas as verificações é guardado e publicado. Se o build fosse refeito para publicar, o que vai ao ar poderia
+ser diferente do que foi testado, por exemplo por uma dependência que mudou no meio do caminho.
+
+### Por que o GitHub tentava usar o Jekyll
+
+Com o Pages configurado em "Deploy from a branch", o GitHub monta o repositório com o Jekyll a cada push,
+como se fosse um blog. Num projeto Astro, isso falha. A configuração certa é "GitHub Actions": o próprio
+repositório diz como o site é gerado.
+
+### Medir de novo no site real
+
+O Lighthouse do CI mede o site servido na máquina do CI. Depois de publicar, a mesma medição foi feita no
+endereço real, que é o que o visitante recebe: 99 a 100 em desempenho e 100 nas outras categorias. E, por
+fim, o teste num celular de verdade, que nenhuma ferramenta substitui.
+
+### Acompanhar sem consultar demais
+
+Para avisar quando a publicação terminasse, um script consultava a API do GitHub em intervalos curtos. Sem
+login, a API aceita 60 consultas por hora; o limite acabou, o script passou a ler respostas de erro e o aviso
+não chegou. Para acompanhar algo externo, o intervalo precisa caber no limite do serviço, e um erro precisa
+interromper o acompanhamento, não ser ignorado.
