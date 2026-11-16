@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "arte": "node scripts/gerar-arte.mjs",
+    "curriculos": "node scripts/gerar-curriculos.mjs",
     "test": "vitest run",
     "capturas": "node scripts/capturar-nextup.mjs",
     "verificar:dist": "node scripts/verificar-dist.mjs",
