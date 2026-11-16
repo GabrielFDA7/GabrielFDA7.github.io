@@ -170,7 +170,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 3 | Conteúdo de todos os projetos e lista de `PREENCHER` | Aprovada |
 | 4 | Focos por vaga e download do currículo | Aprovada |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aprovada |
-| 6 | Publicação no GitHub Pages | — |
+| 6 | Publicação no GitHub Pages | Em andamento |
 | 7 | (Depois) Versão em inglês | — |
 
 **Pendências combinadas:**
@@ -235,6 +235,14 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   dos destaques, e depois os demais destaques. Focos ficam fora do menu e têm `noindex`.
   O campo `principal` escolhe o projeto que abre a página: em `/foco/dados/`, a telemetria (Gabriel,
   15/11/2026). Projeto principal sem captura de celular aparece com a tela larga na moldura de cromo.
+
+## Publicação
+
+- **O site vai ao ar pelo workflow `Publicar`** (`.github/workflows/publicar.yml`), a cada push na `main`. Ele
+  chama o `ci.yml` inteiro como portão e publica o mesmo `dist/` que passou nas verificações, sem novo build.
+- **No GitHub, Settings → Pages → Source precisa estar em "GitHub Actions".** Em "Deploy from a branch", o
+  GitHub tenta montar o repositório com Jekyll a cada push e falha.
+- Na `main`, o CI roda só dentro do `Publicar`; nas outras branches, sozinho.
 
 ## Comandos
 
