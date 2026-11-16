@@ -48,7 +48,7 @@ Os dados vêm ao vivo da API pública ThemeParks.wiki. Desde 28/10/2026, a prime
 
 **Em investigação:** um roteiro do dia. O otimizador exato já existe, mas ainda não tem tela. Ela depende de a medição provar que vale a pena.
 
-**Método:** construí com Claude Code, com contexto versionado em [`CLAUDE.md`](https://github.com/GabrielFDA7/nextup/blob/main/CLAUDE.md), skills próprias em [`.claude/skills/`](https://github.com/GabrielFDA7/nextup/tree/main/.claude/skills) e todos os prompts registrados em [`docs/PROMPTS.md`](https://github.com/GabrielFDA7/nextup/blob/main/docs/PROMPTS.md).
+**Método:** construí com Claude Code, com contexto versionado em [`CLAUDE.md`](https://github.com/GabrielFDA7/nextup/blob/main/CLAUDE.md), skills próprias em [`.claude/skills/`](https://github.com/GabrielFDA7/nextup/tree/main/.claude/skills) e os prompts em destaque em [`docs/PROMPTS.md`](https://github.com/GabrielFDA7/nextup/blob/main/docs/PROMPTS.md).
 
 ## Arquitetura
 
