@@ -195,8 +195,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Os 3 PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Foram corrigidos a
   partir dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa
   passar pela mesma limpeza antes de entrar aqui.
-- **Depois da publicação:** medir o Lighthouse no site real e testar em um celular de verdade, em
-  especial o reflexo das letras e a fluidez da rolagem. O CI mede um servidor local que imita o Pages.
+- **No ar desde 16/11/2026.** O Lighthouse no site real deu 99 a 100 em desempenho e 100 nas outras três
+  categorias, nas 4 páginas medidas. Falta testar em um celular de verdade, em especial o reflexo das letras e
+  a fluidez da rolagem.
 - `npm audit` acusa 5 alertas, todos em dependências de desenvolvimento, e 0 em produção: 3 baixos (katex,
   via mermaid, sobre diagramas escritos por nós) e 2 moderados (fflate, via satori, que só lê fontes
   do próprio repositório). A correção sugerida rebaixaria o satori. Rever quando eles atualizarem.
