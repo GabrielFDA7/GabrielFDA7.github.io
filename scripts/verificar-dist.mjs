@@ -3,6 +3,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { TEXTOS } from '../src/i18n/textos.ts';
 
 const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
 const SITE = 'https://gabrielfda7.github.io';
@@ -28,6 +29,31 @@ const paginas = new Map(arquivos.map((arquivo) => [rotaDe(arquivo), readFileSync
 const idsDe = (html) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
 const metaDe = (html, nome) => html.match(new RegExp(`<meta (?:property|name)="${nome}" content="([^"]*)"`))?.[1];
 const externos = new Map();
+
+// Textos de interface que mudam de um idioma para o outro: nenhum deles pode aparecer na página do outro.
+const folhas = (valor) => (typeof valor === 'string' ? [valor] : typeof valor === 'object' && valor ? Object.values(valor).flatMap(folhas) : []);
+const so = (idioma, outro) => {
+  // O seletor de idioma fala de propósito no outro idioma ("Read in English", marcado com lang).
+  const doOutro = new Set([...folhas(TEXTOS[outro]), ...folhas(TEXTOS[idioma].idioma)]);
+  // Só frases de duas palavras ou mais, inteiras: "Result" não pode casar com "Resultado", nem "Equipe"
+  // com o nome próprio "Equipe de Propulsão".
+  return folhas(TEXTOS[idioma]).filter((texto) => texto.includes(' ') && !texto.includes('<') && !doOutro.has(texto));
+};
+const textoVisivel = (html) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/g, ' ')
+    .replace(/<style[\s\S]*?<\/style>/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&#39;|&#x27;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ');
+// A frase inteira, sem letra colada antes ou depois.
+const frase = (texto) => new RegExp(`(?<!\\p{L})${texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?!\\p{L})`, 'u');
+const SO_PT = so('pt', 'en').map(frase);
+const SO_EN = so('en', 'pt').map(frase);
+const ehIngles = (rota) => rota === '/en/' || rota.startsWith('/en/');
+const ehFoco = (rota) => rota.startsWith('/foco/') || rota.startsWith('/en/focus/');
 
 for (const [rota, html] of paginas) {
   // Comentários do Markdown chegam ao HTML: o marcador não pode sobrar em lugar nenhum.
@@ -66,13 +92,41 @@ for (const [rota, html] of paginas) {
   if (imagem && !existe(new URL(imagem).pathname)) falhar(`${rota}: imagem de compartilhamento inexistente`);
 
   const semIndexacao = html.includes('<meta name="robots" content="noindex"');
-  const deveEsconder = rota.startsWith('/foco/') || rota === '/404';
+  const deveEsconder = ehFoco(rota) || rota === '/404';
   if (semIndexacao !== deveEsconder) falhar(`${rota}: noindex ${semIndexacao ? 'indevido' : 'ausente'}`);
   const canonica = html.includes('<link rel="canonical"');
   if (canonica === deveEsconder) falhar(`${rota}: URL canônica ${canonica ? 'indevida' : 'ausente'}`);
+
+  // Idioma: o atributo lang, a interface sem texto do outro idioma e as versões declaradas ao buscador.
+  const ingles = ehIngles(rota);
+  const lang = html.match(/<html lang="([^"]+)"/)?.[1];
+  if (lang !== (ingles ? 'en' : 'pt-BR')) falhar(`${rota}: lang="${lang}"`);
+  if (rota !== '/404') {
+    const visivel = textoVisivel(html);
+    for (const texto of ingles ? SO_PT : SO_EN) {
+      if (texto.test(visivel)) falhar(`${rota}: texto do outro idioma na interface: "${texto.source}"`);
+    }
+    if (!/<a class="sigla" href="[^"]+" hreflang=/.test(html)) falhar(`${rota}: sem o seletor de idioma`);
+  }
+  const versoes = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => ({ lang: m[1], href: m[2] }));
+  if (!deveEsconder && versoes.length !== 3) falhar(`${rota}: hreflang com ${versoes.length} versões, esperadas 3`);
+  for (const versao of versoes) {
+    const destino = new URL(versao.href).pathname;
+    if (!existe(destino)) falhar(`${rota}: hreflang aponta para página inexistente ${destino}`);
+  }
 }
 
-if (!/"@type":"Person"/.test(paginas.get('/') ?? '')) falhar('/: sem JSON-LD do tipo Person');
+// Cada par de hreflang precisa ser recíproco: se A diz que B é a versão em inglês, B diz que A é a em português.
+for (const [rota, html] of paginas) {
+  for (const m of html.matchAll(/<link rel="alternate" hreflang="(pt-BR|en)" href="([^"]+)"/g)) {
+    const destino = new URL(m[2]).pathname;
+    if (destino === rota) continue;
+    const volta = paginas.get(destino) ?? '';
+    if (!volta.includes(`href="${SITE}${rota}"`)) falhar(`${rota}: hreflang ${m[1]} sem volta em ${destino}`);
+  }
+}
+
+for (const rota of ['/', '/en/']) if (!/"@type":"Person"/.test(paginas.get(rota) ?? '')) falhar(`${rota}: sem JSON-LD do tipo Person`);
 if (!existsSync(join(DIST, '404.html'))) falhar('dist: sem 404.html, que o GitHub Pages exige');
 
 // Mapa do site: todas as páginas indexáveis, e nada além delas.
@@ -80,7 +134,7 @@ const robots = existsSync(join(DIST, 'robots.txt')) ? readFileSync(join(DIST, 'r
 if (!robots.includes(`${SITE}/sitemap-index.xml`)) falhar('robots.txt: não aponta para o mapa do site');
 if (existsSync(join(DIST, 'sitemap-0.xml'))) {
   const noMapa = [...readFileSync(join(DIST, 'sitemap-0.xml'), 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
-  const esperadas = [...paginas.keys()].filter((rota) => !rota.startsWith('/foco/') && rota !== '/404');
+  const esperadas = [...paginas.keys()].filter((rota) => !ehFoco(rota) && rota !== '/404');
   for (const rota of esperadas) if (!noMapa.includes(rota)) falhar(`sitemap: falta ${rota}`);
   for (const rota of noMapa) if (!esperadas.includes(rota)) falhar(`sitemap: sobra ${rota}`);
 } else {

@@ -1,5 +1,6 @@
 // Lighthouse no celular, que é o padrão da ferramenta. Abaixo de 95 em qualquer categoria, o CI reprova.
-const PAGINAS = ['/', '/projetos/', '/projetos/nextup/', '/sobre/'];
+// A home em inglês entra para medir a outra versão; as demais páginas usam os mesmos componentes.
+const PAGINAS = ['/', '/projetos/', '/projetos/nextup/', '/sobre/', '/en/'];
 
 module.exports = {
   ci: {

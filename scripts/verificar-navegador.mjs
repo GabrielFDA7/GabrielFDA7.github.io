@@ -6,6 +6,7 @@ import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { FOCOS } from '../src/config/focos.ts';
+import { IDIOMAS, rotaFoco } from '../src/i18n/rotas.ts';
 import { TECNOLOGIAS } from '../src/config/tecnologias.ts';
 import { servirDist } from './servir-dist.mjs';
 
@@ -60,7 +61,7 @@ for (const { nome: vista, ...opcoes } of VISTAS) {
       conferir(e.h1 === 1 && e.main === 1, `${rotulo}: ${e.h1} h1 e ${e.main} main`);
       conferir(e.pulos === 0, `${rotulo}: hierarquia de títulos pula nível`);
       conferir(e.semAlt === 0, `${rotulo}: imagem sem alt`);
-      conferir(caminho === '/projetos/' || e.js === 0, `${rotulo}: ${e.js} arquivos JS em página sem ilha`);
+      conferir(['/projetos/', '/en/projects/'].includes(caminho) || e.js === 0, `${rotulo}: ${e.js} arquivos JS em página sem ilha`);
 
       // Rola até o fim, como uma pessoa, para as imagens lazy carregarem.
       await p.evaluate(async () => {
@@ -199,9 +200,11 @@ for (const [nome, c] of [['movimento reduzido', calmoSobre], ['sem JS', semJsSob
 }
 
 // --- Links de foco ---------------------------------------------------------------------------
-for (const [nome, foco] of Object.entries(FOCOS)) {
-  const prefixo = `/foco/${nome}:`;
-  await p.goto(`${BASE}/foco/${nome}/`, { waitUntil: 'networkidle' });
+for (const [foco, idioma] of FOCOS.flatMap((foco) => IDIOMAS.map((idioma) => [foco, idioma]))) {
+  const { chamada, curriculo } = foco[idioma];
+  const endereco = rotaFoco(idioma, foco[idioma].nome);
+  const prefixo = `${endereco}:`;
+  await p.goto(BASE + endereco, { waitUntil: 'networkidle' });
   const f = await p.evaluate(() => ({
     robots: document.querySelector('meta[name="robots"]')?.content,
     cv: document.querySelector('.hero a[download]')?.getAttribute('href'),
@@ -210,18 +213,34 @@ for (const [nome, foco] of Object.entries(FOCOS)) {
     menu: [...document.querySelectorAll('header nav a')].map((a) => a.getAttribute('href')),
   }));
   conferir(f.robots === 'noindex', `${prefixo} sem noindex`);
-  conferir(f.hero.includes(foco.chamada), `${prefixo} sem a chamada do foco`);
-  conferir(f.cv === foco.curriculo, `${prefixo} currículo errado: ${f.cv}`);
-  conferir(!f.menu.some((href) => href.includes('/foco')), `${prefixo} não pode aparecer no menu`);
+  conferir(f.hero.includes(chamada), `${prefixo} sem a chamada do foco`);
+  conferir(f.cv === curriculo, `${prefixo} currículo errado: ${f.cv}`);
+  conferir(!f.menu.some((href) => href.includes('/foco') || href.includes('/focus')), `${prefixo} não pode aparecer no menu`);
   const metodoAntes = f.titulos.indexOf('metodo-ia') < f.titulos.indexOf('projeto-principal');
   conferir(metodoAntes === Boolean(foco.iaPrimeiro), `${prefixo} posição errada da seção de IA`);
   const pdf = await p.request.get(BASE + f.cv);
   const corpo = await pdf.body();
   conferir(pdf.status() === 200 && corpo.subarray(0, 5).toString() === '%PDF-', `${prefixo} o currículo não baixa`);
 }
-await p.goto(`${BASE}/`, { waitUntil: 'networkidle' });
-const cvHome = await p.locator('.hero a[download]').getAttribute('href');
-conferir((await p.request.get(BASE + cvHome)).status() === 200, `home: o currículo ${cvHome} não baixa`);
+for (const inicio of ['/', '/en/']) {
+  await p.goto(BASE + inicio, { waitUntil: 'networkidle' });
+  const cvHome = await p.locator('.hero a[download]').getAttribute('href');
+  conferir((await p.request.get(BASE + cvHome)).status() === 200, `${inicio}: o currículo ${cvHome} não baixa`);
+}
+
+// --- Idioma ----------------------------------------------------------------------------------
+// O seletor leva à mesma página no outro idioma, e de lá volta à página de partida.
+for (const partida of ['/', '/projetos/', '/projetos/telemetria-de-frota/', '/sobre/', '/foco/dados/']) {
+  await p.goto(BASE + partida, { waitUntil: 'networkidle' });
+  await p.locator('header a.sigla').click();
+  await p.waitForLoadState('networkidle');
+  const ida = new URL(p.url()).pathname;
+  conferir(ida.startsWith('/en/'), `idioma: de ${partida} o seletor foi para ${ida}`);
+  conferir((await p.locator('html').getAttribute('lang')) === 'en', `idioma: ${ida} sem lang="en"`);
+  await p.locator('header a.sigla').click();
+  await p.waitForLoadState('networkidle');
+  conferir(new URL(p.url()).pathname === partida, `idioma: de ${ida} o seletor voltou para ${new URL(p.url()).pathname}, não para ${partida}`);
+}
 
 // --- Tema ------------------------------------------------------------------------------------
 // Cada tema baixa só a própria capa, mesmo depois de rolar até ela.
@@ -249,7 +268,7 @@ const lum = (rgb) => {
   });
   return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
 };
-const estudos = rotas.filter((r) => r.startsWith('/projetos/') && r !== '/projetos/');
+const estudos = rotas.filter((r) => /^\/(en\/projects|projetos)\/.+/.test(r));
 for (const colorScheme of ['dark', 'light']) {
   const c = await navegador.newContext({ viewport: { width: 360, height: 780 }, colorScheme });
   const m = await c.newPage();
@@ -284,7 +303,7 @@ for (const colorScheme of ['dark', 'light']) {
   }
   await c.close();
 }
-const comDiagrama = ['/projetos/nextup/', '/projetos/telemetria-de-frota/'];
+const comDiagrama = ['/projetos/nextup/', '/projetos/telemetria-de-frota/', '/en/projects/nextup/', '/en/projects/fleet-telemetry/'];
 for (const rota of comDiagrama) conferir(estudos.includes(rota), `${rota}: deve ser um estudo de caso publicado`);
 await p.goto(`${BASE}${comDiagrama[0]}`, { waitUntil: 'networkidle' });
 const corDoNo = () => p.locator('.prosa svg[aria-roledescription] .node rect').first().evaluate((e) => getComputedStyle(e).fill);
