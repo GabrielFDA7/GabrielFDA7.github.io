@@ -1,0 +1,33 @@
+name: Publicar
+
+# Cada push na main vira o site no ar, mas só depois de passar por todas as verificações do CI.
+# O que vai ao ar é o mesmo dist/ que foi verificado, e não um segundo build.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Uma publicação por vez. A que está em andamento termina, para o site nunca ficar pela metade.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  qualidade:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  publicar:
+    needs: qualidade
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - id: publicacao
+        uses: actions/deploy-pages@v5

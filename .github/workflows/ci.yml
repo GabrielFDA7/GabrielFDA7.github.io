@@ -1,7 +1,9 @@
 name: CI
 
 on:
+  # Na main, este CI roda dentro do workflow Publicar, como portão antes de ir ao ar.
   push:
+    branches-ignore: [main]
   workflow_call:
 
 permissions:
@@ -41,3 +43,10 @@ jobs:
 
       - name: Lighthouse (95 ou mais no celular)
         run: npm run lighthouse
+
+      # Só quando o Publicar chama este CI: o dist/ que acabou de passar em tudo vira o site.
+      - name: Guarda o site verificado para publicar
+        if: github.workflow == 'Publicar'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
