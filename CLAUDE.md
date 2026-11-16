@@ -175,7 +175,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 4 | Focos por vaga e download do currículo | Aprovada |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aprovada |
 | 6 | Publicação no GitHub Pages | Aprovada |
-| 7 | Versão em inglês e currículos em inglês | Em andamento |
+| 7 | Versão em inglês e currículos em inglês | Aprovada |
 
 **Pendências combinadas:**
 
@@ -254,8 +254,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Seletor PT · EN no cabeçalho**, que leva à mesma página no outro idioma, e `hreflang` recíproco. Sem
   redirecionamento automático pelo idioma do navegador (decisão do Gabriel, 16/11/2026).
 - **Um só 404**, em português com uma saída para o inglês: o GitHub Pages serve um único `404.html`.
-- **O inglês precisa da revisão do Gabriel** antes de ir para a `main`: o site não pode soar mais fluente
-  do que ele fala em entrevista.
+- **O inglês foi para a `main` em 16/11/2026, a pedido do Gabriel.** Mudança no texto em inglês continua
+  passando pela revisão dele: o site não pode soar mais fluente do que ele fala em entrevista.
 - **Currículos em inglês são gerados por código**: `curriculos/en.mjs` (conteúdo) e `npm run curriculos`
   (`scripts/gerar-curriculos.mjs`), que imprime com o Edge o mesmo layout dos PDFs em português e avisa se
   passar de uma página. Os em português não têm fonte editável, só o PDF.
