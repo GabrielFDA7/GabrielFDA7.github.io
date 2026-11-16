@@ -103,7 +103,8 @@ gráfico), conferidas em pandas e em um protótipo em HTML. Os fatos vêm de `do
 Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 - **946 testes:** 745 na suíte rápida e 201 de interface. Usar 946, nunca "740+".
-- `docs/PROMPTS.md` do NextUp tem **10 sessões e 70 prompts**.
+- `docs/PROMPTS.md` do NextUp guarda só **6 prompts em destaque** (16/11/2026). O registro completo, de
+  10 sessões e 70 prompts, saiu do ar e fica fora do Git. Não citar "70 prompts" no site nem nos currículos.
 - O assistente com LLM entra como **em desenvolvimento**, por decisão do Gabriel. Não há código
   dele na `main` do NextUp, então não descrever como pronto nem citar resultado.
 - A interface mostra só o Magic Kingdom desde 28/10/2026. O texto precisa refletir isso.
@@ -112,7 +113,8 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 
 - Commits pequenos, Conventional Commits, em português.
 - **Uma branch por fase** (`fase-1`, `fase-2`...), integrada à `main` só depois da aprovação.
-- Prompts do Gabriel vão **na íntegra** em `docs/PROMPTS.md`, ao fim de cada sessão.
+- **Não registrar prompts** (Gabriel, 16/11/2026). O registro na íntegra parou: num repositório público, ele
+  expunha conversa crua, informação interna e contradições, sem mostrar método.
 - Cada fase ganha uma seção em `docs/APRENDIZADO.md`, em linguagem simples.
 - Duas opções razoáveis: mostrar as duas com o trade-off em 2 linhas e recomendar uma.
 
