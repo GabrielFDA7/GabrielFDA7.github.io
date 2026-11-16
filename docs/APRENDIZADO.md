@@ -482,3 +482,43 @@ Para avisar quando a publicação terminasse, um script consultava a API do GitH
 login, a API aceita 60 consultas por hora; o limite acabou, o script passou a ler respostas de erro e o aviso
 não chegou. Para acompanhar algo externo, o intervalo precisa caber no limite do serviço, e um erro precisa
 interromper o acompanhamento, não ser ignorado.
+
+## Fase 7: Versão em inglês
+
+### O que existe agora
+
+O site inteiro em inglês, em `/en/`, com os 7 projetos, a experiência, os links de foco e três currículos
+em inglês. Um seletor PT · EN no topo de cada página leva à mesma página no outro idioma.
+
+### O idioma vem do endereço
+
+Cada componente descobre o idioma olhando o endereço da própria página: tudo que começa com `/en/` é inglês.
+Assim, nenhum componente precisou receber o idioma de quem o chama, e as páginas em inglês são as mesmas
+páginas em português, montadas de novo em outro endereço.
+
+### Traduzir só o que muda
+
+A tradução de um projeto não repete imagens, tags, ordem nem links: ela traz só os textos. Se a capa de um
+projeto mudar, muda num lugar só. O risco dessa escolha é esquecer um texto, e ele aparecer em português no
+meio da página em inglês. Por isso há um teste que compara cada tradução com o original (as mesmas seções,
+imagens, diagramas e campos) e uma verificação no build que procura frases de interface do outro idioma.
+
+### Uma verificação também erra
+
+A primeira versão da verificação de idioma acusou "Result" dentro de "Resultado" e "Equipe" dentro do nome
+"Equipe de Propulsão". Uma verificação que dá alarme falso acaba ignorada. Ela passou a procurar só frases
+inteiras, de duas palavras ou mais.
+
+### O id que não era o nome do arquivo
+
+Na primeira montagem, só o NextUp apareceu em inglês. O carregador de conteúdo do Astro usa o campo `slug`
+como identificador quando ele existe, e só no NextUp o slug é igual nos dois idiomas. A tradução de
+"telemetria-de-frota" virou "fleet-telemetry" e não encontrava o original. O identificador passou a ser o
+nome do arquivo.
+
+### Currículo como código
+
+Os currículos em português só existiam em PDF, e por isso trocar uma linha exigiu apagar e reescrever texto
+dentro do arquivo. Os em inglês nasceram de um HTML com as mesmas medidas, impresso pelo navegador. Mudar
+uma linha agora é editar um texto e rodar um comando, e o script avisa se o currículo passar de uma página.
+

@@ -13,7 +13,7 @@ ele divergir deste arquivo, **vale este arquivo**, que guarda as decisões poste
 1. Quem é, o que faz e qual o melhor projeto: visível sem rolar a página.
 2. Estudo de caso completo a no máximo 2 cliques.
 3. Link de foco reordena os projetos, troca a chamada e oferece o currículo certo.
-4. Projeto novo = **um arquivo Markdown**, sem editar componente.
+4. Projeto novo = **um arquivo Markdown** (e a tradução dele em `src/content/en/projetos/`), sem editar componente.
 5. Lighthouse ≥ 95 em todas as categorias, no celular.
 6. Custo zero de hospedagem.
 
@@ -123,6 +123,10 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Todo link interno termina em `/`** (`/projetos/`, `/sobre/`). Cada página é uma pasta com
   `index.html`, e `trailingSlash: 'always'` faz o servidor local dar 404 no link errado. Não use
   `build.format: 'file'`: `projetos.html` ao lado da pasta `projetos/` deixa `/projetos` ambíguo no Pages.
+- **Lighthouse local roda pelo PowerShell.** Com `CHROME_PATH` definido no Git Bash, o Edge não abre
+  ("waiting for dynamic debugging port"). No PowerShell: `$env:CHROME_PATH = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'`.
+- **O `glob` do Astro usa o `slug` do frontmatter como id.** Por isso as traduções têm `generateId` pelo nome
+  do arquivo: o slug em inglês é outro, e sem isso a tradução não acha o original.
 - **Lighthouse local precisa de compressão.** `scripts/servir-dist.mjs` comprime como o GitHub Pages. Sem
   isso, a nota cai vários pontos por medir arquivos até 3 vezes maiores que os reais.
 - **A arte é o LCP no celular.** Por estar no CSS, é pré-carregada no `BaseLayout` com `media` por tema e
@@ -171,7 +175,7 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 | 4 | Focos por vaga e download do currículo | Aprovada |
 | 5 | Qualidade: a11y, SEO, imagens OG, CI, Lighthouse, links | Aprovada |
 | 6 | Publicação no GitHub Pages | Aprovada |
-| 7 | (Depois) Versão em inglês | — |
+| 7 | Versão em inglês e currículos em inglês | Em andamento |
 
 **Pendências combinadas:**
 
@@ -236,6 +240,26 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
   O campo `principal` escolhe o projeto que abre a página: em `/foco/dados/`, a telemetria (Gabriel,
   15/11/2026). Projeto principal sem captura de celular aparece com a tela larga na moldura de cromo.
 
+## Dois idiomas (Fase 7, 16/11/2026)
+
+- **Português na raiz, inglês em `/en/`**, com endereços em inglês: `/en/projects/<slug-em-inglês>/`,
+  `/en/about/`, `/en/focus/data/`, `/en/focus/ai/`, `/en/focus/backend/`. O idioma de uma página sai do
+  endereço (`src/i18n/rotas.ts`). Em candidatura internacional, o link enviado já é o em inglês.
+- **Todo texto de interface fica em `src/i18n/textos.ts`**, nos dois idiomas. O tipo do inglês é o do
+  português: chave esquecida não compila. A ilha do filtro tem os próprios textos, para não baixar os do site.
+- **A tradução de um projeto traz só o que muda com o idioma** (`src/content/en/projetos/`, mesmo nome de
+  arquivo): textos, slug e, se preciso, `stack`. Imagens, tags, ordem e links vêm do original.
+  `src/lib/conteudo.ts` junta os dois; nenhuma página lê a coleção direto. O teste `tests/traducoes.test.ts`
+  reprova projeto ou experiência sem tradução, e tradução com seções, imagens, diagramas ou campos a menos.
+- **Seletor PT · EN no cabeçalho**, que leva à mesma página no outro idioma, e `hreflang` recíproco. Sem
+  redirecionamento automático pelo idioma do navegador (decisão do Gabriel, 16/11/2026).
+- **Um só 404**, em português com uma saída para o inglês: o GitHub Pages serve um único `404.html`.
+- **O inglês precisa da revisão do Gabriel** antes de ir para a `main`: o site não pode soar mais fluente
+  do que ele fala em entrevista.
+- **Currículos em inglês são gerados por código**: `curriculos/en.mjs` (conteúdo) e `npm run curriculos`
+  (`scripts/gerar-curriculos.mjs`), que imprime com o Edge o mesmo layout dos PDFs em português e avisa se
+  passar de uma página. Os em português não têm fonte editável, só o PDF.
+
 ## Publicação
 
 - **O site vai ao ar pelo workflow `Publicar`** (`.github/workflows/publicar.yml`), a cada push na `main`. Ele
@@ -254,6 +278,7 @@ npm run build    # gera dist/
 npm run preview  # serve dist/
 npm run arte     # regenera a arte de cromo e os favicons
 npm run capturas # recaptura o NextUp no ar; espera o parque ter fila (--agora para não esperar)
+npm run curriculos # regenera os currículos em inglês a partir de curriculos/en.mjs
 
 # Depois de `npm run build`. O CI roda todos, e qualquer falha reprova:
 npm run verificar:dist       # links internos, PREENCHER, dados proibidos, SEO e mapa do site
