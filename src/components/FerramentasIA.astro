@@ -1,7 +1,10 @@
 ---
 // Logos das ferramentas de IA em metal. Os desenhos vêm do pacote simple-icons (licença CC0);
 // as marcas pertencem às respectivas empresas e aparecem só para dizer o que eu uso.
+import { idiomaDaPagina } from '../i18n';
 import { siClaude, siClaudecode, siGithubcopilot, siGooglegemini } from 'simple-icons';
+
+const { t } = idiomaDaPagina(Astro.url);
 
 const ferramentas = [
   { nome: 'Claude Code', icone: siClaudecode },
@@ -17,7 +20,7 @@ const mascara = (caminho: string) => {
 };
 ---
 
-<ul class="logos flex max-w-lg justify-between gap-x-3" aria-label="Ferramentas de IA que eu uso">
+<ul class="logos flex max-w-lg justify-between gap-x-3" aria-label={t.metodo.ferramentas}>
   {ferramentas.map(({ nome, icone }) => (
     <li class="flex flex-col items-center text-center">
       <span class="logo block size-10 lg:size-14" style={mascara(icone.path)} aria-hidden="true"></span>

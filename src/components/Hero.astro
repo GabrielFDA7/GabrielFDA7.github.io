@@ -1,5 +1,6 @@
 ---
 import { site } from '../config/site';
+import { idiomaDaPagina, rota } from '../i18n';
 import ArteCromo from './ArteCromo.astro';
 import FotoPerfil from './FotoPerfil.astro';
 import Icone from './Icone.astro';
@@ -11,7 +12,8 @@ interface Props {
   curriculo?: string | undefined;
 }
 
-const { chamada = site.posicionamento, curriculo = site.curriculoPadrao } = Astro.props;
+const { idioma, t } = idiomaDaPagina(Astro.url);
+const { chamada = t.posicionamento, curriculo = t.curriculoPadrao } = Astro.props;
 ---
 
 <section class="hero relative overflow-clip" aria-labelledby="nome">
@@ -21,14 +23,14 @@ const { chamada = site.posicionamento, curriculo = site.curriculoPadrao } = Astr
     <div class="texto pt-5 pb-2 lg:py-24">
       <div class="flex items-center gap-4">
         <FotoPerfil tamanho={76} />
-        <p class="rotulo">Dados · Python · IA</p>
+        <p class="rotulo">{t.rotuloAbertura}</p>
       </div>
       <h1 id="nome" class="mt-5 pb-2 text-marca"><span class="metal">{site.nome}</span></h1>
-      <p class="mt-5 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{chamada}</p>
-      <p class="mt-4 max-w-xl text-texto-suave">{site.apoio}</p>
+      <p class="mt-5 text-2xl font-semibold leading-tight tracking-tight text-balance sm:text-3xl">{chamada}</p>
+      <p class="mt-4 max-w-xl text-texto-suave">{t.apoio}</p>
       <div class="botoes mt-8 gap-2!">
-        <a class="btn btn-cromo" href="/projetos/">Ver projetos</a>
-        <a class="btn btn-contorno" href={curriculo} download>Baixar currículo</a>
+        <a class="btn btn-cromo" href={rota(idioma, 'projetos')}>{t.abertura.verProjetos}</a>
+        <a class="btn btn-contorno" href={curriculo} download>{t.abertura.curriculo}</a>
         <a class="btn btn-contorno" href={site.links.github}>
           <Icone nome="github" />
           GitHub
@@ -38,7 +40,7 @@ const { chamada = site.posicionamento, curriculo = site.curriculoPadrao } = Astr
           <a class="btn btn-contorno icone-botao p-0!" href={site.links.linkedin} aria-label="LinkedIn">
             <Icone nome="linkedin" />
           </a>
-          <a class="btn btn-contorno icone-botao p-0!" href={`mailto:${site.links.email}`} aria-label="E-mail">
+          <a class="btn btn-contorno icone-botao p-0!" href={`mailto:${site.links.email}`} aria-label={t.email}>
             <Icone nome="email" />
           </a>
         </div>

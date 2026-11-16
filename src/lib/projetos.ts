@@ -41,16 +41,3 @@ export function comPrincipal<T extends { id: string }>(lista: readonly T[], prin
 export function vizinhos<T>(lista: readonly T[], indice: number): { anterior?: T; proximo?: T } {
   return { anterior: lista[indice - 1], proximo: lista[indice + 1] };
 }
-
-export const ROTULO_STATUS = {
-  'em-producao': 'Em produção',
-  concluido: 'Concluído',
-  'em-desenvolvimento': 'Em desenvolvimento',
-} as const;
-
-export const ROTULO_CONTEXTO = {
-  pessoal: 'Pessoal',
-  profissional: 'Profissional',
-  academico: 'Acadêmico',
-  freelance: 'Freelance',
-} as const;

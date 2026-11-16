@@ -1,26 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import LinhaProjeto from '../../components/LinhaProjeto.astro';
-import ProjectFilter from '../../components/ProjectFilter';
-import TopoPagina from '../../components/TopoPagina.astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { publicados } from '../../lib/projetos';
-
-const projetos = publicados(await getCollection('projetos'));
+import ListaProjetos from '../../paginas/ListaProjetos.astro';
 ---
 
-<BaseLayout title="Projetos" description="Todos os projetos de Gabriel Faria de Angelis, com filtro por dados, IA, backend, automação, BI e web." imagem="projetos">
-  <TopoPagina titulo="Projetos" descricao="Cada um conta o problema, o que foi meu e as decisões que tomei no caminho.">
-    <div class="mt-8">
-      <ProjectFilter client:idle projetos={projetos.map((projeto) => projeto.data.tags)} />
-    </div>
-  </TopoPagina>
-
-  <ul class="pagina">
-    {projetos.map((projeto, indice) => (
-      <li data-projeto={projeto.data.slug} data-tags={projeto.data.tags.join(' ')}>
-        <LinhaProjeto projeto={projeto} numero={indice + 1} titulo="h2" />
-      </li>
-    ))}
-  </ul>
-</BaseLayout>
+<ListaProjetos />

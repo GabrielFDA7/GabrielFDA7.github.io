@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import foto from '../assets/foto/gabriel.jpg';
 import { site } from '../config/site';
+import { idiomaDaPagina } from '../i18n';
 
 interface Props {
   tamanho: number;
@@ -9,12 +10,13 @@ interface Props {
 }
 
 const { tamanho, class: classe } = Astro.props;
+const { t } = idiomaDaPagina(Astro.url);
 ---
 
 <span class:list={['moldura inline-block shrink-0 rounded-full p-0.5', classe]}>
   <Image
     src={foto}
-    alt={`Foto de ${site.nome}`}
+    alt={`${t.fotoDe} ${site.nome}`}
     width={tamanho}
     height={tamanho}
     densities={[1, 2, 3]}

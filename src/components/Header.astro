@@ -2,26 +2,38 @@
 import { Image } from 'astro:assets';
 import emblema from '../assets/arte/emblema.webp';
 import { site } from '../config/site';
+import { IDIOMAS, LOCALE, TEXTOS, idiomaDaPagina, rota } from '../i18n';
 import ThemeToggle from './ThemeToggle.astro';
 
+interface Props {
+  /** A mesma página no outro idioma. */
+  alternativa: string;
+}
+
+const { alternativa } = Astro.props;
+const { idioma, t } = idiomaDaPagina(Astro.url);
 const caminho = Astro.url.pathname;
+const navegacao = [
+  { rotulo: t.menu.projetos, href: rota(idioma, 'projetos') },
+  { rotulo: t.menu.sobre, href: rota(idioma, 'sobre') },
+];
 ---
 
 <header>
   <div class="pagina flex items-center justify-between gap-3 py-3">
-    <a href="/" class="flex min-h-11 items-center gap-2.5 text-texto no-underline hover:text-texto" aria-label={`${site.nomeCurto}, página inicial`}>
+    <a href={rota(idioma, 'inicio')} class="flex min-h-11 items-center gap-2.5 text-texto no-underline hover:text-texto" aria-label={`${site.nomeCurto}, ${t.menu.inicio}`}>
       <Image src={emblema} alt="" width={36} height={36} densities={[1, 2, 3]} class="emblema size-9" />
       <span class="hidden text-sm font-semibold tracking-tight sm:inline">{site.nomeCurto}</span>
     </a>
     <div class="flex items-center gap-1 sm:gap-3">
-      <nav aria-label="Principal">
+      <nav aria-label={t.menu.principal}>
         <ul class="flex items-center gap-1 sm:gap-2">
-          {site.navegacao.map((item) => (
+          {navegacao.map((item) => (
             <li>
               <a
                 href={item.href}
                 aria-current={caminho.startsWith(item.href) ? 'page' : undefined}
-                class="inline-flex min-h-11 items-center px-2.5 text-sm font-medium text-texto-suave no-underline hover:text-texto aria-[current=page]:text-texto aria-[current=page]:underline"
+                class="inline-flex min-h-11 items-center px-2 text-sm font-medium text-texto-suave no-underline hover:text-texto aria-[current=page]:text-texto aria-[current=page]:underline sm:px-2.5"
               >
                 {item.rotulo}
               </a>
@@ -29,6 +41,22 @@ const caminho = Astro.url.pathname;
           ))}
         </ul>
       </nav>
+      <!-- PT · EN, sempre nesta ordem. O idioma atual é texto; o outro, link para a mesma página nele. -->
+      <ul class="idiomas flex items-center text-sm font-semibold" aria-label={t.idioma.grupo}>
+        {IDIOMAS.map((sigla) => {
+          const textos = TEXTOS[sigla];
+          return sigla === idioma ? (
+            <li><span class="sigla atual" aria-current="true" title={textos.idioma.nome}>{textos.idioma.sigla}</span></li>
+          ) : (
+            <li>
+              <!-- O nome acessível começa pelo texto visível ("EN"), como pedem as diretrizes de acessibilidade. -->
+              <a class="sigla" href={alternativa} hreflang={LOCALE[sigla].lang} lang={LOCALE[sigla].lang}>
+                {textos.idioma.sigla}<span class="sr-only">: {textos.idioma.trocar}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
       <ThemeToggle />
     </div>
   </div>
@@ -38,5 +66,36 @@ const caminho = Astro.url.pathname;
 <style>
   .emblema {
     filter: var(--sombra-emblema);
+  }
+
+  .sigla {
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--texto-suave);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+
+  a.sigla:hover {
+    color: var(--texto);
+    text-decoration: underline;
+  }
+
+  .sigla.atual {
+    color: var(--texto);
+  }
+
+  /* O ponto entre as siglas: só visual, o leitor de tela já ouve uma lista de dois idiomas. */
+  .idiomas li + li::before {
+    content: '·';
+    color: var(--texto-suave);
+  }
+
+  .idiomas li {
+    display: flex;
+    align-items: center;
   }
 </style>

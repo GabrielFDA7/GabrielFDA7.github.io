@@ -1,0 +1,31 @@
+---
+// A página inicial, nos dois idiomas. Os links de foco usam o mesmo Inicio, sem os dados estruturados.
+import { getImage } from 'astro:assets';
+import foto from '../assets/foto/gabriel.jpg';
+import Inicio from '../components/Inicio.astro';
+import { site } from '../config/site';
+import { idiomaDaPagina, outroIdioma, rota } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { idioma, t } = idiomaDaPagina(Astro.url);
+const retrato = await getImage({ src: foto, width: 460, format: 'jpeg' });
+const pessoa = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.nome,
+  url: new URL(rota(idioma, 'inicio'), Astro.site).href,
+  image: new URL(retrato.src, Astro.site).href,
+  jobTitle: t.cargoAtual,
+  worksFor: { '@type': 'Organization', name: 'Sotreq' },
+  email: `mailto:${site.links.email}`,
+  sameAs: [site.links.github, site.links.linkedin],
+  knowsAbout: t.conhecimentos,
+};
+// "<" escapado: o conteúdo nunca pode fechar a tag <script> por acidente.
+const jsonLd = JSON.stringify(pessoa).replace(/</g, '\u003c');
+---
+
+<BaseLayout alternativa={rota(outroIdioma(idioma), 'inicio')}>
+  <script slot="head" is:inline type="application/ld+json" set:html={jsonLd} />
+  <Inicio />
+</BaseLayout>

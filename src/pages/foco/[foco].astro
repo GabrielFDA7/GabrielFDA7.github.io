@@ -1,21 +1,8 @@
 ---
-// Links enviados em cada candidatura: fora do menu e sem indexação, para não competir com a home.
-import Inicio from '../../components/Inicio.astro';
-import { FOCOS, type Foco } from '../../config/focos';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import FocoPagina from '../../paginas/FocoPagina.astro';
+import { caminhosDosFocos } from '../../paginas/rotas';
 
-export function getStaticPaths() {
-  return Object.entries(FOCOS).map(([foco, config]) => ({ params: { foco }, props: { config, nome: foco } }));
-}
-
-interface Props {
-  config: Foco;
-  nome: string;
-}
-
-const { config, nome } = Astro.props;
+export const getStaticPaths = () => caminhosDosFocos('pt');
 ---
 
-<BaseLayout title={config.chamada} description={config.chamada} noindex imagem={`foco-${nome}`}>
-  <Inicio foco={config} />
-</BaseLayout>
+<FocoPagina {...Astro.props} />

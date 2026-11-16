@@ -1,12 +1,14 @@
 ---
 import { site } from '../config/site';
+import { idiomaDaPagina } from '../i18n';
 import MetalLiquido from './MetalLiquido.astro';
 
+const { t } = idiomaDaPagina(Astro.url);
 const ano = new Date().getFullYear();
 const links = [
   { rotulo: 'GitHub', href: site.links.github },
   { rotulo: 'LinkedIn', href: site.links.linkedin },
-  { rotulo: 'E-mail', href: `mailto:${site.links.email}` },
+  { rotulo: t.email, href: `mailto:${site.links.email}` },
 ];
 ---
 

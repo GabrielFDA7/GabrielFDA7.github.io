@@ -1,0 +1,18 @@
+---
+import { render } from 'astro:content';
+import EstudoDeCaso from '../layouts/EstudoDeCaso.astro';
+import type { Projeto } from '../lib/conteudo';
+
+interface Props {
+  projeto: Projeto;
+  anterior?: Projeto | undefined;
+  proximo?: Projeto | undefined;
+}
+
+const { projeto, anterior, proximo } = Astro.props;
+const { Content, headings } = await render(projeto.entrada);
+---
+
+<EstudoDeCaso projeto={projeto} headings={headings} anterior={anterior} proximo={proximo}>
+  <Content />
+</EstudoDeCaso>

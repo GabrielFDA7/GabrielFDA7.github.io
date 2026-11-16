@@ -1,25 +1,34 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
 import { FOCOS } from '../../config/focos';
 import { site } from '../../config/site';
-import { publicados } from '../../lib/projetos';
+import { IDIOMAS, TEXTOS, type Idioma } from '../../i18n';
+import { projetosNoIdioma } from '../../lib/conteudo';
 import { gerarImagemOg, type DadosOg } from '../../lib/og';
 
-export const getStaticPaths = (async () => {
-  const projetos = publicados(await getCollection('projetos'));
-  const paginas: { pagina: string; dados: DadosOg }[] = [
-    { pagina: 'inicio', dados: { rotulo: 'Dados · Python · IA', titulo: site.nome, apoio: site.posicionamento } },
-    { pagina: 'projetos', dados: { rotulo: site.nomeCurto, titulo: 'Projetos', apoio: 'O problema, o que foi meu e as decisões de cada projeto.' } },
-    { pagina: 'sobre', dados: { rotulo: site.nomeCurto, titulo: 'Sobre', apoio: 'Trajetória, experiência, formação e idiomas.' } },
-    ...Object.entries(FOCOS).map(([nome, foco]) => ({
-      pagina: `foco-${nome}`,
-      dados: { rotulo: 'Dados · Python · IA', titulo: site.nome, apoio: foco.chamada },
+// Uma imagem por página e por idioma. As do inglês levam o prefixo "en-", e o nome de projeto é sempre
+// o slug em português, para o BaseLayout achar a imagem sabendo só o idioma.
+async function paginasDoIdioma(idioma: Idioma): Promise<{ pagina: string; dados: DadosOg }[]> {
+  const t = TEXTOS[idioma];
+  const projetos = await projetosNoIdioma(idioma);
+  const paginas = [
+    { pagina: 'inicio', dados: { rotulo: t.rotuloAbertura, titulo: site.nome, apoio: t.posicionamento } },
+    { pagina: 'projetos', dados: { rotulo: site.nomeCurto, titulo: t.projetos.titulo, apoio: t.projetos.apoioOg } },
+    { pagina: 'sobre', dados: { rotulo: site.nomeCurto, titulo: t.sobre.titulo, apoio: t.sobre.apoioOg } },
+    ...FOCOS.map((foco) => ({
+      pagina: `foco-${foco.pt.nome}`,
+      dados: { rotulo: t.rotuloAbertura, titulo: site.nome, apoio: foco[idioma].chamada },
     })),
-    ...projetos.map(({ data }) => {
+    ...projetos.map(({ data, slugs }) => {
       const [nome = data.title, ...resto] = data.title.split(' — ');
-      return { pagina: data.slug, dados: { rotulo: 'Estudo de caso', titulo: nome, apoio: resto.join(' — ') || site.nomeCurto } };
+      return { pagina: slugs.pt, dados: { rotulo: t.estudo.rotuloOg, titulo: nome, apoio: resto.join(' — ') || site.nomeCurto } };
     }),
   ];
+  const prefixo = idioma === 'en' ? 'en-' : '';
+  return paginas.map(({ pagina, dados }) => ({ pagina: prefixo + pagina, dados }));
+}
+
+export const getStaticPaths = (async () => {
+  const paginas = (await Promise.all(IDIOMAS.map(paginasDoIdioma))).flat();
   return paginas.map(({ pagina, dados }) => ({ params: { pagina }, props: { dados } }));
 }) satisfies GetStaticPaths;
 

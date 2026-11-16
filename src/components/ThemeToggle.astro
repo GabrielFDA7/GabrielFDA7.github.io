@@ -1,9 +1,17 @@
+---
+import { idiomaDaPagina } from '../i18n';
+
+const { t } = idiomaDaPagina(Astro.url);
+---
+
 <!-- Sem JavaScript o botão não faria nada, então ele só aparece depois que o script roda. -->
 <button
   type="button"
   id="alternar-tema"
   class="btn btn-contorno size-11 shrink-0 p-0!"
-  aria-label="Usar tema escuro"
+  aria-label={t.tema.escuro}
+  data-rotulo-escuro={t.tema.escuro}
+  data-rotulo-claro={t.tema.claro}
   hidden
 >
   <svg class="icone-sol size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
@@ -25,7 +33,8 @@
     if (!botao) return;
     const escuro = temaAtual() === 'dark';
     botao.dataset.tema = escuro ? 'dark' : 'light';
-    botao.setAttribute('aria-label', escuro ? 'Usar tema claro' : 'Usar tema escuro');
+    // Os rótulos vêm do HTML, já no idioma da página.
+    botao.setAttribute('aria-label', (escuro ? botao.dataset.rotuloClaro : botao.dataset.rotuloEscuro) ?? '');
   };
 
   if (botao) {

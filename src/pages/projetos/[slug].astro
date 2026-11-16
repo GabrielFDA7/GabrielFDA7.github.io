@@ -1,20 +1,8 @@
 ---
-import { getCollection, render } from 'astro:content';
-import EstudoDeCaso from '../../layouts/EstudoDeCaso.astro';
-import { publicados, vizinhos } from '../../lib/projetos';
+import EstudoDeCasoPagina from '../../paginas/EstudoDeCasoPagina.astro';
+import { caminhosDosProjetos } from '../../paginas/rotas';
 
-export async function getStaticPaths() {
-  const lista = publicados(await getCollection('projetos'));
-  return lista.map((projeto, indice) => ({
-    params: { slug: projeto.data.slug },
-    props: { projeto, ...vizinhos(lista, indice) },
-  }));
-}
-
-const { projeto, anterior, proximo } = Astro.props;
-const { Content, headings } = await render(projeto);
+export const getStaticPaths = () => caminhosDosProjetos('pt');
 ---
 
-<EstudoDeCaso projeto={projeto} headings={headings} anterior={anterior} proximo={proximo}>
-  <Content />
-</EstudoDeCaso>
+<EstudoDeCasoPagina {...Astro.props} />

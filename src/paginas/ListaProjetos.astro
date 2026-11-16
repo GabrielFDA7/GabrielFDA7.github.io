@@ -1,0 +1,28 @@
+---
+// /projetos/ e /en/projects/.
+import LinhaProjeto from '../components/LinhaProjeto.astro';
+import ProjectFilter from '../components/ProjectFilter';
+import TopoPagina from '../components/TopoPagina.astro';
+import { idiomaDaPagina, outroIdioma, rota } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projetosNoIdioma } from '../lib/conteudo';
+
+const { idioma, t } = idiomaDaPagina(Astro.url);
+const projetos = await projetosNoIdioma(idioma);
+---
+
+<BaseLayout title={t.projetos.titulo} description={t.projetos.descricaoMeta} imagem="projetos" alternativa={rota(outroIdioma(idioma), 'projetos')}>
+  <TopoPagina titulo={t.projetos.titulo} descricao={t.projetos.descricao}>
+    <div class="mt-8">
+      <ProjectFilter client:idle idioma={idioma} projetos={projetos.map((projeto) => projeto.data.tags)} />
+    </div>
+  </TopoPagina>
+
+  <ul class="pagina">
+    {projetos.map((projeto, indice) => (
+      <li data-projeto={projeto.slugs.pt} data-tags={projeto.data.tags.join(' ')}>
+        <LinhaProjeto projeto={projeto} numero={indice + 1} titulo="h2" />
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

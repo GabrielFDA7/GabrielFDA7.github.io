@@ -1,16 +1,18 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import { idiomaDaPagina, rotaProjeto } from '../i18n';
+import type { Projeto } from '../lib/conteudo';
 import ArteCromo from './ArteCromo.astro';
 import CapaProjeto from './CapaProjeto.astro';
 import Icone from './Icone.astro';
 import Metricas from './Metricas.astro';
 
 interface Props {
-  projeto: CollectionEntry<'projetos'>;
+  projeto: Projeto;
 }
 
 const { projeto } = Astro.props;
 const { data } = projeto;
+const { idioma, t } = idiomaDaPagina(Astro.url);
 // "NextUp — recomendador..." vira um nome enorme e uma linha de apoio.
 const [nome = data.title, ...resto] = data.title.split(' — ');
 const apoio = resto.join(' — ');
@@ -22,7 +24,7 @@ const larga = !data.cover && data.coverLargo;
   <div class="arte"><ArteCromo class="size-full" /></div>
   <div class:list={['pagina grade relative py-10 lg:py-20', { 'com-tela-larga': larga }]}>
     <div class="cabeca min-w-0">
-      <p class="rotulo com-conta">Projeto principal</p>
+      <p class="rotulo com-conta">{t.inicio.projetoPrincipal}</p>
       <h2 id="projeto-principal" class:list={['mt-3 pb-2', apoio ? 'titulo-gigante' : 'titulo-longo']}><span class="metal">{nome}</span></h2>
       {apoio && <p class="mt-2 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{apoio}</p>}
     </div>
@@ -62,17 +64,17 @@ const larga = !data.cover && data.coverLargo;
       <p class="max-w-xl text-lg text-texto-suave">{data.summary}</p>
       <div class="mt-6 lg:mt-10"><Metricas itens={data.metrics} /></div>
       <div class="botoes mt-6 lg:mt-10">
-        <a class="btn btn-cromo" href={`/projetos/${data.slug}/`}>Ver estudo de caso</a>
+        <a class="btn btn-cromo" href={rotaProjeto(idioma, data.slug)}>{t.projeto.verEstudo}</a>
         {data.links.demo && (
           <a class="btn btn-contorno" href={data.links.demo}>
-            Abrir demo
+            {t.projeto.demo}
             <Icone nome="externo" class="size-4" />
           </a>
         )}
         {data.links.repo && (
           <a class="btn btn-contorno" href={data.links.repo}>
             <Icone nome="github" />
-            Código
+            {t.projeto.codigo}
           </a>
         )}
       </div>

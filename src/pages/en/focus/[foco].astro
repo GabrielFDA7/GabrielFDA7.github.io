@@ -1,0 +1,8 @@
+---
+import FocoPagina from '../../../paginas/FocoPagina.astro';
+import { caminhosDosFocos } from '../../../paginas/rotas';
+
+export const getStaticPaths = () => caminhosDosFocos('en');
+---
+
+<FocoPagina {...Astro.props} />

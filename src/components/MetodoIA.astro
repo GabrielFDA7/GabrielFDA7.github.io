@@ -2,42 +2,19 @@
 import FerramentasIA from './FerramentasIA.astro';
 import TituloSecao from './TituloSecao.astro';
 
-const BASE = 'https://github.com/GabrielFDA7/nextup';
+import { idiomaDaPagina } from '../i18n';
 
-const praticas = [
-  {
-    titulo: 'Contexto versionado',
-    texto: 'O agente começa cada sessão lendo a arquitetura, as convenções e as decisões em um arquivo que evolui com o código.',
-    links: [{ rotulo: 'CLAUDE.md', href: `${BASE}/blob/main/CLAUDE.md` }],
-  },
-  {
-    titulo: 'Skills próprias',
-    texto: 'Fluxos repetidos viram instrução executável: uma exige medição antes de escolher um algoritmo ou limiar, e outra fecha a sessão com o registro feito.',
-    links: [
-      { rotulo: 'medir-antes-de-implementar', href: `${BASE}/blob/main/.claude/skills/medir-antes-de-implementar/SKILL.md` },
-      { rotulo: 'fechar-sessao', href: `${BASE}/blob/main/.claude/skills/fechar-sessao/SKILL.md` },
-    ],
-  },
-  {
-    titulo: 'Prompts em destaque',
-    texto: 'Seis prompts escolhidos mostram como conduzi o projeto: o enquadramento do problema, as decisões de produto e os bugs que achei usando o app.',
-    links: [{ rotulo: 'docs/PROMPTS.md', href: `${BASE}/blob/main/docs/PROMPTS.md` }],
-  },
-  {
-    titulo: 'Testes e CI como rede de segurança',
-    texto: 'O código do agente passa pelo mesmo crivo que o meu: 946 testes e CI em Python 3.11, 3.12 e 3.13.',
-    links: [{ rotulo: 'ci.yml', href: `${BASE}/blob/main/.github/workflows/ci.yml` }],
-  },
-];
+const { t } = idiomaDaPagina(Astro.url);
+const praticas = t.metodo.praticas;
 ---
 
 <section class="pagina mt-secao grid gap-x-16 gap-y-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-y-12" aria-labelledby="metodo-ia">
   <div class="fixo">
     <TituloSecao
       id="metodo-ia"
-      rotulo="Método"
-      titulo="Como eu trabalho com IA"
-      descricao="O NextUp foi construído com Claude Code. O processo é tão público quanto o código, e cada passo aponta para o arquivo real no repositório."
+      rotulo={t.metodo.rotulo}
+      titulo={t.metodo.titulo}
+      descricao={t.metodo.descricao}
     />
     <div class="mt-7 lg:mt-10"><FerramentasIA /></div>
   </div>

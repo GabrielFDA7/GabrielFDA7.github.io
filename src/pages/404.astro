@@ -3,22 +3,31 @@ import { Image } from 'astro:assets';
 import emblema from '../assets/arte/emblema-grande.webp';
 import ArteCromo from '../components/ArteCromo.astro';
 import MetalLiquido from '../components/MetalLiquido.astro';
+import { TEXTOS } from '../i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// O GitHub Pages serve um único 404.html para os dois idiomas: a página é em português, com uma saída
+// em inglês logo abaixo dos botões.
+const { erro } = TEXTOS.pt;
+const { erro: erroEn } = TEXTOS.en;
 ---
 
-<BaseLayout title="Página não encontrada" description="Esta página não existe. Veja os links para continuar navegando." noindex>
+<BaseLayout title={erro.titulo} description={erro.descricao} noindex>
   <section class="erro relative overflow-clip">
     <MetalLiquido altura={88} />
     <div class="arte"><ArteCromo class="size-full" /></div>
     <div class="pagina relative pt-6 pb-10 lg:py-24">
       <p class="metal quatro" aria-hidden="true">404</p>
-      <h1 class="titulo-longo mt-2 pb-2"><span class="metal">Página não encontrada</span></h1>
-      <p class="mt-4 max-w-xl text-lg text-texto-suave">O endereço pode estar errado, ou a página mudou de lugar. Daqui você consegue seguir:</p>
+      <h1 class="titulo-longo mt-2 pb-2"><span class="metal">{erro.titulo}</span></h1>
+      <p class="mt-4 max-w-xl text-lg text-texto-suave">{erro.texto}</p>
       <div class="botoes mt-8">
-        <a class="btn btn-cromo" href="/">Página inicial</a>
+        <a class="btn btn-cromo" href="/">{erro.inicio}</a>
         <a class="btn btn-contorno" href="/projetos/">Projetos</a>
         <a class="btn btn-contorno" href="/sobre/">Sobre</a>
       </div>
+      <p lang="en" class="mt-8 max-w-xl text-texto-suave">
+        {erroEn.titulo}. <a class="font-medium" href="/en/">Go to the English version</a>.
+      </p>
       <Image src={emblema} alt="" widths={[320, 640]} sizes="16rem" class="emblema hidden lg:absolute lg:right-16 lg:bottom-16 lg:block lg:w-64" />
     </div>
   </section>

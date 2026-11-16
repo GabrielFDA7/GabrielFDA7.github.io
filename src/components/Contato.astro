@@ -1,16 +1,19 @@
 ---
 import { site } from '../config/site';
+import { idiomaDaPagina } from '../i18n';
 import ArteCromo from './ArteCromo.astro';
 import Icone from './Icone.astro';
+
+const { t } = idiomaDaPagina(Astro.url);
 ---
 
 <section class="contato relative mt-secao overflow-clip" aria-labelledby="contato">
   <div class="arte"><ArteCromo class="size-full" /></div>
   <div class="pagina relative lg:py-24">
     <div class="texto">
-      <p class="rotulo com-conta">Contato</p>
-      <h2 id="contato" class="titulo-gigante mt-3 pb-2"><span class="metal">Vamos conversar</span></h2>
-      <p class="mt-4 text-lg text-texto-suave">O caminho mais rápido é o e-mail.</p>
+      <p class="rotulo com-conta">{t.contato.rotulo}</p>
+      <h2 id="contato" class="titulo-gigante mt-3 pb-2"><span class="metal">{t.contato.titulo}</span></h2>
+      <p class="mt-4 text-lg text-texto-suave">{t.contato.texto}</p>
       <div class="botoes mt-6 lg:mt-8">
         <a class="btn btn-cromo max-w-full whitespace-normal! break-all" href={`mailto:${site.links.email}`}>
           <Icone nome="email" class="size-5 shrink-0" />

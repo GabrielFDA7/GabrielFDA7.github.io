@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SkipLink from '../components/SkipLink.astro';
 import { site } from '../config/site';
+import { LOCALE, idiomaDaPagina, outroIdioma, rota } from '../i18n';
 import { enderecosDaArte } from '../lib/arte';
 import '../styles/global.css';
 
@@ -15,12 +16,27 @@ interface Props {
   imagem?: string;
   /** false quando a página troca a arte do computador por outra imagem (estudo de caso com foto). */
   arteNoComputador?: boolean;
+  /** A mesma página no outro idioma. Sem ela, o seletor de idioma leva à página inicial do outro idioma. */
+  alternativa?: string | undefined;
 }
 
-const { title, description = site.descricao, noindex = false, imagem = 'inicio', arteNoComputador = true } = Astro.props;
-const tituloCompleto = title ? `${title} · ${site.nomeCurto}` : `${site.nomeCurto} · ${site.posicionamento}`;
+const { idioma, t } = idiomaDaPagina(Astro.url);
+const outro = outroIdioma(idioma);
+const { title, description = t.descricao, noindex = false, imagem = 'inicio', arteNoComputador = true } = Astro.props;
+const alternativa = Astro.props.alternativa ?? rota(outro, 'inicio');
+const tituloCompleto = title ? `${title} · ${site.nomeCurto}` : `${site.nomeCurto} · ${t.posicionamento}`;
 const canonica = new URL(Astro.url.pathname, Astro.site);
-const imagemOg = new URL(`/og/${imagem}.jpg`, Astro.site);
+// As imagens de compartilhamento em inglês levam o prefixo "en-": /og/en-inicio.jpg.
+const imagemOg = new URL(`/og/${idioma === 'en' ? 'en-' : ''}${imagem}.jpg`, Astro.site);
+// Só páginas com tradução de verdade se declaram versões uma da outra para o buscador.
+const versoes =
+  Astro.props.alternativa && !noindex
+    ? [
+        { lang: LOCALE[idioma].lang, href: canonica.href },
+        { lang: LOCALE[outro].lang, href: new URL(alternativa, Astro.site).href },
+        { lang: 'x-default', href: new URL(idioma === 'pt' ? Astro.url.pathname : alternativa, Astro.site).href },
+      ]
+    : [];
 const arte = await enderecosDaArte();
 const ESCURO = '(prefers-color-scheme: dark)';
 const CLARO = '(prefers-color-scheme: light)';
@@ -38,7 +54,7 @@ const preArte = [
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={LOCALE[idioma].lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,8 +62,10 @@ const preArte = [
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     {!noindex && <link rel="canonical" href={canonica} />}
+    {versoes.map(({ lang, href }) => <link rel="alternate" hreflang={lang} href={href} />)}
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={LOCALE[idioma].og} />
+    <meta property="og:locale:alternate" content={LOCALE[outro].og} />
     <meta property="og:site_name" content={site.nomeCurto} />
     <meta property="og:title" content={tituloCompleto} />
     <meta property="og:description" content={description} />
@@ -80,7 +98,7 @@ const preArte = [
   </head>
   <body>
     <SkipLink />
-    <Header />
+    <Header alternativa={alternativa} />
     <div class="trilho">
       <main id="conteudo" class="flex-1" tabindex="-1">
         <slot />

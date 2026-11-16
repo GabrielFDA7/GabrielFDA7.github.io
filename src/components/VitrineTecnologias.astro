@@ -1,5 +1,9 @@
 ---
 import { TECNOLOGIAS } from '../config/tecnologias';
+import { idiomaDaPagina } from '../i18n';
+
+const { idioma, t } = idiomaDaPagina(Astro.url);
+const areas = TECNOLOGIAS.map((item) => ({ area: idioma === 'en' ? item.areaEn : item.area, itens: item.itens }));
 ---
 
 <!--
@@ -7,13 +11,13 @@ import { TECNOLOGIAS } from '../config/tecnologias';
   troca por cima dela, e todas as áreas continuam no HTML, para leitor de tela e buscador.
 -->
 <div class="vitrine mt-8" data-vitrine>
-  <div class="areas" role="group" aria-label="Escolher área de tecnologia" data-areas hidden>
-    {TECNOLOGIAS.map(({ area }, indice) => (
+  <div class="areas" role="group" aria-label={t.sobre.escolherArea} data-areas hidden>
+    {areas.map(({ area }, indice) => (
       <button type="button" class="rotulo area" aria-pressed={indice === 0 ? 'true' : 'false'}>{area}</button>
     ))}
   </div>
   <div class="paineis">
-    {TECNOLOGIAS.map(({ area, itens }, indice) => (
+    {areas.map(({ area, itens }, indice) => (
       <div class:list={['painel', { visivel: indice === 0 }]} data-painel>
         <h3 class="rotulo titulo-area">{area}</h3>
         <ul class="nomes">

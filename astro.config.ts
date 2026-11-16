@@ -13,8 +13,8 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     react(),
-    // Os links de foco são enviados em candidaturas e têm noindex: não entram no mapa do site.
-    sitemap({ filter: (pagina) => !pagina.includes('/foco/') }),
+    // Os links de foco, nos dois idiomas, são enviados em candidaturas e têm noindex: não entram no mapa do site.
+    sitemap({ filter: (pagina) => !pagina.includes('/foco/') && !pagina.includes('/en/focus/') }),
   ],
   markdown: {
     // Sem realce de código: os estudos de caso quase não têm código, e assim o HTML não

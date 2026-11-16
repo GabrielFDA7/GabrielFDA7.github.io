@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { FOCOS } from '../src/config/focos';
 import { TAGS } from '../src/config/tags';
+import { IDIOMAS } from '../src/i18n/rotas';
 import { comPrincipal, publicados, selecionarParaFoco, vizinhos } from '../src/lib/projetos';
 
 const projeto = (id: string, order: number, draft = false) => ({ id, data: { order, draft } });
@@ -49,15 +50,25 @@ describe('comPrincipal', () => {
 });
 
 describe('FOCOS', () => {
-  it.each(Object.entries(FOCOS).filter(([, foco]) => foco.principal))('%s aponta para um projeto que existe', (_nome, foco) => {
+  it.each(FOCOS.filter((foco) => foco.principal).map((foco) => [foco.pt.nome, foco]))('%s aponta para um projeto que existe', (_nome, foco) => {
     expect(existsSync(`src/content/projetos/${foco.principal}.md`)).toBe(true);
   });
 
-  it.each(Object.entries(FOCOS))('%s tem chamada, tags válidas e currículo em /cv/', (_nome, foco) => {
-    expect(foco.chamada.length).toBeGreaterThan(0);
+  it.each(FOCOS.map((foco) => [foco.pt.nome, foco]))('%s tem tags válidas e, nos dois idiomas, chamada e currículo que existe', (_nome, foco) => {
     expect(foco.tags.length).toBeGreaterThan(0);
     expect(foco.tags.every((tag) => (TAGS as readonly string[]).includes(tag))).toBe(true);
-    expect(foco.curriculo).toMatch(/^\/cv\/.+\.pdf$/);
+    for (const idioma of IDIOMAS) {
+      expect(foco[idioma].chamada.length).toBeGreaterThan(0);
+      expect(foco[idioma].nome).toMatch(/^[a-z]+$/);
+      expect(foco[idioma].curriculo).toMatch(/^\/cv\/.+\.pdf$/);
+      expect(existsSync(`public${foco[idioma].curriculo}`)).toBe(true);
+    }
+  });
+
+  it('não repete nome de foco dentro de um idioma', () => {
+    for (const idioma of IDIOMAS) {
+      expect(new Set(FOCOS.map((foco) => foco[idioma].nome)).size).toBe(FOCOS.length);
+    }
   });
 });
 

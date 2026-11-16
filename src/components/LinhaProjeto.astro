@@ -1,10 +1,10 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { ROTULO_CONTEXTO, ROTULO_STATUS } from '../lib/projetos';
+import { idiomaDaPagina, rotaProjeto } from '../i18n';
+import type { Projeto } from '../lib/conteudo';
 import Icone from './Icone.astro';
 
 interface Props {
-  projeto: CollectionEntry<'projetos'>;
+  projeto: Projeto;
   numero: number;
   /** Nível do título, para respeitar a hierarquia da página em que a linha aparece. */
   titulo?: 'h2' | 'h3';
@@ -12,16 +12,17 @@ interface Props {
 
 const { projeto, numero, titulo: Titulo = 'h3' } = Astro.props;
 const { data } = projeto;
+const { idioma, t } = idiomaDaPagina(Astro.url);
 const destaque = data.metrics[0];
 ---
 
 <article class="linha group relative">
   <span class="numero metal" aria-hidden="true">{String(numero).padStart(2, '0')}</span>
   <div class="cabeca min-w-0">
-    <p class="rotulo">{data.draft && 'Rascunho · '}{ROTULO_CONTEXTO[data.context]} · {ROTULO_STATUS[data.status]}</p>
+    <p class="rotulo">{data.draft && `${t.projeto.rascunho} · `}{t.projeto.contexto[data.context]} · {t.projeto.status[data.status]}</p>
     <Titulo class="titulo-linha mt-2">
       <!-- O ::after estica o link por toda a linha, sem aninhar outros elementos dentro dele. -->
-      <a href={`/projetos/${data.slug}/`} class="no-underline after:absolute after:inset-0">
+      <a href={rotaProjeto(idioma, data.slug)} class="no-underline after:absolute after:inset-0">
         <span class="nome">{data.title}</span>
       </a>
     </Titulo>

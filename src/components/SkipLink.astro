@@ -1,6 +1,12 @@
+---
+import { idiomaDaPagina } from '../i18n';
+
+const { t } = idiomaDaPagina(Astro.url);
+---
+
 <a
   href="#conteudo"
   class="btn btn-cromo sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
 >
-  Pular para o conteúdo
+  {t.pular}
 </a>

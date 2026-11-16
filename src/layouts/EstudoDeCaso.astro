@@ -5,24 +5,28 @@
  * Projeto com imagem a mostra no lugar da arte de cromo, na moldura de cromo.
  */
 import type { MarkdownHeading } from 'astro';
-import type { CollectionEntry } from 'astro:content';
 import CapaProjeto from '../components/CapaProjeto.astro';
 import Icone from '../components/Icone.astro';
 import NavProjetos from '../components/NavProjetos.astro';
 import StackChips from '../components/StackChips.astro';
 import TopoPagina from '../components/TopoPagina.astro';
-import { ROTULO_CONTEXTO, ROTULO_STATUS } from '../lib/projetos';
+import { idiomaDaPagina, outroIdioma, rota, rotaProjeto } from '../i18n';
+import type { Projeto } from '../lib/conteudo';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
-  projeto: CollectionEntry<'projetos'>;
+  projeto: Projeto;
   headings: MarkdownHeading[];
-  anterior?: CollectionEntry<'projetos'>;
-  proximo?: CollectionEntry<'projetos'>;
+  anterior?: Projeto | undefined;
+  proximo?: Projeto | undefined;
 }
 
 const { projeto, headings, anterior, proximo } = Astro.props;
 const { data } = projeto;
+const { idioma, t } = idiomaDaPagina(Astro.url);
+const outro = outroIdioma(idioma);
+const slugOutro = projeto.slugs[outro];
+const alternativa = slugOutro ? rotaProjeto(outro, slugOutro) : undefined;
 // "NextUp — recomendador..." vira um nome grande e uma linha de apoio, como na home.
 const [nome = data.title, ...resto] = data.title.split(' — ');
 const apoio = resto.join(' — ');
@@ -30,9 +34,9 @@ const apoio = resto.join(' — ');
 const equipe = data.role.split(' — ')[0];
 const secoes = headings.filter((h) => h.depth === 2);
 const resumo = [
-  { termo: 'O problema', texto: data.resumo.problema },
-  { termo: 'O que eu fiz', texto: data.resumo.feito },
-  { termo: 'Resultado', texto: data.resumo.resultado },
+  { termo: t.estudo.problema, texto: data.resumo.problema },
+  { termo: t.estudo.feito, texto: data.resumo.feito },
+  { termo: t.estudo.resultado, texto: data.resumo.resultado },
 ];
 // A tela larga tem preferência; a capa quadrada ou de celular entra quando é a única.
 const imagem = data.coverLargo
@@ -42,11 +46,11 @@ const imagem = data.coverLargo
     : undefined;
 ---
 
-<BaseLayout title={data.title} description={data.summary} imagem={data.slug} arteNoComputador={!imagem}>
+<BaseLayout title={data.title} description={data.summary} imagem={projeto.slugs.pt} arteNoComputador={!imagem} alternativa={alternativa}>
   <article>
-    <TopoPagina titulo={nome} apoio={apoio || undefined} rotulo={ROTULO_CONTEXTO[data.context]} descricao={data.summary} longo={!apoio} semArte={!!imagem}>
+    <TopoPagina titulo={nome} apoio={apoio || undefined} rotulo={t.projeto.contexto[data.context]} descricao={data.summary} longo={!apoio} semArte={!!imagem}>
       <p slot="antes" class="mb-4">
-        <a class="inline-flex min-h-11 items-center text-sm font-medium" href="/projetos/">Todos os projetos</a>
+        <a class="inline-flex min-h-11 items-center text-sm font-medium" href={rota(idioma, 'projetos')}>{t.estudo.todos}</a>
       </p>
       {imagem && (
         <figure slot="lado" class:list={['imagem-topo', { larga: imagem.larga }]}>
@@ -67,7 +71,7 @@ const imagem = data.coverLargo
     </TopoPagina>
 
     <div class="pagina">
-      <ol class="resumo" aria-label="Em resumo">
+      <ol class="resumo" aria-label={t.estudo.emResumo}>
         {resumo.map((item) => (
           <li class="parada">
             <p class="rotulo">{item.termo}</p>
@@ -78,22 +82,22 @@ const imagem = data.coverLargo
     </div>
 
     <div class="pagina corpo">
-      <aside class="lateral" aria-label="Sobre o projeto">
+      <aside class="lateral" aria-label={t.estudo.sobreProjeto}>
         <dl class="ficha">
           <div>
-            <dt class="rotulo">Equipe</dt>
+            <dt class="rotulo">{t.estudo.equipe}</dt>
             <dd>{equipe}</dd>
           </div>
           <div>
-            <dt class="rotulo">Período</dt>
+            <dt class="rotulo">{t.estudo.periodo}</dt>
             <dd>{data.period}</dd>
           </div>
           <div>
-            <dt class="rotulo">Status</dt>
-            <dd>{ROTULO_STATUS[data.status]}</dd>
+            <dt class="rotulo">{t.estudo.status}</dt>
+            <dd>{t.projeto.status[data.status]}</dd>
           </div>
           <div class="toda-linha">
-            <dt class="rotulo">Tecnologias</dt>
+            <dt class="rotulo">{t.estudo.tecnologias}</dt>
             <dd class="mt-2"><StackChips itens={data.stack} /></dd>
           </div>
         </dl>
@@ -101,7 +105,7 @@ const imagem = data.coverLargo
         {data.confidential && (
           <p class="mt-6 flex items-start gap-3 text-sm text-texto-suave">
             <span class="esfera mt-0.5 shrink-0" aria-hidden="true"></span>
-            {data.avisoConfidencial ?? 'Projeto corporativo: dados e nomes de clientes omitidos.'}
+            {data.avisoConfidencial ?? t.estudo.avisoPadrao}
           </p>
         )}
 
@@ -109,22 +113,22 @@ const imagem = data.coverLargo
           <div class="links">
             {data.links.demo && (
               <a class="btn btn-cromo" href={data.links.demo}>
-                Abrir demo
+                {t.projeto.demo}
                 <Icone nome="externo" class="size-4" />
               </a>
             )}
             {data.links.repo && (
               <a class="btn btn-contorno" href={data.links.repo}>
                 <Icone nome="github" />
-                Código
+                {t.projeto.codigo}
               </a>
             )}
           </div>
         )}
 
         {secoes.length > 1 && (
-          <nav class="indice" aria-label="Nesta página">
-            <p class="rotulo">Nesta página</p>
+          <nav class="indice" aria-label={t.estudo.nestaPagina}>
+            <p class="rotulo">{t.estudo.nestaPagina}</p>
             <ol class="mt-1 text-sm">
               {secoes.map((secao) => (
                 <li><a class="text-texto-suave no-underline hover:text-destaque" href={`#${secao.slug}`}>{secao.text}</a></li>
@@ -266,14 +270,14 @@ const imagem = data.coverLargo
    * "**Decisão.** Explicação": a decisão vira um subtítulo e a explicação fica embaixo. Só a partir
    * de "Decisões técnicas": antes dela, o negrito é um rótulo com dois-pontos ("O que foi meu:").
    */
-  .estudo :global(h2[id='decisões-técnicas'] ~ p > strong:first-child) {
+  .estudo :global(h2:is([id='decisões-técnicas'], [id='technical-decisions']) ~ p > strong:first-child) {
     display: block;
     margin-bottom: 0.25rem;
     font-size: 1.125rem;
     letter-spacing: -0.01em;
   }
 
-  .estudo :global(h2[id='decisões-técnicas'] ~ p:has(> strong:first-child)) {
+  .estudo :global(h2:is([id='decisões-técnicas'], [id='technical-decisions']) ~ p:has(> strong:first-child)) {
     margin-top: 1.75rem;
   }
 </style>

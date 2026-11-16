@@ -17,10 +17,10 @@ export type Tag = (typeof TAGS)[number];
 
 // Só estas tags viram botão no filtro de /projetos. As demais servem de classificação.
 export const FILTROS = [
-  { tag: 'dados', rotulo: 'Dados' },
-  { tag: 'ia', rotulo: 'IA' },
-  { tag: 'backend', rotulo: 'Backend' },
-  { tag: 'automacao', rotulo: 'Automação' },
-  { tag: 'bi', rotulo: 'BI' },
-  { tag: 'web', rotulo: 'Web' },
-] as const satisfies readonly { tag: Tag; rotulo: string }[];
+  { tag: 'dados', rotulo: 'Dados', rotuloEn: 'Data' },
+  { tag: 'ia', rotulo: 'IA', rotuloEn: 'AI' },
+  { tag: 'backend', rotulo: 'Backend', rotuloEn: 'Backend' },
+  { tag: 'automacao', rotulo: 'Automação', rotuloEn: 'Automation' },
+  { tag: 'bi', rotulo: 'BI', rotuloEn: 'BI' },
+  { tag: 'web', rotulo: 'Web', rotuloEn: 'Web' },
+] as const satisfies readonly { tag: Tag; rotulo: string; rotuloEn: string }[];

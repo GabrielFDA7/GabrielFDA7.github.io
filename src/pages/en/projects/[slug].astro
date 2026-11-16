@@ -1,0 +1,8 @@
+---
+import EstudoDeCasoPagina from '../../../paginas/EstudoDeCasoPagina.astro';
+import { caminhosDosProjetos } from '../../../paginas/rotas';
+
+export const getStaticPaths = () => caminhosDosProjetos('en');
+---
+
+<EstudoDeCasoPagina {...Astro.props} />

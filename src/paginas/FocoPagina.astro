@@ -1,0 +1,20 @@
+---
+// Links enviados em cada candidatura: fora do menu e sem indexação, para não competir com a home.
+import Inicio from '../components/Inicio.astro';
+import type { Foco } from '../config/focos';
+import { idiomaDaPagina, outroIdioma, rotaFoco } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  foco: Foco;
+}
+
+const { foco } = Astro.props;
+const { idioma } = idiomaDaPagina(Astro.url);
+const outro = outroIdioma(idioma);
+const { chamada } = foco[idioma];
+---
+
+<BaseLayout title={chamada} description={chamada} noindex imagem={`foco-${foco.pt.nome}`} alternativa={rotaFoco(outro, foco[outro].nome)}>
+  <Inicio foco={foco} />
+</BaseLayout>

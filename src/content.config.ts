@@ -60,4 +60,37 @@ const experiencia = defineCollection({
   }),
 });
 
-export const collections = { projetos, experiencia };
+// Versões em inglês. O arquivo tem o mesmo nome do original em português e traz só o que muda com o
+// idioma: textos, o slug do endereço e, se preciso, a lista de tecnologias. Imagens, tags, ordem e
+// links continuam vindo do original, então não há duas fontes para o mesmo dado. O teste
+// tests/traducoes.test.ts cobra que nenhum texto em português fique sem tradução.
+const projetosEn = defineCollection({
+  // O id é o nome do arquivo, igual ao do original. Sem isto, o glob usaria o `slug` do frontmatter,
+  // que em inglês é outro, e a tradução não encontraria o projeto.
+  loader: glob({ pattern: '**/*.md', base: './src/content/en/projetos', generateId: ({ entry }) => entry.replace(/\.md$/, '') }),
+  schema: z.object({
+    title: z.string().min(1),
+    slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'use minúsculas, números e hífens'),
+    summary: z.string().min(1).max(140),
+    role: z.string().min(1),
+    period: z.string().min(1),
+    stack: z.array(z.string().min(1)).optional(),
+    metrics: z.array(z.object({ label: z.string().min(1), value: z.string().min(1) })).max(3),
+    resumo: z.object({ problema: z.string().min(1), feito: z.string().min(1), resultado: z.string().min(1) }),
+    coverAlt: z.string().min(1).optional(),
+    coverLegenda: z.string().min(1).optional(),
+    avisoConfidencial: z.string().min(1).optional(),
+  }),
+});
+
+const experienciaEn = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/en/experiencia' }),
+  schema: z.object({
+    cargo: z.string().min(1),
+    contexto: z.string().optional(),
+    period: z.string().min(1),
+    resumo: z.string().min(1).max(260),
+  }),
+});
+
+export const collections = { projetos, experiencia, projetosEn, experienciaEn };
