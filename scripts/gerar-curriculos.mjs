@@ -1,10 +1,16 @@
-// Gera os currículos em inglês (public/cv/*-resume-*.pdf) a partir de curriculos/en.mjs, com o mesmo
-// layout dos PDFs em português: A4, Inter e as mesmas medidas, em pontos. O build não roda este script;
-// os PDFs ficam versionados, como a arte. Uso: `npm run curriculos`.
+// Gera os currículos (public/cv/*.pdf) nos dois idiomas, a partir de curriculos/pt.mjs e curriculos/en.mjs:
+// A4, Inter e as mesmas medidas, em pontos. O build não roda este script; os PDFs ficam versionados, como a
+// arte. Uso: `npm run curriculos`.
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
-import { CURRICULOS } from '../curriculos/en.mjs';
+import { CURRICULOS as EN } from '../curriculos/en.mjs';
+import { CURRICULOS as PT } from '../curriculos/pt.mjs';
+
+const IDIOMAS = [
+  { lang: 'pt-BR', documento: 'Currículo', curriculos: PT },
+  { lang: 'en', documento: 'Résumé', curriculos: EN },
+];
 
 const raiz = process.cwd();
 const fonte = async (peso, faixa = 'latin') =>
@@ -34,13 +40,13 @@ function secao({ titulo, texto, itens, tabela }) {
     </section>`;
 }
 
-async function html({ cargo, contato, secoes }) {
+async function html({ cargo, contato, secoes }, { lang, documento }) {
   const [regular, seminegrito, negrito, regularExt] = await Promise.all([fonte(400), fonte(600), fonte(700), fonte(400, 'latin-ext')]);
   return `<!doctype html>
-<html lang="en">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
-<title>${NOME} — Résumé</title>
+<title>${NOME} — ${documento}</title>
 <style>
   @font-face { font-family: Inter; font-weight: 400; src: url(data:font/woff2;base64,${regular}) format('woff2'); }
   @font-face { font-family: Inter; font-weight: 400; src: url(data:font/woff2;base64,${regularExt}) format('woff2'); unicode-range: U+0100-024F, U+2190-21FF; }
@@ -89,8 +95,8 @@ async function html({ cargo, contato, secoes }) {
 const navegador = await chromium.launch(process.env.CI ? {} : { channel: 'msedge' });
 // A janela tem a largura de uma A4 (210 mm = 794 px), para a medida da altura ser a da impressão.
 const pagina = await navegador.newPage({ viewport: { width: 794, height: 1123 } });
-for (const curriculo of CURRICULOS) {
-  await pagina.setContent(await html(curriculo), { waitUntil: 'load' });
+for (const [curriculo, idioma] of IDIOMAS.flatMap((idioma) => idioma.curriculos.map((c) => [c, idioma]))) {
+  await pagina.setContent(await html(curriculo, idioma), { waitUntil: 'load' });
   await pagina.evaluate(() => document.fonts.ready);
   const altura = await pagina.evaluate(() => document.querySelector('.folha').scrollHeight);
   const destino = join(raiz, 'public/cv', curriculo.arquivo);

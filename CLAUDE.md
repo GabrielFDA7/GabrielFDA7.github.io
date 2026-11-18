@@ -196,9 +196,9 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - Currículo do botão da home: a versão Python (`Gabriel-de-Angelis-curriculo-python.pdf`), confirmada pelo
   Gabriel em 04/11/2026. Os PDFs se chamam `Gabriel-de-Angelis-curriculo-<foco>.pdf` (15/11/2026): é com esse
   nome que chegam no computador de quem baixa.
-- **Os 3 PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Foram corrigidos a
-  partir dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa
-  passar pela mesma limpeza antes de entrar aqui.
+- **Os PDFs em `public/cv/` são públicos:** sem telefone e sem valor financeiro. Os em português nasceram
+  dos originais do Gabriel, que continuam em Downloads, com telefone. Um novo currículo precisa passar pela
+  mesma limpeza antes de entrar aqui.
 - **No ar desde 16/11/2026.** O Lighthouse no site real deu 99 a 100 em desempenho e 100 nas outras três
   categorias, nas 4 páginas medidas. O Gabriel conferiu em um celular de verdade e aprovou (16/11/2026).
 - `npm audit` acusa 5 alertas, todos em dependências de desenvolvimento, e 0 em produção: 3 baixos (katex,
@@ -256,9 +256,12 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Um só 404**, em português com uma saída para o inglês: o GitHub Pages serve um único `404.html`.
 - **O inglês foi para a `main` em 16/11/2026, a pedido do Gabriel.** Mudança no texto em inglês continua
   passando pela revisão dele: o site não pode soar mais fluente do que ele fala em entrevista.
-- **Currículos em inglês são gerados por código**: `curriculos/en.mjs` (conteúdo) e `npm run curriculos`
-  (`scripts/gerar-curriculos.mjs`), que imprime com o Edge o mesmo layout dos PDFs em português e avisa se
-  passar de uma página. Os em português não têm fonte editável, só o PDF.
+- **Os seis currículos são gerados por código**: `curriculos/pt.mjs` e `curriculos/en.mjs` (conteúdo) e
+  `npm run curriculos` (`scripts/gerar-curriculos.mjs`), que imprime com o Edge o mesmo layout e avisa se
+  passar de uma página. Desde 18/11/2026 os em português também saem daí: os PDFs antigos, corrigidos à
+  mão, faziam a extração de texto (usada pelos sistemas de candidatura) ler frases fora de ordem. Não edite
+  um PDF de currículo direto; mude o `.mjs` e regenere. Marcador de lista é o nativo (`list-style`), não
+  `::before` com `position`, pelo mesmo motivo.
 
 ## Publicação
 
@@ -278,7 +281,7 @@ npm run build    # gera dist/
 npm run preview  # serve dist/
 npm run arte     # regenera a arte de cromo e os favicons
 npm run capturas # recaptura o NextUp no ar; espera o parque ter fila (--agora para não esperar)
-npm run curriculos # regenera os currículos em inglês a partir de curriculos/en.mjs
+npm run curriculos # regenera os seis currículos a partir de curriculos/pt.mjs e curriculos/en.mjs
 
 # Depois de `npm run build`. O CI roda todos, e qualquer falha reprova:
 npm run verificar:dist       # links internos, PREENCHER, dados proibidos, SEO e mapa do site
