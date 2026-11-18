@@ -64,9 +64,11 @@ async function html({ cargo, contato, secoes }) {
   .direita { flex: none; font-size: 8.6pt; color: #5b6270; }
   .linha { margin: 1pt 0 0; font-size: 8.89pt; color: #5b6270; }
   .linha strong { font-weight: 600; color: #16181d; }
-  ul { margin: 2pt 0 0; padding: 0; list-style: none; }
-  li { position: relative; margin-top: 2pt; padding-left: 11pt; font-size: 9.19pt; line-height: 13.5pt; }
-  li::before { content: ''; position: absolute; left: -0.5pt; top: 5.3pt; width: 3pt; height: 3pt; border-radius: 50%; background: #1f4e8c; }
+  /* Marcador nativo, não desenhado com ::before e position: o elemento posicionado fazia a extração de texto
+     (sistemas de candidatura) ler os tópicos no fim da página, fora de ordem. */
+  ul { margin: 2pt 0 0; padding: 0 0 0 11pt; list-style: disc; }
+  li { margin-top: 2pt; font-size: 9.19pt; line-height: 13.5pt; }
+  li::marker { color: #1f4e8c; font-size: 7pt; }
   li strong { font-weight: 600; }
   table { margin-top: 5pt; border-collapse: collapse; width: 100%; }
   th, td { padding: 1.4pt 0; font-size: 9.19pt; line-height: 13pt; text-align: left; vertical-align: top; }
