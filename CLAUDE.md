@@ -256,12 +256,15 @@ Fonte: `pytest --collect-only` em `a656d19`, feito em 04/11/2026.
 - **Um só 404**, em português com uma saída para o inglês: o GitHub Pages serve um único `404.html`.
 - **O inglês foi para a `main` em 16/11/2026, a pedido do Gabriel.** Mudança no texto em inglês continua
   passando pela revisão dele: o site não pode soar mais fluente do que ele fala em entrevista.
-- **Os seis currículos são gerados por código**: `curriculos/pt.mjs` e `curriculos/en.mjs` (conteúdo) e
+- **Os seis currículos do site são gerados por código**: `curriculos/pt.mjs` e `curriculos/en.mjs` (conteúdo) e
   `npm run curriculos` (`scripts/gerar-curriculos.mjs`), que imprime com o Edge o mesmo layout e avisa se
   passar de uma página. Desde 18/11/2026 os em português também saem daí: os PDFs antigos, corrigidos à
   mão, faziam a extração de texto (usada pelos sistemas de candidatura) ler frases fora de ordem. Não edite
   um PDF de currículo direto; mude o `.mjs` e regenere. Marcador de lista é o nativo (`list-style`), não
   `::before` com `position`, pelo mesmo motivo.
+- **O currículo geral fica fora do site** (24/11/2026), para não competir com os focados: é só para sites de vagas que
+  aceitam um arquivo. O texto está em `curriculos/pt.mjs` (`foraDoSite: true`) e o PDF sai em
+  `curriculos/fora-do-site/`, que não entra no Git. Ainda não tem versão em inglês.
 
 ## Publicação
 
@@ -281,7 +284,7 @@ npm run build    # gera dist/
 npm run preview  # serve dist/
 npm run arte     # regenera a arte de cromo e os favicons
 npm run capturas # recaptura o NextUp no ar; espera o parque ter fila (--agora para não esperar)
-npm run curriculos # regenera os seis currículos a partir de curriculos/pt.mjs e curriculos/en.mjs
+npm run curriculos # regenera os currículos a partir de curriculos/pt.mjs e curriculos/en.mjs
 
 # Depois de `npm run build`. O CI roda todos, e qualquer falha reprova:
 npm run verificar:dist       # links internos, PREENCHER, dados proibidos, SEO e mapa do site

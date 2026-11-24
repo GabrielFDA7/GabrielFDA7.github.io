@@ -1,7 +1,8 @@
 // Gera os currículos (public/cv/*.pdf) nos dois idiomas, a partir de curriculos/pt.mjs e curriculos/en.mjs:
 // A4, Inter e as mesmas medidas, em pontos. O build não roda este script; os PDFs ficam versionados, como a
-// arte. Uso: `npm run curriculos`.
-import { readFile } from 'node:fs/promises';
+// arte. Os marcados com `foraDoSite` vão para curriculos/fora-do-site/, que fica fora do Git e do site.
+// Uso: `npm run curriculos`.
+import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
 import { CURRICULOS as EN } from '../curriculos/en.mjs';
@@ -99,7 +100,9 @@ for (const [curriculo, idioma] of IDIOMAS.flatMap((idioma) => idioma.curriculos.
   await pagina.setContent(await html(curriculo, idioma), { waitUntil: 'load' });
   await pagina.evaluate(() => document.fonts.ready);
   const altura = await pagina.evaluate(() => document.querySelector('.folha').scrollHeight);
-  const destino = join(raiz, 'public/cv', curriculo.arquivo);
+  const pasta = join(raiz, curriculo.foraDoSite ? 'curriculos/fora-do-site' : 'public/cv');
+  await mkdir(pasta, { recursive: true });
+  const destino = join(pasta, curriculo.arquivo);
   await pagina.pdf({ path: destino, format: 'A4', printBackground: true, margin: { top: 0, right: 0, bottom: 0, left: 0 } });
   // 1 pt = 4/3 px; uma A4 tem 842 pt de altura.
   const pontos = Math.round(altura * 0.75);

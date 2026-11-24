@@ -1,5 +1,5 @@
-// Conteúdo dos currículos em português, no mesmo layout dos em inglês (curriculos/en.mjs). Transcrição fiel
-// dos PDFs corrigidos à mão até 18/11/2026. Para mudar uma linha: edite aqui e rode `npm run curriculos`.
+// Conteúdo dos currículos em português, no mesmo layout dos em inglês (curriculos/en.mjs). Nasceu da
+// transcrição dos PDFs corrigidos à mão até 18/11/2026. Para mudar uma linha: edite aqui e rode `npm run curriculos`.
 // O repositório é público: nada de telefone nem de valor financeiro.
 
 const contato = (remoto) => [
@@ -217,6 +217,71 @@ export const CURRICULOS = [
           ['Backend e dados', 'FastAPI, Pydantic, APIs REST, PostgreSQL, SQLAlchemy, Pandas'],
           ['Qualidade e DevOps', 'pytest, Playwright, ruff, Docker, GitHub Actions, Git, Linux'],
           ['Automação', 'RPA (Selenium, PyAutoGUI), SAP, Power Query'],
+          ['Idiomas', 'Português (nativo) · Inglês C1 (FCE, Cambridge)'],
+        ],
+      },
+      formacao(' · VIII Iniciação Científica da FAMAT'),
+    ],
+  },
+  // Para sites de vagas que aceitam um currículo só. Fica fora do portfólio, para não competir com os focados.
+  {
+    arquivo: 'Gabriel-de-Angelis-curriculo.pdf',
+    foraDoSite: true,
+    cargo: 'Desenvolvedor Python · Dados, Automação e Backend',
+    contato: contato(true).map((linha, i) => (i ? [...linha, 'gabrielfda7.github.io'] : linha)),
+    secoes: [
+      {
+        titulo: 'Resumo',
+        texto:
+          'Desenvolvedor Python com quase 2 anos na Sotreq (revenda Caterpillar), construindo pipelines de dados, automações e integrações com APIs e SAP. Autor do NextUp, API em FastAPI com PostgreSQL, testes automatizados e deploy contínuo. Estudante de Sistemas de Informação (UFU), inglês C1.',
+      },
+      {
+        titulo: 'Experiência',
+        itens: [
+          {
+            ...ANALISTA,
+            itens: [
+              '<strong>Telemetria:</strong> pipeline diário em Python que valida os relatórios do VisionLink, marca dados suspeitos e grava no PostgreSQL. A primeira carga gravou 45 dias de histórico, sem falha.',
+              '<strong>Análises do painel:</strong> defini regra, fonte e gráfico das 10 análises da frota e conferi as contas em pandas.',
+              '<strong>API SIS2:</strong> automatizei o levantamento de peças por máquina, de horas para segundos (81 na primeira demanda).',
+              '<strong>SAP → Looker Studio:</strong> extração diária de pedidos tratada em Python, em dashboard self-service para cliente.',
+              '<strong>Gastos por filial (SAP BW, Power Query):</strong> estudo em dupla com meu gestor, que mostrou à diretoria que a meta de redução cabia sem cortar pessoas.',
+              'Consultas SQL para a área comercial; tutor do squad de estagiários e instrutor de workshops de Python.',
+            ],
+          },
+          {
+            ...ESTAGIO,
+            itens: [
+              '<strong>Verificadores SAP (VBA):</strong> consulta de preço e estoque de 50 itens caiu de mais de 30 para cerca de 3 minutos; usados pela Sotreq no Brasil inteiro.',
+              '<strong>Extrator de PDFs (Python):</strong> cada pedido, fatura ou cotação caiu de 8 a 10 minutos de digitação para 1.',
+              'Automações em Python (Pandas, Selenium, openpyxl) e relatórios do SAP, em squad ágil (Kanban/Scrum).',
+            ],
+          },
+        ],
+      },
+      {
+        titulo: 'Projeto em destaque',
+        itens: [
+          {
+            ...NEXTUP,
+            linha: 'Python · FastAPI · PostgreSQL · Docker · GitHub Actions · nextup-rcux.onrender.com',
+            itens: [
+              'API REST assíncrona (FastAPI, Pydantic) que cruza fila ao vivo e distância para indicar a próxima atração.',
+              'Histórico de filas em PostgreSQL (SQLAlchemy, Alembic), coletado de uma API pública com cache.',
+              '946 testes automatizados (pytest, Playwright), CI no GitHub Actions e deploy contínuo com Docker no Render.',
+            ],
+          },
+        ],
+      },
+      {
+        titulo: 'Competências técnicas',
+        tabela: [
+          ['Linguagens', 'Python, SQL, VBA, JavaScript'],
+          ['Dados e BI', 'Pandas, PostgreSQL, Parquet, ETL, qualidade de dados, Power Query, Looker Studio, Excel avançado'],
+          ['Backend e APIs', 'FastAPI, Pydantic, SQLAlchemy, Alembic, APIs REST/JSON, httpx'],
+          ['Automação', 'RPA (Selenium, PyAutoGUI), SAP GUI Scripting, SAP (ERP e BW), openpyxl, pdfplumber'],
+          ['Testes e entrega', 'pytest, Playwright, Docker, GitHub Actions (CI/CD), Git, Linux'],
+          ['IA no trabalho', 'Desenvolvimento com Claude Code: contexto versionado, skills próprias e testes'],
           ['Idiomas', 'Português (nativo) · Inglês C1 (FCE, Cambridge)'],
         ],
       },
