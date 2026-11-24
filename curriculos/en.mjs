@@ -113,9 +113,10 @@ export const CURRICULOS = [
           {
             ...ANALISTA,
             itens: [
-              "<strong>Telemetry:</strong> Python pipeline on VisionLink data for a client's mixed-fleet dashboard.",
+              '<strong>Telemetry:</strong> daily Python pipeline that validates VisionLink reports, flags suspicious data and writes to PostgreSQL. The first load brought in 45 days of history, with no failures.',
+              '<strong>Dashboard analyses:</strong> defined the rule, source and chart of the 10 fleet analyses and checked the math in pandas.',
               '<strong>SAP → Looker Studio:</strong> daily order extraction processed in Python, in a self-service dashboard for a client.',
-              '<strong>SIS2 API:</strong> automated the collection of part numbers for 81 machines, previously done by hand.',
+              '<strong>SIS2 API:</strong> automated the parts list of each machine, from hours to seconds; 81 machines in the first request.',
               'RPA automations and data matching (Power Query, SQL) to prioritize sales proposals.',
               'Financial analyses with SAP BW (DOL, net revenue) and pipeline consolidation.',
               'Mentor of the intern squad and instructor of internal Python workshops.',
@@ -124,6 +125,8 @@ export const CURRICULOS = [
           {
             ...ESTAGIO,
             itens: [
+              '<strong>SAP checkers (VBA):</strong> price and stock lookup of 50 items went from over 30 minutes to about 3; used by Sotreq across Brazil.',
+              '<strong>PDF extractor (Python):</strong> each order, invoice or quote went from 8 to 10 minutes of typing down to 1.',
               'Python (Pandas, Selenium, openpyxl) and VBA automations for routines and data matching.',
               'SAP data extraction for management reports, in an agile squad (Kanban/Scrum).',
             ],
@@ -136,7 +139,7 @@ export const CURRICULOS = [
           {
             titulo: 'Theme park ride recommender',
             direita: '2026 · GitHub',
-            itens: ['App that combines live wait times (ThemeParks.wiki API) and proximity to recommend the next ride.'],
+            itens: ['App that combines live wait times (ThemeParks.wiki API) and proximity to recommend the next ride, with wait-time history in PostgreSQL.'],
           },
           EPTA,
         ],
@@ -145,6 +148,7 @@ export const CURRICULOS = [
         titulo: 'Technical skills',
         tabela: [
           ['Data and analysis', 'Python (Pandas, NumPy, Matplotlib), SQL, Power Query, advanced Excel'],
+          ['Databases and quality', 'PostgreSQL (Supabase), Parquet, data validation and quality rules, pytest'],
           ['BI and visualization', 'Looker Studio, Excel dashboards, executive presentations'],
           ['Integration and automation', 'REST/JSON APIs, ETL pipelines, RPA (Selenium, PyAutoGUI, openpyxl), VBA'],
           ['Systems and tools', 'SAP (ERP and BW), VisionLink, Git/GitHub, VS Code, Firebase, C#/Unity'],

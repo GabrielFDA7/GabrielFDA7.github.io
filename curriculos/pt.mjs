@@ -113,9 +113,10 @@ export const CURRICULOS = [
           {
             ...ANALISTA,
             itens: [
-              '<strong>Telemetria:</strong> pipeline Python com dados do VisionLink para painel de frota mista de cliente.',
+              '<strong>Telemetria:</strong> pipeline diário em Python que valida os relatórios do VisionLink, marca dados suspeitos e grava no PostgreSQL. A primeira carga gravou 45 dias de histórico, sem falha.',
+              '<strong>Análises do painel:</strong> defini regra, fonte e gráfico das 10 análises da frota e conferi as contas em pandas.',
               '<strong>SAP → Looker Studio:</strong> extração diária de pedidos tratada em Python, em dashboard self-service para cliente.',
-              '<strong>API SIS2:</strong> automatizei o levantamento de part numbers de 81 máquinas, antes feito manualmente.',
+              '<strong>API SIS2:</strong> automatizei o levantamento de peças por máquina, de horas para segundos (81 na primeira demanda).',
               'Automações RPA e cruzamento de bases (Power Query, SQL) para priorizar propostas comerciais.',
               'Análises financeiras com SAP BW (DOL, Receita Líquida) e consolidação de pipeline.',
               'Tutor do squad de estagiários e instrutor de workshops internos de Python.',
@@ -124,6 +125,8 @@ export const CURRICULOS = [
           {
             ...ESTAGIO,
             itens: [
+              '<strong>Verificadores SAP (VBA):</strong> consulta de preço e estoque de 50 itens caiu de mais de 30 para cerca de 3 minutos; usados pela Sotreq no Brasil inteiro.',
+              '<strong>Extrator de PDFs (Python):</strong> cada pedido, fatura ou cotação caiu de 8 a 10 minutos de digitação para 1.',
               'Automações em Python (Pandas, Selenium, openpyxl) e VBA para rotinas e cruzamento de dados.',
               'Extração de dados do SAP para relatórios gerenciais, em squad ágil (Kanban/Scrum).',
             ],
@@ -136,7 +139,7 @@ export const CURRICULOS = [
           {
             titulo: 'Recomendador de atrações em parques temáticos',
             direita: '2026 · GitHub',
-            itens: ['App que cruza tempo de fila ao vivo (API ThemeParks.wiki) e proximidade para indicar a próxima atração.'],
+            itens: ['App que cruza tempo de fila ao vivo (API ThemeParks.wiki) e proximidade para indicar a próxima atração, com histórico de filas em PostgreSQL.'],
           },
           EPTA,
         ],
@@ -145,6 +148,7 @@ export const CURRICULOS = [
         titulo: 'Competências técnicas',
         tabela: [
           ['Dados e análise', 'Python (Pandas, NumPy, Matplotlib), SQL, Power Query, Excel avançado'],
+          ['Banco e qualidade', 'PostgreSQL (Supabase), Parquet, validação e regras de qualidade de dados, pytest'],
           ['BI e visualização', 'Looker Studio, dashboards em Excel, apresentações executivas'],
           ['Integração e automação', 'APIs REST/JSON, pipelines ETL, RPA (Selenium, PyAutoGUI, openpyxl), VBA'],
           ['Sistemas e ferramentas', 'SAP (ERP e BW), VisionLink, Git/GitHub, VS Code, Firebase, C#/Unity'],
